@@ -1,8 +1,8 @@
-from VIPMUSIC.core.bot import VIP
-from VIPMUSIC.core.dir import dirr
-from VIPMUSIC.core.git import git
-from VIPMUSIC.core.userbot import Userbot
-from VIPMUSIC.misc import dbb, heroku
+from LOVEMUSIC.core.bot import VIP
+from LOVEMUSIC.core.dir import dirr
+from LOVEMUSIC.core.git import git
+from LOVEMUSIC.core.userbot import Userbot
+from LOVEMUSIC.misc import dbb, heroku
 from telethon import TelegramClient
 from config import API_ID, API_HASH
 
@@ -29,4 +29,4 @@ Resso = RessoAPI()
 Telegram = TeleAPI()
 YouTube = YouTubeAPI()
 
-telethn = TelegramClient("VIPMUSIC", API_ID, API_HASH)
+telethn = TelegramClient("LOVEMUSIC", API_ID, API_HASH)
