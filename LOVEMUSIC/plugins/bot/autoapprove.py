@@ -1,4 +1,4 @@
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from os import environ
 import random
 from pyrogram import Client, filters
