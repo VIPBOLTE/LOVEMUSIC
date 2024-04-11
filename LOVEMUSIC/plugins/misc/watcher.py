@@ -1,8 +1,8 @@
 from pyrogram import filters
 from pyrogram.types import Message
 
-from VIPMUSIC import app
-from VIPMUSIC.core.call import VIP
+from LOVEMUSIC import app
+from LOVEMUSIC.core.call import VIP
 
 welcome = 20
 close = 30
