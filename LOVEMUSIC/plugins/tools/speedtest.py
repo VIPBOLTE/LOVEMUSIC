@@ -4,9 +4,9 @@ import speedtest
 from pyrogram import filters
 from pyrogram.types import Message
 
-from VIPMUSIC import app
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.utils.decorators.language import language
+from LOVEMUSIC import app
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils.decorators.language import language
 
 
 def testspeed(m, _):
