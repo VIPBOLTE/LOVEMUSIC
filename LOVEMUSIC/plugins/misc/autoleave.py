@@ -5,8 +5,8 @@ from pyrogram.enums import ChatType
 
 import config
 from VIPMUSIC import app
-from VIPMUSIC.core.call import VIP, autoend
-from VIPMUSIC.utils.database import get_client, is_active_chat, is_autoend
+from LOVEMUSIC.core.call import VIP, autoend
+from LOVEMUSIC.utils.database import get_client, is_active_chat, is_autoend
 
 
 async def auto_leave():
