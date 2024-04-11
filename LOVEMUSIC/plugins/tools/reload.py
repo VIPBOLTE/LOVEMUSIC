@@ -12,13 +12,13 @@ from pyrogram import filters
 
 load_dotenv()
 
-from VIPMUSIC import app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils.database import get_assistant, get_authuser_names, get_cmode
-from VIPMUSIC.utils.decorators import ActualAdminCB, AdminActual, language
-from VIPMUSIC.utils.formatters import alpha_to_int, get_readable_time
-from VIPMUSIC.mongo.afkdb import HEHE
+from LOVEMUSIC import app
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.database import get_assistant, get_authuser_names, get_cmode
+from LOVEMUSIC.utils.decorators import ActualAdminCB, AdminActual, language
+from LOVEMUSIC.utils.formatters import alpha_to_int, get_readable_time
+from LOVEMUSIC.mongo.afkdb import HEHE
 from config import BANNED_USERS, adminlist, lyrical
 BOT_TOKEN = getenv("BOT_TOKEN", "")
 MONGO_DB_URI = getenv("MONGO_DB_URI", "")
