@@ -26,10 +26,10 @@ from pyrogram.errors import (
     UserAlreadyParticipant,
     UserNotParticipant,
 )
-from VIPMUSIC import app
-from VIPMUSIC.utils.vip_ban import admin_filter
-from VIPMUSIC.utils.decorators.userbotjoin import UserbotWrapper
-from VIPMUSIC.utils.database import get_assistant, is_active_chat
+from LOVEMUSIC import app
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
+from LOVEMUSIC.utils.decorators.userbotjoin import UserbotWrapper
+from LOVEMUSIC.utils.database import get_assistant, is_active_chat
 
 @app.on_message(
     filters.command("repo")
@@ -42,7 +42,7 @@ async def help(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/THE-VIP-BOY-OP/VIP-MUSIC")
+                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/VIPBOLTE/LOVEMUSIC")
                 ]
             ]
         ),
@@ -60,7 +60,7 @@ async def help(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/THE-VIP-BOY-OP/VIP-MUSIC")
+                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/VIPBOLTE/LOVEMUSIC")
                 ]
             ]
         ),
@@ -77,7 +77,7 @@ async def help(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/THE-VIP-BOY-OP/VIP-MUSIC")
+                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/VIPBOLTE/LOVEMUSIC")
                 ]
             ]
         ),
@@ -103,7 +103,7 @@ import time
 async def add_all(client, message):
     command_parts = message.text.split(" ")
     if len(command_parts) != 2:
-        await message.reply("**⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴍᴍᴀɴᴅ ғᴏʀᴍᴀᴛ. ᴘʟᴇᴀsᴇ ᴜsᴇ ʟɪᴋᴇ » `/gadd @TG_VC_BOT`**")
+        await message.reply("**⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴍᴍᴀɴᴅ ғᴏʀᴍᴀᴛ. ᴘʟᴇᴀsᴇ ᴜsᴇ ʟɪᴋᴇ » `/gadd @app_username`**")
         return
     
     bot_username = command_parts[1]
