@@ -6,12 +6,12 @@ from pyrogram.errors import FloodWait
 from pyrogram.types import CallbackQuery, InputMediaPhoto, Message
 
 import config
-from VIPMUSIC import app
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils import VIPBin, get_channeplayCB, seconds_to_min
-from VIPMUSIC.utils.database import get_cmode, is_active_chat, is_music_playing
-from VIPMUSIC.utils.decorators.language import language, languageCB
-from VIPMUSIC.utils.inline import queue_back_markup, queue_markup
+from LOVEMUSIC import app
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils import LOVEBin, get_channeplayCB, seconds_to_min
+from LOVEMUSIC.utils.database import get_cmode, is_active_chat, is_music_playing
+from LOVEMUSIC.utils.decorators.language import language, languageCB
+from LOVEMUSIC.utils.inline import queue_back_markup, queue_markup
 from config import BANNED_USERS
 
 basic = {}
