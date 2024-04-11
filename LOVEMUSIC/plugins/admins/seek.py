@@ -1,11 +1,11 @@
 from pyrogram import filters
 from pyrogram.types import Message
 
-from VIPMUSIC import YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils import AdminRightsCheck, seconds_to_min
-from VIPMUSIC.utils.inline import close_markup
+from LOVEMUSIC import YouTube, app
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils import AdminRightsCheck, seconds_to_min
+from LOVEMUSIC.utils.inline import close_markup
 from config import BANNED_USERS
 
 
