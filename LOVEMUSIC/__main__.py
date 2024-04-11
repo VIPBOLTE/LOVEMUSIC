@@ -5,13 +5,13 @@ from pyrogram import idle
 from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
-from VIPMUSIC import LOGGER, app, userbot
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import sudo
-from VIPMUSIC.plugins import ALL_MODULES
-from VIPMUSIC.utils.database import get_banned_users, get_gbanned
+from LOVEMUSIC import LOGGER, app, userbot
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.misc import sudo
+from LOVEMUSIC.plugins import ALL_MODULES
+from LOVEMUSIC.utils.database import get_banned_users, get_gbanned
 from config import BANNED_USERS
-from VIPMUSIC import telethn
+from LOVEMUSIC import telethn
 
 async def init():
     if (
@@ -37,11 +37,11 @@ async def init():
     await app.start()
     for all_module in ALL_MODULES:
         importlib.import_module("VIPMUSIC.plugins" + all_module)
-    LOGGER("VIPMUSIC.plugins").info("𝐀𝐥𝐥 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 𝐋𝐨𝐚𝐝𝐞𝐝 𝐁𝐚𝐛𝐲🥳...")
+    LOGGER("LOVEMUSIC.plugins").info("𝐀𝐥𝐥 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 𝐋𝐨𝐚𝐝𝐞𝐝 𝐁𝐚𝐛𝐲🥳...")
     await userbot.start()
     await VIP.start()
     await VIP.decorators()
-    LOGGER("VIPMUSIC").info("╔═════ஜ۩۞۩ஜ════╗\n  ♨️𝗠𝗔𝗗𝗘 𝗕𝗬 𝗩𝗜𝗣 𝗕𝗢𝗬♨️\n╚═════ஜ۩۞۩ஜ════╝"
+    LOGGER("LOVEMUSIC").info("╔═════ஜ۩۞۩ஜ════╗\n  ♨️𝗠𝗔𝗗𝗘 𝗕𝗬 𝗠𝗥 𝗚𝗢𝗞𝗨♨️\n╚═════ஜ۩۞۩ஜ════╝"
     )
     await idle()
     if len(argv) not in (1, 3, 4):
@@ -51,7 +51,7 @@ async def init():
                 
     await app.stop()
     await userbot.stop()
-    LOGGER("VIPMUSIC").info("                 ╔═════ஜ۩۞۩ஜ════╗\n  ♨️𝗠𝗔𝗗𝗘 𝗕𝗬 𝗩𝗜𝗣 𝗕𝗢𝗬♨️\n╚═════ஜ۩۞۩ஜ════╝")
+    LOGGER("LOVEMUSIC").info("                 ╔═════ஜ۩۞۩ஜ════╗\n  ♨️𝗠𝗔𝗗𝗘 𝗕𝗬 𝗠𝗥 𝗚𝗢𝗞𝗨♨️\n╚═════ஜ۩۞۩ஜ════╝")
     
 
 if __name__ == "__main__":
