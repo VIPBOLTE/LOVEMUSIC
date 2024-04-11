@@ -5,17 +5,17 @@ import os
 import re
 import asyncio
 import time
-from VIPMUSIC import app
-from VIPMUSIC.utils.database import add_served_chat, delete_served_chat
+from LOVEMUSIC import app
+from LOVEMUSIC.utils.database import add_served_chat, delete_served_chat
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 import asyncio
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.mongo.afkdb import HEHE
-from VIPMUSIC.core.userbot import Userbot
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.mongo.afkdb import HEHE
+from LOVEMUSIC.core.userbot import Userbot
 from pyrogram import Client, filters
 from pyrogram.errors import UserAlreadyParticipant
-from VIPMUSIC import app
+from LOVEMUSIC import app
 import asyncio
 import random
 from pyrogram import Client, filters
