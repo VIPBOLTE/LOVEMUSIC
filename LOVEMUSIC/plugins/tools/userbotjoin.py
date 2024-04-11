@@ -1,9 +1,9 @@
 import asyncio
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.core.userbot import Userbot
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.core.userbot import Userbot
 from pyrogram import Client, filters
 from pyrogram.errors import UserAlreadyParticipant
-from VIPMUSIC import app
+from LOVEMUSIC import app
 import asyncio
 import random
 from pyrogram import Client, filters
@@ -14,10 +14,10 @@ from pyrogram.errors import (
     UserAlreadyParticipant,
     UserNotParticipant,
 )
-from VIPMUSIC import app
-from VIPMUSIC.utils.vip_ban import admin_filter
-from VIPMUSIC.utils.decorators.userbotjoin import UserbotWrapper
-from VIPMUSIC.utils.database import get_assistant, is_active_chat
+from LOVEMUSIC import app
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
+from LOVEMUSIC.utils.decorators.userbotjoin import UserbotWrapper
+from LOVEMUSIC.utils.database import get_assistant, is_active_chat
 links = {}
 
 
