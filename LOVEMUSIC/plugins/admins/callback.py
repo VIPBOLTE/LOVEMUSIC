@@ -7,13 +7,13 @@ from pyrogram.errors import (
     UserAlreadyParticipant,
     UserNotParticipant,
 )
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from VIPMUSIC import YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import SUDOERS, db
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import YouTube, app
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.misc import SUDOERS, db
+from LOVEMUSIC.utils.database import (
     get_active_chats,
     get_lang,
     get_upvote_count,
@@ -27,11 +27,11 @@ from VIPMUSIC.utils.database import (
     is_muted,
     set_loop,
 )
-from VIPMUSIC.utils.decorators.language import languageCB
-from VIPMUSIC.utils.formatters import seconds_to_min
-from VIPMUSIC.utils.inline import close_markup, stream_markup, stream_markup_timer, stream_markup2, stream_markup_timer2
-from VIPMUSIC.utils.stream.autoclear import auto_clean
-from VIPMUSIC.utils.thumbnails import get_thumb
+from LOVEMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.utils.formatters import seconds_to_min
+from LOVEMUSIC.utils.inline import close_markup, stream_markup, stream_markup_timer, stream_markup2, stream_markup_timer2
+from LOVEMUSIC.utils.stream.autoclear import auto_clean
+from LOVEMUSIC.utils.thumbnails import get_thumb
 from config import BANNED_USERS, SOUNCLOUD_IMG_URL, STREAM_IMG_URL, TELEGRAM_AUDIO_URL, TELEGRAM_VIDEO_URL, adminlist, confirmer, votemode
 from strings import get_string
 from config import lyrical
@@ -43,7 +43,7 @@ wrong = {}
 import math
 from typing import Union
 from pyrogram.types import InlineKeyboardButton
-from VIPMUSIC.utils.formatters import time_to_seconds
+from LOVEMUSIC.utils.formatters import time_to_seconds
 
 def track_markup(_, user_id, channel, fplay):
     buttons = [
