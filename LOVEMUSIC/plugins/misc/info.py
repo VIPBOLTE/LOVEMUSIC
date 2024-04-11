@@ -2,7 +2,7 @@ import asyncio, os, time, aiohttp
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from asyncio import sleep
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from pyrogram import filters, Client, enums
 from pyrogram.enums import ParseMode
 from pyrogram.types import *
@@ -10,7 +10,7 @@ from typing import Union, Optional
 import random
 from time import time
 import asyncio
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
