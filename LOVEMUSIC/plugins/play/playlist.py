@@ -1,7 +1,7 @@
 import os
 import requests
 from random import randint
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC.utils.database import (
     add_served_chat,
     add_served_user,
     blacklisted_chats,
@@ -14,14 +14,14 @@ from pykeyboard import InlineKeyboard
 from pyrogram import filters
 from pyrogram.types import (InlineKeyboardButton, CallbackQuery,
                             InlineKeyboardMarkup, Message)
-from VIPMUSIC.utils import close_markup
+from LOVEMUSIC.utils import close_markup
 from config import BANNED_USERS, SERVER_PLAYLIST_LIMIT
-from VIPMUSIC import Carbon, app
-from VIPMUSIC.utils.decorators.language import language, languageCB
-from VIPMUSIC.utils.inline.playlist import (botplaylist_markup,
+from LOVEMUSIC import Carbon, app
+from LOVEMUSIC.utils.decorators.language import language, languageCB
+from LOVEMUSIC.utils.inline.playlist import (botplaylist_markup,
                                               get_playlist_markup,
                                               warning_markup)
-from VIPMUSIC.utils.pastebin import VIPBin
+from LOVEMUSIC.utils.pastebin import LOVEBin
 import time
 import asyncio
 import yt_dlp
@@ -29,11 +29,11 @@ from youtube_search import YoutubeSearch
 from youtubesearchpython import VideosSearch
 from youtubesearchpython import SearchVideos
 
-from VIPMUSIC.utils.stream.stream import stream
+from LOVEMUSIC.utils.stream.stream import stream
 from typing import Dict, List, Union
 from time import time
 import asyncio
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
@@ -41,7 +41,7 @@ user_command_count = {}
 # Define the threshold for command spamming (e.g., 20 commands within 60 seconds)
 SPAM_THRESHOLD = 2
 SPAM_WINDOW_SECONDS = 5
-from VIPMUSIC.core.mongo import mongodb
+from LOVEMUSIC.core.mongo import mongodb
 
 
 playlistdb = mongodb.playlist
