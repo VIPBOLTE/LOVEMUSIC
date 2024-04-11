@@ -2,7 +2,7 @@ import pyrogram
 import time
 from pyrogram import filters
 from pyrogram import Client
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from LOVEMUSIC.misc import SUDOERS
 
 # Define the spam command handler
