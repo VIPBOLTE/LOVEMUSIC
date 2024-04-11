@@ -21,15 +21,15 @@ from VIPMUSIC.utils.database import (
     is_banned_user,
     is_on_off,
 )
-from VIPMUSIC.utils.decorators.language import LanguageStart
-from VIPMUSIC.utils.formatters import get_readable_time
-from VIPMUSIC.utils.inline import first_page, private_panel, start_panel
+from LOVEMUSIC.utils.decorators.language import LanguageStart
+from LOVEMUSIC.utils.formatters import get_readable_time
+from LOVEMUSIC.utils.inline import first_page, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 from time import time
 import asyncio
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
