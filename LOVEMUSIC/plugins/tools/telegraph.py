@@ -5,13 +5,13 @@ from telethon import Button
 from PIL import Image
 from telegraph import Telegraph, exceptions, upload_file
 
-from VIPMUSIC import telethn as tbot
-from VIPMUSIC.utils.events import register
+from LOVEMUSIC import telethn as tbot
+from LOVEMUSIC.utils.events import register
 
-VIP = "Vip"
+LOVE = "Love"
 TMP_DOWNLOAD_DIRECTORY = "./"
 telegraph = Telegraph(domain="graph.org")
-r = telegraph.create_account(short_name=VIP)
+r = telegraph.create_account(short_name=LOVE)
 auth_url = r["auth_url"]
 
 
