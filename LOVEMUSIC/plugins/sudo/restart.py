@@ -13,15 +13,15 @@ from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyb
 from io import BytesIO
 from pyrogram import filters
 import config
-from VIPMUSIC import app
-from VIPMUSIC.misc import HAPP, SUDOERS, XCB
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import app
+from LOVEMUSIC.misc import HAPP, SUDOERS, XCB
+from LOVEMUSIC.utils.database import (
     get_active_chats,
     remove_active_chat,
     remove_active_video_chat,
 )
-from VIPMUSIC.utils.decorators.language import language
-from VIPMUSIC.utils.pastebin import VIPBin
+from LOVEMUSIC.utils.decorators.language import language
+from LOVEMUSIC.utils.pastebin import LOVEBin
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
