@@ -4,17 +4,17 @@ from pyrogram import filters
 from pyrogram.enums import ChatMembersFilter
 from pyrogram.errors import FloodWait
 
-from VIPMUSIC import app
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import app
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils.database import (
     get_active_chats,
     get_authuser_names,
     get_client,
     get_served_chats,
     get_served_users,
 )
-from VIPMUSIC.utils.decorators.language import language
-from VIPMUSIC.utils.formatters import alpha_to_int
+from LOVEMUSIC.utils.decorators.language import language
+from LOVEMUSIC.utils.formatters import alpha_to_int
 from config import adminlist
 
 IS_BROADCASTING = False
