@@ -1,13 +1,13 @@
 from pyrogram import enums
 from pyrogram.enums import ChatType
 from pyrogram import filters, Client
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from config import OWNER_ID
-from VIPMUSIC.misc import SUDOERS
+from LOVEMUSIC.misc import SUDOERS
 from pyrogram.types import Message
-from VIPMUSIC.utils.vip_ban import admin_filter
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-from VIPMUSIC.utils.database import add_served_chat, delete_served_chat
+from LOVEMUSIC.utils.database import add_served_chat, delete_served_chat
 
 # ------------------------------------------------------------------------------- #
 
