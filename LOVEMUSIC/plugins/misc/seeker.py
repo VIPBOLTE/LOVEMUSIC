@@ -1,7 +1,7 @@
 import asyncio
 
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils.database import get_active_chats, is_music_playing
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.database import get_active_chats, is_music_playing
 
 
 async def timer():
