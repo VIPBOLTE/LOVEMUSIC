@@ -1,11 +1,11 @@
 from pyrogram import filters
 from pyrogram.types import Message
 
-from VIPMUSIC import app
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.utils.database import add_gban_user, remove_gban_user
-from VIPMUSIC.utils.decorators.language import language
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC import app
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils.database import add_gban_user, remove_gban_user
+from LOVEMUSIC.utils.decorators.language import language
+from LOVEMUSIC.utils.extraction import extract_user
 from config import BANNED_USERS
 
 
