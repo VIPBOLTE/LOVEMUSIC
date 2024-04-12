@@ -1,4 +1,4 @@
-from LOVEMUSIC.core.bot import VIP
+from LOVEMUSIC.core.bot import LOVE
 from LOVEMUSIC.core.dir import dirr
 from LOVEMUSIC.core.git import git
 from LOVEMUSIC.core.userbot import Userbot
