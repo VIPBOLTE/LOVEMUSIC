@@ -2,8 +2,8 @@ import time
 
 import psutil
 
-from VIPMUSIC.misc import _boot_
-from VIPMUSIC.utils.formatters import get_readable_time
+from LOVEMUSIC.misc import _boot_
+from LOVEMUSIC.utils.formatters import get_readable_time
 
 
 async def bot_sys_stats():
