@@ -1,8 +1,8 @@
 import asyncio
 from typing import Union
 
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils.formatters import check_duration, seconds_to_min
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.formatters import check_duration, seconds_to_min
 from config import autoclean, time_to_seconds
 
 
