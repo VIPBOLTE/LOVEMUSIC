@@ -5,8 +5,8 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto, InputMediaVideo, Message
 from config import LOGGER_ID as LOG_GROUP_ID
 from VIPMUSIC import app  
-from VIPMUSIC.utils.database import get_assistant
-from VIPMUSIC.utils.database import delete_served_chat
+from LOVEMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import delete_served_chat
 
 photo = [
     "https://telegra.ph/file/1949480f01355b4e87d26.jpg",
