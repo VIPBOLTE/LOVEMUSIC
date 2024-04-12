@@ -5,14 +5,14 @@ from typing import Union
 from pyrogram.types import InlineKeyboardMarkup
 
 import config
-from VIPMUSIC import Carbon, YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils.database import add_active_video_chat, is_active_chat
-from VIPMUSIC.utils.exceptions import AssistantErr
-from VIPMUSIC.utils.inline import aq_markup, queuemarkup, close_markup, stream_markup, stream_markup2
-from VIPMUSIC.utils.pastebin import VIPBin
-from VIPMUSIC.utils.stream.queue import put_queue, put_queue_index
+from LOVEMUSIC import Carbon, YouTube, app
+from LOVEMUSIC.core.call import LOVE
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
+from LOVEMUSIC.utils.exceptions import AssistantErr
+from LOVEMUSIC.utils.inline import aq_markup, queuemarkup, close_markup, stream_markup, stream_markup2
+from LOVEMUSIC.utils.pastebin import LOVEBin
+from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from youtubesearchpython.__future__ import VideosSearch
 
 
@@ -32,7 +32,7 @@ async def stream(
     if not result:
         return
     if forceplay:
-        await VIP.force_stop_stream(chat_id)
+        await LOVE.force_stop_stream(chat_id)
     if streamtype == "playlist":
         msg = f"{_['play_19']}\n\n"
         count = 0
