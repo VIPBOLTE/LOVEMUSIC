@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from youtubesearchpython.__future__ import VideosSearch
 
-from VIPMUSIC import app
+from LOVEMUSIC import app
 
 # Command handler for /getthumbnail
 @app.on_message(filters.command("getthumb", prefixes="/"))
