@@ -1,12 +1,12 @@
 from datetime import datetime
 from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from VIPMUSIC import app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.utils import bot_sys_stats
-from VIPMUSIC.utils.decorators.language import language
-from VIPMUSIC.utils.inline import supp_markup
-from VIPMUSIC.utils.inline import close_markup
+from LOVEMUSIC import app
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.utils import bot_sys_stats
+from LOVEMUSIC.utils.decorators.language import language
+from LOVEMUSIC.utils.inline import supp_markup
+from LOVEMUSIC.utils.inline import close_markup
 from config import BANNED_USERS
 import aiohttp
 import asyncio
@@ -14,7 +14,7 @@ from io import BytesIO
 from PIL import Image, ImageEnhance 
 from time import time
 import asyncio
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
