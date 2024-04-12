@@ -2,7 +2,7 @@ import inspect
 import re
 from pathlib import Path
 from telethon import events
-from VIPMUSIC import telethn
+from LOVEMUSIC import telethn
 
 
 def register(**args):
