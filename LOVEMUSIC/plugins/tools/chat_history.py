@@ -4,11 +4,11 @@ from pyrogram.errors import FloodWait
 from pyrogram.types import Message
 from dotenv import load_dotenv
 import config
-from VIPMUSIC.mongo.afkdb import HEHE as OWNER
-from VIPMUSIC.core.userbot import Userbot
-from VIPMUSIC import app
+from LOVEMUSIC.mongo.afkdb import HEHE as OWNER
+from LOVEMUSIC.core.userbot import Userbot
+from LOVEMUSIC import app
 from datetime import datetime
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 from telegraph import Telegraph  # Import Telegraph library
 import os
 
