@@ -9,7 +9,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 from youtubesearchpython import SearchVideos
 from yt_dlp import YoutubeDL
-from VIPMUSIC import app
+from LOVEMUSIC import app
 import asyncio
 import os
 import time
@@ -19,10 +19,10 @@ from pyrogram import filters
 from pyrogram.types import Message
 from youtubesearchpython import SearchVideos
 from yt_dlp import YoutubeDL
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from time import time
 import asyncio
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 import asyncio
 import os
 import wget
@@ -31,16 +31,16 @@ from pyrogram.types import Message
 from youtubesearchpython import SearchVideos
 from yt_dlp import YoutubeDL
 
-from VIPMUSIC import app
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC import app
+from LOVEMUSIC.utils.extraction import extract_user
 from time import time
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 from urllib.parse import urlparse
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import filters
 from youtubesearchpython import SearchVideos
 from yt_dlp import YoutubeDL
-from VIPMUSIC import app
+from LOVEMUSIC import app
 import wget
 
 # Define a dictionary to track the last query timestamp for each user
