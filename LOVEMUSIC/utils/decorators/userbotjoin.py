@@ -9,9 +9,9 @@ from pyrogram.errors import (
 )
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters
-from VIPMUSIC import YouTube, app
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import YouTube, app
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils.database import (
     get_assistant,
     get_cmode,
     get_lang,
