@@ -1,6 +1,6 @@
 from asyncio import get_running_loop, sleep, TimeoutError
 from functools import partial
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiohttp import ClientSession
