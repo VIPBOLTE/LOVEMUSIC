@@ -1,6 +1,6 @@
 import aiohttp
 from pyrogram import filters
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 @app.on_message(filters.command(["github", "git"]))
