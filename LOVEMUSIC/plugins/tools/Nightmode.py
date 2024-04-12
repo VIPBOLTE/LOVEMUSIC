@@ -1,10 +1,10 @@
 import random 
 from pyrogram import filters,Client,enums
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pyrogram.types import ChatPermissions
-from VIPMUSIC.mongo.nightmodedb import nightdb,nightmode_on,nightmode_off,get_nightchats 
+from LOVEMUSIC.mongo.nightmodedb import nightdb,nightmode_on,nightmode_off,get_nightchats 
 
 
 
