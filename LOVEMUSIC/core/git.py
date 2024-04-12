@@ -54,7 +54,7 @@ def git():
             origin = repo.remote("origin")
         else:
             origin = repo.create_remote("origin", UPSTREAM_REPO)
-        origin.fetch() 
+        origin.fetch()
         repo.create_head(
             config.UPSTREAM_BRANCH,
             origin.refs[config.UPSTREAM_BRANCH],
