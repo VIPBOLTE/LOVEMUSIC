@@ -9,11 +9,11 @@ from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
 import config
-from VIPMUSIC import app
-from VIPMUSIC.misc import _boot_
-from VIPMUSIC.utils import bot_up_time
-from VIPMUSIC.plugins.sudo.sudoers import sudoers_list
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import app
+from LOVEMUSIC.misc import _boot_
+from LOVEMUSIC.utils import bot_up_time
+from LOVEMUSIC.plugins.sudo.sudoers import sudoers_list
+from LOVEMUSIC.utils.database import (
     add_served_chat,
     add_served_user,
     blacklisted_chats,
