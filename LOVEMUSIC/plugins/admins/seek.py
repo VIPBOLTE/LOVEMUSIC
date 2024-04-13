@@ -2,7 +2,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 
 from LOVEMUSIC import YouTube, app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils import AdminRightsCheck, seconds_to_min
 from LOVEMUSIC.utils.inline import close_markup
@@ -56,7 +56,7 @@ async def seek_comm(cli, message: Message, _, chat_id):
     if "index_" in file_path:
         file_path = playing[0]["vidid"]
     try:
-        await VIP.seek_stream(
+        await LOVE.seek_stream(
             chat_id,
             file_path,
             seconds_to_min(to_seek),
