@@ -7,7 +7,7 @@ from pytgcalls.exceptions import NoActiveGroupCall
 from LOVEMUSIC.utils.database import get_assistant
 import config
 from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
 from LOVEMUSIC.utils.channelplay import get_channeplayCB
