@@ -17,9 +17,9 @@ from pytgcalls.types.input_stream.quality import HighQualityAudio, MediumQuality
 from pytgcalls.types.stream import StreamAudioEnded
 
 import config
-from VIPMUSIC import LOGGER, YouTube, app
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import LOGGER, YouTube, app
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.database import (
     add_active_chat,
     add_active_video_chat,
     get_lang,
