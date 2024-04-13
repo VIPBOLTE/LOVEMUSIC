@@ -3,7 +3,7 @@ from pyrogram import filters
 from LOVEMUSIC import YouTube, app
 from LOVEMUSIC.utils.channelplay import get_channeplayCB
 from LOVEMUSIC.utils.decorators.language import languageCB
-from lOVEMUSIC.utils.stream.stream import stream
+from LOVEMUSIC.utils.stream.stream import stream
 from config import BANNED_USERS
 
 
