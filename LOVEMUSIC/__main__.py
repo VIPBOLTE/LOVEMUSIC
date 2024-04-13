@@ -6,7 +6,7 @@ from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
 from LOVEMUSIC import LOGGER, app, userbot
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import sudo
 from LOVEMUSIC.plugins import ALL_MODULES
 from LOVEMUSIC.utils.database import get_banned_users, get_gbanned
@@ -36,11 +36,11 @@ async def init():
         pass
     await app.start()
     for all_module in ALL_MODULES:
-        importlib.import_module("VIPMUSIC.plugins" + all_module)
+        importlib.import_module("LOVEMUSIC.plugins" + all_module)
     LOGGER("LOVEMUSIC.plugins").info("𝐀𝐥𝐥 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 𝐋𝐨𝐚𝐝𝐞𝐝 𝐁𝐚𝐛𝐲🥳...")
     await userbot.start()
-    await VIP.start()
-    await VIP.decorators()
+    await LOVE.start()
+    await LOVE.decorators()
     LOGGER("LOVEMUSIC").info("╔═════ஜ۩۞۩ஜ════╗\n  ♨️𝗠𝗔𝗗𝗘 𝗕𝗬 𝗠𝗥 𝗚𝗢𝗞𝗨♨️\n╚═════ஜ۩۞۩ஜ════╝"
     )
     await idle()
