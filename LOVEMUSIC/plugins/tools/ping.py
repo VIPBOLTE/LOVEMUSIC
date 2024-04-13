@@ -2,7 +2,7 @@ from datetime import datetime
 from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.utils import bot_sys_stats
 from LOVEMUSIC.utils.decorators.language import language
 from LOVEMUSIC.utils.inline import supp_markup
@@ -84,7 +84,7 @@ async def ping_com(client, message: Message, _):
     await asyncio.sleep(3)
     await response.edit_caption("**📩sᴇɴᴅɪɴɢ sʏsᴛᴇᴍ ᴀɴᴀʟʏsᴇᴅ ᴅᴀᴛᴀ ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ...**")
     start = datetime.now()
-    pytgping = await VIP.ping()
+    pytgping = await LOVE.ping()
     UP, CPU, RAM, DISK = await bot_sys_stats()
     resp = (datetime.now() - start).microseconds / 1000
     text =  _["ping_2"].format(resp, app.name, UP, RAM, CPU, DISK, pytgping)
