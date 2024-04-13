@@ -4,7 +4,7 @@ from pyrogram.types import Message
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto, InputMediaVideo, Message
 from config import LOGGER_ID as LOG_GROUP_ID
-from VIPMUSIC import app  
+from LOVEMUSIC import app  
 from LOVEMUSIC.utils.database import get_assistant
 from LOVEMUSIC.utils.database import delete_served_chat
 
