@@ -14,7 +14,7 @@ git()
 dbb()
 heroku()
 
-app = VIP()
+app = LOVE()
 api = SafoneAPI()
 userbot = Userbot()
 
