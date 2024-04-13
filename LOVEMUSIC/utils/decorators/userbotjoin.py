@@ -20,7 +20,7 @@ from LOVEMUSIC.utils.database import (
     is_active_chat,
     is_maintenance,
 )
-from VIPMUSIC.utils.inline import botplaylist_markup
+from LOVEMUSIC.utils.inline import botplaylist_markup
 from config import PLAYLIST_IMG_URL, SUPPORT_CHAT, adminlist
 from strings import get_string
 
