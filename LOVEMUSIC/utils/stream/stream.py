@@ -6,7 +6,7 @@ from pyrogram.types import InlineKeyboardMarkup
 
 import config
 from LOVEMUSIC import Carbon, YouTube, app
-from LOVEMUSIC.core.call import LOVE
+from LOVEMUSIC.core.call import VIP
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
 from LOVEMUSIC.utils.exceptions import AssistantErr
