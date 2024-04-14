@@ -38,8 +38,8 @@ random_photo = [
     "https://telegra.ph/file/2973150dd62fd27a3a6ba.jpg",
 ]
 
-bg_path = "VIPMUSIC/assets/userinfo.png"
-font_path = "VIPMUSIC/assets/hiroko.ttf"
+bg_path = "LOVEMUSIC/assets/userinfo.png"
+font_path = "LOVEMUSIC/assets/hiroko.ttf"
 
 get_font = lambda font_size, font_path: ImageFont.truetype(font_path, font_size)
 
