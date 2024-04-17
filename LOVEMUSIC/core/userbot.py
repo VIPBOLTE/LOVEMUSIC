@@ -20,35 +20,35 @@ assistantids = []
 class Userbot(Client):
     def __init__(self):
         self.one = Client(
-            name="VIPAss1",
+            name="LOVEAss1",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING1),
             no_updates=True,
         )
         self.two = Client(
-            name="VIPAss2",
+            name="LOVEAss2",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING2),
             no_updates=True,
         )
         self.three = Client(
-            name="VIPAss3",
+            name="LOVEAss3",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING3),
             no_updates=True,
         )
         self.four = Client(
-            name="VIPAss4",
+            name="LOVEAss4",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING4),
             no_updates=True,
         )
         self.five = Client(
-            name="VIPAss5",
+            name="LOVEAss5",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING5),
@@ -62,8 +62,8 @@ class Userbot(Client):
         if config.STRING1:
             await self.one.start()
             try:
-                await self.one.join_chat("THE_VIP_BOY")
-                await self.one.join_chat("THE_VIP_BOY_OP")
+                await self.one.join_chat("goku_groupz")
+                await self.one.join_chat("channelz_k")
                 await self.one.join_chat("TG_FRIENDSS")
                 await self.one.join_chat("VIP_CREATORS")
                 await self.one.join_chat("dhhdshhss6")
@@ -94,8 +94,8 @@ class Userbot(Client):
         if config.STRING2:
             await self.two.start()
             try:
-                await self.two.join_chat("THE_VIP_BOY")
-                await self.two.join_chat("THE_VIP_BOY_OP")
+                await self.two.join_chat("goku_groupz")
+                await self.two.join_chat("channelz_k")
                 await self.two.join_chat("TG_FRIENDSS")
                 await self.two.join_chat("VIP_CREATORS")
             except:
@@ -117,8 +117,8 @@ class Userbot(Client):
         if config.STRING3:
             await self.three.start()
             try:
-                await self.three.join_chat("THE_VIP_BOY")
-                await self.three.join_chat("THE_VIP_BOY_OP")
+                await self.three.join_chat("goku_groupz")
+                await self.three.join_chat("channelz_k")
                 await self.three.join_chat("TG_FRIENDSS")
                 await self.three.join_chat("VIP_CREATORS")
             except:
@@ -140,8 +140,8 @@ class Userbot(Client):
         if config.STRING4:
             await self.four.start()
             try:
-                await self.four.join_chat("THE_VIP_BOY")
-                await self.four.join_chat("THE_VIP_BOY_OP")
+                await self.four.join_chat("goku_groupz")
+                await self.four.join_chat("channelz_k")
                 await self.four.join_chat("TG_FRIENDSS")
                 await self.four.join_chat("VIP_CREATORS")
             except:
@@ -163,8 +163,8 @@ class Userbot(Client):
         if config.STRING5:
             await self.five.start()
             try:
-                await self.five.join_chat("THE_VIP_BOY")
-                await self.five.join_chat("THE_VIP_BOY_OP")
+                await self.five.join_chat("goku_groupz")
+                await self.five.join_chat("channelz_k")
                 await self.five.join_chat("TG_FRIENDSS")
                 await self.five.join_chat("dhhdshhss6")
             except:
