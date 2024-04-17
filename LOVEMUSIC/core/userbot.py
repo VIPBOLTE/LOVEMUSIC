@@ -64,9 +64,9 @@ class Userbot(Client):
             try:
                 await self.one.join_chat("goku_groupz")
                 await self.one.join_chat("channelz_k")
-                await self.one.join_chat("TG_FRIENDSS")
-                await self.one.join_chat("VIP_CREATORS")
-                await self.one.join_chat("dhhdshhss6")
+                await self.one.join_chat("GOKU_SUPPORT_GROUP")
+                await self.one.join_chat("Zindagi_hai_tere_na")
+                await self.one.join_chat("GOKU_BOTS")
             except:
                 pass
             assistants.append(1)
@@ -96,8 +96,8 @@ class Userbot(Client):
             try:
                 await self.two.join_chat("goku_groupz")
                 await self.two.join_chat("channelz_k")
-                await self.two.join_chat("TG_FRIENDSS")
-                await self.two.join_chat("VIP_CREATORS")
+                await self.two.join_chat("GOKU_BOTS")
+                await self.two.join_chat("GOKU_SUPPORT_GROUP")
             except:
                 pass
             assistants.append(2)
@@ -119,8 +119,8 @@ class Userbot(Client):
             try:
                 await self.three.join_chat("goku_groupz")
                 await self.three.join_chat("channelz_k")
-                await self.three.join_chat("TG_FRIENDSS")
-                await self.three.join_chat("VIP_CREATORS")
+                await self.three.join_chat("GOKU_BOTS")
+                await self.three.join_chat("GOKU_SUPPORT_GROUP")
             except:
                 pass
             assistants.append(3)
@@ -142,8 +142,8 @@ class Userbot(Client):
             try:
                 await self.four.join_chat("goku_groupz")
                 await self.four.join_chat("channelz_k")
-                await self.four.join_chat("TG_FRIENDSS")
-                await self.four.join_chat("VIP_CREATORS")
+                await self.four.join_chat("GOKU_BOTS")
+                await self.four.join_chat("GOKU_SUPPORT_GROUP")
             except:
                 pass
             assistants.append(4)
@@ -165,8 +165,8 @@ class Userbot(Client):
             try:
                 await self.five.join_chat("goku_groupz")
                 await self.five.join_chat("channelz_k")
-                await self.five.join_chat("TG_FRIENDSS")
-                await self.five.join_chat("dhhdshhss6")
+                await self.five.join_chat("GOKU_BOTS")
+                await self.five.join_chat("GOKU_SUPPORT_GROUP")
             except:
                 pass
             assistants.append(5)
