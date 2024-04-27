@@ -71,7 +71,9 @@ def get_random_picture():
     # For example:
     picture_urls = [
         "https://telegra.ph/file/79eeb941efd45de3bbf8a.jpg",
-        "url2", "url3"]  # List of picture URLs
+        "https://telegra.ph/file/3d6d81167437ed2148e26.jpg",
+        "url3"
+    ]  # List of picture URLs
     return random.choice(picture_urls)
 
 @app.on_message(filters.command(SHAYRI_COMMAND) & filters.group)
