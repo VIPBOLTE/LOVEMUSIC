@@ -69,7 +69,9 @@ SHAYRI_COMMAND = ["gf", "bf", "shayri", "sari", "shari", "love"]
 def get_random_picture():
     # Replace this with your code to fetch a random picture URL
     # For example:
-    picture_urls = ["url1", "url2", "url3"]  # List of picture URLs
+    picture_urls = [
+        "https://telegra.ph/file/79eeb941efd45de3bbf8a.jpg",
+        "url2", "url3"]  # List of picture URLs
     return random.choice(picture_urls)
 
 @app.on_message(filters.command(SHAYRI_COMMAND) & filters.group)
