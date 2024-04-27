@@ -2,9 +2,9 @@ from pyrogram import filters
 from pyrogram.enums import ChatMembersFilter, ChatMemberStatus, ChatType
 from pyrogram.types import Message
 
-from GOKUMUSIC import app
-from GOKUMUSIC.utils.database import set_cmode
-from GOKUMUSIC.utils.decorators.admins import AdminActual
+from LOVEMUSIC import app
+from LOVEMUSIC.utils.database import set_cmode
+from LOVEMUSIC.utils.decorators.admins import AdminActual
 from config import BANNED_USERS
 
 
