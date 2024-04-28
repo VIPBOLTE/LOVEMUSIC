@@ -6,7 +6,7 @@ from PIL import Image , ImageDraw
 from pyrogram import *
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.enums import *
-
+from config import SUPPORT_GROUP
 #BOT FILE NAME
 from LOVEMUSIC import app as app
 from LOVEMUSIC.mongo.couples_db import _get_image, get_couple
@@ -15,7 +15,7 @@ POLICE = [
     [
         InlineKeyboardButton(
             text="𓊈𝗚𝗢𝗞𝗨 𝗕𝗢𝗧 𝗠𝗔𝗞𝗘𝗥𓊉",
-            url=f"https://t.me/goku_groupz",
+            url=f"SUPPORT_GROUP",
         ),
     ],
 ]
