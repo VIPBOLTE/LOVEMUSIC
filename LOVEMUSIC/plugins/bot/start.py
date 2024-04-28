@@ -35,9 +35,8 @@ SPAM_WINDOW_SECONDS = 5
 
 # List of random picture URLs
 YUMI_PICS = [
-    "https://telegra.ph/file/3134ed3b57eb051b8c363.jpg",
-    "https://telegra.ph/file/5a2cbb9deb62ba4b122e4.jpg",
-    "https://telegra.ph/file/cb09d52a9555883eb0f61.jpg"
+    "https://telegra.ph/file/356899d2372049fe47ad6.jpg",
+    "https://telegra.ph/file/b63b956536e578e1faf08.jpg"
 ]
 
 @app.on_message(filters.command(["start"]) & filters.private & ~config.BANNED_USERS)
