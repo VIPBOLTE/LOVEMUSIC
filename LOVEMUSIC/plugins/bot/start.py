@@ -76,8 +76,8 @@ async def start_pm(client, message: Message, _):
         name = message.text.split(None, 1)[1]
         if name[0:4] == "help":
             keyboard = first_page(_)
-            return await message.reply_photo(
-                photo=
+            return await message.reply_video(
+                video=
                 random.choice(YUMI_PICS),
                 caption=_["help_1"].format(config.SUPPORT_CHAT),
                 reply_markup=keyboard,
@@ -133,8 +133,8 @@ async def start_pm(client, message: Message, _):
                 )
     else:
         out = private_panel(_)
-        await message.reply_photo(
-            photo=
+        await message.reply_video(
+            video=
             random.choice(YUMI_PICS),
             caption=_["start_2"].format(message.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(out),
@@ -174,8 +174,8 @@ async def start_gp(client, message: Message, _):
         
     out = start_panel(_)
     BOT_UP = await bot_up_time()
-    await message.reply_photo(
-        photo=
+    await message.reply_video(
+        video=
         random.choice(YUMI_PICS),
         caption=_["start_1"].format(app.mention, BOT_UP),
         reply_markup=InlineKeyboardMarkup(out),
@@ -253,7 +253,7 @@ async def welcome(client, message: Message):
                 except Exception as e:
                     await message.edit_text(f"**Please make me admin to invite my [Assistant](tg://openmessage?user_id={userbot.id}) in this chat.**")
 
-                await message.reply_photo(
+                await message.reply_video(
                     random.choice(YUMI_PICS),
                     caption=_["start_3"].format(
                         message.from_user.first_name,
