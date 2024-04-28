@@ -1,11 +1,13 @@
 import time
+from time import time
 import asyncio
-from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant
+from pyrogram.errors import UserAlreadyParticipant
+import random
+from pyrogram.errors import UserNotParticipant
 from pyrogram import filters
 from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from youtubesearchpython.__future__ import VideosSearch
-import random
 import config
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import _boot_
@@ -22,9 +24,12 @@ from LOVEMUSIC.utils.database import (
 from LOVEMUSIC.utils.decorators.language import LanguageStart
 from LOVEMUSIC.utils.formatters import get_readable_time
 from LOVEMUSIC.utils.inline import first_page, private_panel, start_panel
+from config import BANNED_USERS
+from strings import get_string
 from LOVEMUSIC.utils.database import get_assistant
 from time import time
-
+import asyncio
+from LOVEMUSIC.utils.extraction import extract_user
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
@@ -33,13 +38,17 @@ user_command_count = {}
 SPAM_THRESHOLD = 2
 SPAM_WINDOW_SECONDS = 5
 
-# List of random picture URLs
+
 YUMI_PICS = [
-    "https://telegra.ph/file/356899d2372049fe47ad6.jpg",
-    "https://telegra.ph/file/b63b956536e578e1faf08.jpg"
+"https://telegra.ph/file/3134ed3b57eb051b8c363.jpg",
+"https://telegra.ph/file/5a2cbb9deb62ba4b122e4.jpg",
+"https://telegra.ph/file/cb09d52a9555883eb0f61.jpg"
+
 ]
 
-@app.on_message(filters.command(["start"]) & filters.private & ~config.BANNED_USERS)
+
+
+@app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     user_id = message.from_user.id
@@ -68,7 +77,8 @@ async def start_pm(client, message: Message, _):
         if name[0:4] == "help":
             keyboard = first_page(_)
             return await message.reply_photo(
-                photo=random.choice(YUMI_PICS),
+                photo=
+                random.choice(YUMI_PICS),
                 caption=_["help_1"].format(config.SUPPORT_CHAT),
                 reply_markup=keyboard,
             )
@@ -124,7 +134,8 @@ async def start_pm(client, message: Message, _):
     else:
         out = private_panel(_)
         await message.reply_photo(
-            photo=random.choice(YUMI_PICS),
+            photo=
+            random.choice(YUMI_PICS),
             caption=_["start_2"].format(message.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(out),
         )
@@ -134,7 +145,10 @@ async def start_pm(client, message: Message, _):
                 text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
             )
 
-@app.on_message(filters.command(["start"]) & filters.group & ~config.BANNED_USERS)
+
+    
+
+@app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
 async def start_gp(client, message: Message, _):
     user_id = message.from_user.id
@@ -161,7 +175,8 @@ async def start_gp(client, message: Message, _):
     out = start_panel(_)
     BOT_UP = await bot_up_time()
     await message.reply_photo(
-        photo=random.choice(YUMI_PICS),
+        photo=
+        random.choice(YUMI_PICS),
         caption=_["start_1"].format(app.mention, BOT_UP),
         reply_markup=InlineKeyboardMarkup(out),
     )
@@ -184,6 +199,9 @@ async def start_gp(client, message: Message, _):
             await message.edit_text(f"**[ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}) ɪs ɴᴏᴡ ᴀᴄᴛɪᴠᴇ ɪɴ ᴛʜɪs ɢʀᴏᴜᴘ, ʏᴏᴜ ᴄᴀɴ ᴘʟᴀʏ sᴏɴɢs.**")
         except Exception as e:
             await message.edit_text(f"**ᴜɴᴀʙʟᴇ ᴛᴏ ɪɴᴠɪᴛᴇ ᴍʏ [ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}). ᴘʟᴇᴀsᴇ ᴍᴀᴋᴇ ᴍᴇ ᴀᴅᴍɪɴ ᴡɪᴛʜ ɪɴᴠɪᴛᴇ ᴜsᴇʀ ᴀᴅᴍɪɴ ᴘᴏᴡᴇʀ ᴛᴏ ɪɴᴠɪᴛᴇ ᴍʏ [ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}) ɪɴ ᴛʜɪs ɢʀᴏᴜᴘ.**")
+
+
+
 
 @app.on_message(filters.new_chat_members, group=-1)
 async def welcome(client, message: Message):
