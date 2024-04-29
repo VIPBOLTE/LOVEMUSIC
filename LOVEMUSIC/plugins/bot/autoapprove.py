@@ -13,11 +13,10 @@ from pyrogram.enums import ParseMode
 from typing import Union, Optional
 
 random_photo = [
-    "https://telegra.ph/file/1949480f01355b4e87d26.jpg",
-    "https://telegra.ph/file/3ef2cc0ad2bc548bafb30.jpg",
-    "https://telegra.ph/file/a7d663cd2de689b811729.jpg",
-    "https://telegra.ph/file/6f19dc23847f5b005e922.jpg",
-    "https://telegra.ph/file/2973150dd62fd27a3a6ba.jpg",
+    "https://telegra.ph/file/6bf7396c81d98ba2b59d5.jpg",
+    "https://telegra.ph/file/6dbcc772692eebf1a8c89.jpg",
+    "https://telegra.ph/file/1874c35b202cc22b74e1d.jpg",
+    "https://telegra.ph/file/5cd3c2f56ef77a68ce022.jpg",
 ]
 
 # --------------------------------------------------------------------------------- #
