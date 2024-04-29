@@ -14,7 +14,7 @@ from LOVEMUSIC.mongo.couples_db import _get_image, get_couple
 POLICE = [
     [
         InlineKeyboardButton(
-            text="𓊈𝗚𝗢𝗞𝗨 𝗕𝗢𝗧 𝗠𝗔𝗞𝗘𝗥𓊉",
+            text="𓊈𓈖༤ 🇦𝐍𝐈𝐌𝐄 🇺𝐍𝐈𝐓𝐄 🇨𝐇𝐀𝐓 ✗ 𖥸𓊉",
             url=f"https://t.me/ANIME_UNITE_CHAT",
         ),
     ],
