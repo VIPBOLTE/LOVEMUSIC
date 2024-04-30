@@ -41,8 +41,8 @@ SPAM_WINDOW_SECONDS = 5
 random_photo = [
     "https://telegra.ph/file/a34c31708efc42b850e43.jpg",
     "https://telegra.ph/file/4ef5da03060776fdfef55.jpg",
-    "https://telegra.ph/file/a0c824b3ad40e8bd86db7.jpg",
     "https://telegra.ph/file/3232095ddb87a6f257543.jpg",
+    "https://telegra.ph/file/1874c35b202cc22b74e1d.jpg",
     "https://telegra.ph/file/6bf7396c81d98ba2b59d5.jpg",
 ]
 # --------------------------------------------------------------------------------- #
