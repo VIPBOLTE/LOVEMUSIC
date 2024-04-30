@@ -43,11 +43,11 @@ from logging import getLogger
 
 
 random_photo = [
-    "https://telegra.ph/file/1949480f01355b4e87d26.jpg",
-    "https://telegra.ph/file/3ef2cc0ad2bc548bafb30.jpg",
-    "https://telegra.ph/file/a7d663cd2de689b811729.jpg",
-    "https://telegra.ph/file/6f19dc23847f5b005e922.jpg",
-    "https://telegra.ph/file/2973150dd62fd27a3a6ba.jpg",
+    "https://telegra.ph/file/a34c31708efc42b850e43.jpg",
+    "https://telegra.ph/file/4ef5da03060776fdfef55.jpg",
+    "https://telegra.ph/file/3232095ddb87a6f257543.jpg",
+    "https://telegra.ph/file/6bf7396c81d98ba2b59d5.jpg",
+    "https://telegra.ph/file/20b4a9fd06ea4a9457a61.jpg",
 ]
 # --------------------------------------------------------------------------------- #
 
