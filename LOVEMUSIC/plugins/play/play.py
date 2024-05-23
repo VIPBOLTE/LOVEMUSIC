@@ -7,8 +7,8 @@ from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
 from VIPMUSIC.utils.database import get_assistant
 import config
-from VIPMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
-from VIPMUSIC.core.call import VIP
+from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
+from LOVEMUSIC.core.call import VIP
 from VIPMUSIC.misc import SUDOERS
 from VIPMUSIC.utils import seconds_to_min, time_to_seconds
 from VIPMUSIC.utils.channelplay import get_channeplayCB
