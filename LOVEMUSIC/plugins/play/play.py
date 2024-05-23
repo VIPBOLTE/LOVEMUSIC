@@ -613,7 +613,7 @@ async def play_music(client, CallbackQuery, _):
     return await mystic.delete()
 
 
-@app.on_callback_query(filters.regex("VIPmousAdmin") & ~BANNED_USERS)
+@app.on_callback_query(filters.regex("LOVEmousAdmin") & ~BANNED_USERS)
 async def VIPmous_check(client, CallbackQuery):
     try:
         await CallbackQuery.answer(
@@ -624,7 +624,7 @@ async def VIPmous_check(client, CallbackQuery):
         pass
 
 
-@app.on_callback_query(filters.regex("VIPPlaylists") & ~BANNED_USERS)
+@app.on_callback_query(filters.regex("LOVEPlaylists") & ~BANNED_USERS)
 @languageCB
 async def play_playlists_command(client, CallbackQuery, _):
     callback_data = CallbackQuery.data.strip()
@@ -766,12 +766,12 @@ from typing import Union
 from pyrogram.types import InlineKeyboardMarkup
 
 import config
-from VIPMUSIC import Carbon, YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils.database import add_active_video_chat, is_active_chat
-from VIPMUSIC.utils.exceptions import AssistantErr
-from VIPMUSIC.utils.inline import (
+from LOVEMUSIC import Carbon, YouTube, app
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
+from LOVEMUSIC.utils.exceptions import AssistantErr
+from LOVEMUSIC.utils.inline import (
     aq_markup,
     queuemarkup,
     close_markup,
@@ -779,8 +779,8 @@ from VIPMUSIC.utils.inline import (
     stream_markup2,
     panel_markup_4,
 )
-from VIPMUSIC.utils.pastebin import VIPBin
-from VIPMUSIC.utils.stream.queue import put_queue, put_queue_index
+from LOVEMUSIC.utils.pastebin import VIPBin
+from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from youtubesearchpython.__future__ import VideosSearch
 
 
