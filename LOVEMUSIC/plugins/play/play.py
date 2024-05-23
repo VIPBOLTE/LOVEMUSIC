@@ -848,7 +848,7 @@ async def stream(
                 except:
 
                     await mystic.edit_text(_["play_3"])
-                await VIP.join_call(
+                await LOVE.join_call(
                     chat_id,
                     original_chat_id,
                     file_path,
@@ -940,7 +940,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await VIP.join_call(
+            await LOVE.join_call(
                 chat_id,
                 original_chat_id,
                 file_path,
@@ -1001,7 +1001,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await VIP.join_call(chat_id, original_chat_id, file_path, video=None)
+            await LOVE.join_call(chat_id, original_chat_id, file_path, video=None)
             await put_queue(
                 chat_id,
                 original_chat_id,
