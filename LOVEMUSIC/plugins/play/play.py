@@ -12,17 +12,17 @@ from LOVEMUSIC.core.call import VIP
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
 from LOVEMUSIC.utils.channelplay import get_channeplayCB
-from LMUSIC.utils.decorators.language import languageCB
-from VIPMUSIC.utils.decorators.play import PlayWrapper
-from VIPMUSIC.utils.formatters import formats
-from VIPMUSIC.utils.inline import (
+from LOVEMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.utils.decorators.play import PlayWrapper
+from LOVEMUSIC.utils.formatters import formats
+from LOVEMUSIC.utils.inline import (
     botplaylist_markup,
     livestream_markup,
     playlist_markup,
     slider_markup,
     track_markup,
 )
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC.utils.database import (
     add_served_chat,
     add_served_user,
     blacklisted_chats,
@@ -30,10 +30,10 @@ from VIPMUSIC.utils.database import (
     is_banned_user,
     is_on_off,
 )
-from VIPMUSIC.utils.logger import play_logs
+from LOVEMUSIC.utils.logger import play_logs
 from config import BANNED_USERS, lyrical
 from time import time
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
