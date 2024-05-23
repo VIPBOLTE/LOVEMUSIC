@@ -767,7 +767,7 @@ from pyrogram.types import InlineKeyboardMarkup
 
 import config
 from LOVEMUSIC import Carbon, YouTube, app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
 from LOVEMUSIC.utils.exceptions import AssistantErr
@@ -800,7 +800,7 @@ async def stream(
     if not result:
         return
     if forceplay:
-        await VIP.force_stop_stream(chat_id)
+        await LOVE.force_stop_stream(chat_id)
     if streamtype == "playlist":
         msg = f"{_['play_19']}\n\n"
         count = 0
