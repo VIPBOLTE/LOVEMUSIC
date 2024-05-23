@@ -8,7 +8,7 @@ from pytgcalls.exceptions import NoActiveGroupCall
 from VIPMUSIC.utils.database import get_assistant
 import config
 from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
 from LOVEMUSIC.utils.channelplay import get_channeplayCB
@@ -385,7 +385,7 @@ async def play_commnd(
             return await mystic.delete()
         else:
             try:
-                await VIP.stream_call(url)
+                await LOVE.stream_call(url)
             except NoActiveGroupCall:
                 await mystic.edit_text(_["black_9"])
                 return await app.send_message(
