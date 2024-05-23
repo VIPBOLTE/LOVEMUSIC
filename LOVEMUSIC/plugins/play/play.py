@@ -9,10 +9,10 @@ from VIPMUSIC.utils.database import get_assistant
 import config
 from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
 from LOVEMUSIC.core.call import VIP
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.utils import seconds_to_min, time_to_seconds
-from VIPMUSIC.utils.channelplay import get_channeplayCB
-from VIPMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
+from LOVEMUSIC.utils.channelplay import get_channeplayCB
+from LMUSIC.utils.decorators.language import languageCB
 from VIPMUSIC.utils.decorators.play import PlayWrapper
 from VIPMUSIC.utils.formatters import formats
 from VIPMUSIC.utils.inline import (
