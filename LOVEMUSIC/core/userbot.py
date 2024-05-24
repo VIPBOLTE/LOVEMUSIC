@@ -68,7 +68,7 @@ class Userbot(Client):
                 await self.one.join_chat("channelz_k")
                 await self.one.join_chat("goku_groupz")
                 await self.one.join_chat("GOKU_SUPPORT_GROUP")
-                await self.one.join_chat("httpsGOKU_BOTS")
+                await self.one.join_chat("GOKU_BOTS")
 
             except:
                 pass
