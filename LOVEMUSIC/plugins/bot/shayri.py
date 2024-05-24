@@ -86,7 +86,7 @@ async def shayari_with_picture(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "✨ 𝚂𝚄𝙿𝙿𝙾𝚁𝚃 ✨", url="https://t.me/goku_groupz"
+                        "✨ 𝚂𝚄𝙿𝙿𝙾𝚁𝚃 ✨", url="https://t.me/ANIME_UNITE_CHAT"
                     ),
                     InlineKeyboardButton(
                         "✨ 𝙾𝙵𝙵𝙸𝙲𝙴 ✨", url="https://t.me/channelz_k"
