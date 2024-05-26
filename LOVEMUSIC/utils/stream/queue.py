@@ -1,6 +1,6 @@
 import asyncio
 from typing import Union
-
+from pyrogram import Client, client
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.formatters import check_duration, seconds_to_min
 from config import autoclean, time_to_seconds
