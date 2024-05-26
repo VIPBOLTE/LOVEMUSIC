@@ -1,6 +1,49 @@
 import os
 from random import randint
 from typing import Union
+import random
+import string
+import asyncio
+from pyrogram import client, filters
+from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
+from pytgcalls.exceptions import NoActiveGroupCall
+from VIPMUSIC.utils.database import get_assistant
+import config
+from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
+from LOVEMUSIC.core.call import LOVE
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
+from LOVEMUSIC.utils.channelplay import get_channeplayCB
+from LOVEMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.utils.decorators.play import PlayWrapper
+from LOVEMUSIC.utils.formatters import formats
+from LOVEMUSIC.utils.inline import (
+    botplaylist_markup,
+    livestream_markup,
+    playlist_markup,
+    slider_markup,
+    track_markup,
+)
+from LOVEMUSIC.utils.database import (
+    add_served_chat,
+    add_served_user,
+    blacklisted_chats,
+    get_lang,
+    is_banned_user,
+    is_on_off,
+)
+from LOVEMUSIC.utils.logger import play_logs
+from config import BANNED_USERS, lyrical
+from time import time
+from LOVEMUSIC.utils.extraction import extract_user
+
+# Define a dictionary to track the last message timestamp for each user
+user_last_message_time = {}
+user_command_count = {}
+# Define the threshold for command spamming (e.g., 20 commands within 60 seconds)
+SPAM_THRESHOLD = 2
+SPAM_WINDOW_SECONDS = 5
+
 
 from pyrogram.types import InlineKeyboardMarkup
 
@@ -10,7 +53,14 @@ from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
 from LOVEMUSIC.utils.exceptions import AssistantErr
-from LOVEMUSIC.utils.inline import aq_markup, queuemarkup, close_markup, stream_markup, stream_markup2
+from LOVEMUSIC.utils.inline import (
+    aq_markup,
+    queuemarkup,
+    close_markup,
+    stream_markup,
+    stream_markup2,
+    panel_markup_4,
+)
 from LOVEMUSIC.utils.pastebin import LOVEBin
 from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from youtubesearchpython.__future__ import VideosSearch
@@ -78,7 +128,8 @@ async def stream(
                         vidid, mystic, video=status, videoid=True
                     )
                 except:
-                    raise AssistantErr(_["play_14"])
+
+                    await mystic.edit_text(_["play_3"])
                 await LOVE.join_call(
                     chat_id,
                     original_chat_id,
@@ -105,18 +156,19 @@ async def stream(
                     photo=img,
                     caption=_["stream_1"].format(
                         f"https://t.me/{app.username}?start=info_{vidid}",
-                        title[:23],
+                        title[:18],
                         duration_min,
-                        user_name), reply_markup=InlineKeyboardMarkup(button))
-                
-                    
-                
+                        user_name,
+                    ),
+                    reply_markup=InlineKeyboardMarkup(button),
+                )
+
                 db[chat_id][0]["mystic"] = run
                 db[chat_id][0]["markup"] = "stream"
         if count == 0:
             return
         else:
-            link = await VIPBin(msg)
+            link = await LOVEBin(msg)
             lines = msg.count("\n")
             if lines >= 17:
                 car = os.linesep.join(msg.split(os.linesep)[:17])
@@ -142,7 +194,8 @@ async def stream(
                 vidid, mystic, videoid=True, video=status
             )
         except:
-            raise AssistantErr(_["play_14"])
+
+            await mystic.edit_text(_["play_3"])
         if await is_active_chat(chat_id):
             await put_queue(
                 chat_id,
@@ -157,17 +210,19 @@ async def stream(
             )
             img = await get_thumb(vidid)
             position = len(db.get(chat_id)) - 1
-            button = queuemarkup(_, vidid, chat_id)
+            button = aq_markup(_, chat_id)
             await app.send_photo(
                 chat_id=original_chat_id,
                 photo=img,
-                caption=_["queue_4"].format(position, title[:20], duration_min, user_name),
+                caption=_["queue_4"].format(
+                    position, title[:18], duration_min, user_name
+                ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
             if not forceplay:
                 db[chat_id] = []
-            await LOVE.join_call(
+            await VIP.join_call(
                 chat_id,
                 original_chat_id,
                 file_path,
@@ -193,10 +248,13 @@ async def stream(
                 photo=img,
                 caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{vidid}",
-                    title[:20],
+                    title[:18],
                     duration_min,
-                    user_name), reply_markup=InlineKeyboardMarkup(button))
-                
+                    user_name,
+                ),
+                reply_markup=InlineKeyboardMarkup(button),
+            )
+
             db[chat_id][0]["mystic"] = run
             db[chat_id][0]["markup"] = "stream"
     elif streamtype == "soundcloud":
@@ -219,7 +277,7 @@ async def stream(
             button = aq_markup(_, chat_id)
             await app.send_message(
                 chat_id=original_chat_id,
-                text=_["queue_4"].format(position, title[:27], duration_min, user_name),
+                text=_["queue_4"].format(position, title[:18], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
@@ -271,7 +329,7 @@ async def stream(
             button = aq_markup(_, chat_id)
             await app.send_message(
                 chat_id=original_chat_id,
-                text=_["queue_4"].format(position, title[:27], duration_min, user_name),
+                text=_["queue_4"].format(position, title[:18], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
@@ -324,7 +382,7 @@ async def stream(
             button = aq_markup(_, chat_id)
             await app.send_message(
                 chat_id=original_chat_id,
-                text=_["queue_4"].format(position, title[:27], duration_min, user_name),
+                text=_["queue_4"].format(position, title[:18], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
@@ -420,9 +478,6 @@ async def stream(
             await mystic.delete()
 
 
-
-
-
 # Function to get thumbnail by video ID
 async def get_thumb(videoid):
     try:
@@ -446,6 +501,3 @@ async def get_thumb(vidid):
         return thumbnail
     except Exception as e:
         return config.YOUTUBE_IMG_URL
-    
-
-                
