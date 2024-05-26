@@ -5,17 +5,17 @@ import os
 import re
 import asyncio
 import time
-from VIPMUSIC import app
-from VIPMUSIC.utils.database import add_served_chat, delete_served_chat
+from LOVEMUSIC import app
+from LOVEMUSIC.utils.database import add_served_chat, delete_served_chat
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 import asyncio
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.mongo.afkdb import LOGGERS as OWNERS
-from VIPMUSIC.core.userbot import Userbot
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.mongo.afkdb import LOGGERS as OWNERS
+from LOVEMUSIC.core.userbot import Userbot
 from pyrogram import Client, filters
 from pyrogram.errors import UserAlreadyParticipant
-from VIPMUSIC import app
+from LOVEMUSIC import app
 import asyncio
 import random
 from pyrogram import Client, filters
@@ -26,10 +26,10 @@ from pyrogram.errors import (
     UserAlreadyParticipant,
     UserNotParticipant,
 )
-from VIPMUSIC import app
-from VIPMUSIC.utils.vip_ban import admin_filter
-from VIPMUSIC.utils.decorators.userbotjoin import UserbotWrapper
-from VIPMUSIC.utils.database import get_assistant, is_active_chat
+from LOVEMUSIC import app
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
+from LOVEMUSIC.utils.decorators.userbotjoin import UserbotWrapper
+from LOVEMUSIC.utils.database import get_assistant, is_active_chat
 
 
 @app.on_message(filters.command("repo"))
@@ -41,7 +41,7 @@ async def help(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/THE-VIP-BOY-OP/VIP-MUSIC"
+                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/DAXXTEAM/DAXXMUSIC"
                     )
                 ]
             ]
@@ -58,7 +58,7 @@ async def clones(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/THE-VIP-BOY-OP/VIP-MUSIC"
+                        "🌱ƨσʋяcɛ🌱", url=f"https://github.com/DAXXTEAM/DAXXMUSIC"
                     )
                 ]
             ]
@@ -93,7 +93,7 @@ async def add_allbot(client, message):
     command_parts = message.text.split(" ")
     if len(command_parts) != 2:
         await message.reply(
-            "**⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴍᴍᴀɴᴅ ғᴏʀᴍᴀᴛ. ᴘʟᴇᴀsᴇ ᴜsᴇ ʟɪᴋᴇ » `/gadd @TG_VC_BOT`**"
+            "**⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴍᴍᴀɴᴅ ғᴏʀᴍᴀᴛ. ᴘʟᴇᴀsᴇ ᴜsᴇ ʟɪᴋᴇ » `/gadd @bot_username`**"
         )
         return
 
@@ -107,7 +107,7 @@ async def add_allbot(client, message):
         lol = await message.reply("🔄 **ᴀᴅᴅɪɴɢ ɢɪᴠᴇɴ ʙᴏᴛ ɪɴ ᴀʟʟ ᴄʜᴀᴛs!**")
         await userbot.send_message(bot_username, f"/start")
         async for dialog in userbot.get_dialogs():
-            if dialog.chat.id == -1002120144597:
+            if dialog.chat.id == -1002126989582:
                 continue
             try:
 
