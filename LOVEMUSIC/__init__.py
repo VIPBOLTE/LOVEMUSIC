@@ -3,8 +3,6 @@ from LOVEMUSIC.core.dir import dirr
 from LOVEMUSIC.core.git import git
 from LOVEMUSIC.core.userbot import Userbot
 from LOVEMUSIC.misc import dbb, heroku
-from telethon import TelegramClient
-from config import API_ID, API_HASH
 
 from SafoneAPI import SafoneAPI
 from .logging import LOGGER
@@ -14,7 +12,7 @@ git()
 dbb()
 heroku()
 
-app = LOVE()
+app = VIP()
 api = SafoneAPI()
 userbot = Userbot()
 
@@ -28,5 +26,4 @@ Spotify = SpotifyAPI()
 Resso = RessoAPI()
 Telegram = TeleAPI()
 YouTube = YouTubeAPI()
-
-telethn = TelegramClient("LOVEMUSIC", API_ID, API_HASH)
+APP = "LOVEMUSIC_bot"  # connect music api key "Dont change it"
