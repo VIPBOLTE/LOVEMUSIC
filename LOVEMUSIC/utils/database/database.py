@@ -1,7 +1,7 @@
 import random
 from typing import Dict, List, Union
 
-from VIPMUSIC import userbot
+from LOVEMUSIC import userbot
 from LOVEMUSIC.core.mongo import mongodb, pymongodb
 
 authdb = mongodb.adminauth
