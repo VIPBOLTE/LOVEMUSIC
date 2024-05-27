@@ -8,7 +8,7 @@ from pyrogram.types import CallbackQuery, InputMediaPhoto, Message
 import config
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import db
-from LOVEMUSIC.utils import LOVEBin, get_channeplayCB, seconds_to_min
+from LOVEMUSIC.utils import VIPBin, get_channeplayCB, seconds_to_min
 from LOVEMUSIC.utils.database import get_cmode, is_active_chat, is_music_playing
 from LOVEMUSIC.utils.decorators.language import language, languageCB
 from LOVEMUSIC.utils.inline import queue_back_markup, queue_markup
@@ -18,9 +18,10 @@ basic = {}
 
 
 def get_image(videoid):
-    if os.path.isfile(f"cache/{videoid}.png"):
-        return f"cache/{videoid}.png"
-    else:
+    try:
+        url = f"https://img.youtube.com/vi/{videoid}/maxresdefault.jpg"
+        return url
+    except Exception:
         return config.YOUTUBE_IMG_URL
 
 
