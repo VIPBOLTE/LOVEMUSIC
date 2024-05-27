@@ -9,17 +9,17 @@ from pyrogram.types import InputMediaPhoto, Message
 from pytgcalls.__version__ import __version__ as pytgver
 
 import config
-from VIPMUSIC import app
-from VIPMUSIC.core.userbot import assistants
-from VIPMUSIC.misc import SUDOERS, mongodb
-from VIPMUSIC.plugins import ALL_MODULES
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import app
+from LOVEMUSIC.core.userbot import assistants
+from LOVEMUSIC.misc import SUDOERS, mongodb
+from LOVEMUSIC.plugins import ALL_MODULES
+from LOVEMUSIC.utils.database import (
     get_served_chats_clone,
     get_served_users_clone,
     get_sudoers,
 )
-from VIPMUSIC.utils.decorators.language import language, languageCB
-from VIPMUSIC.utils.inline.stats import back_stats_buttons, stats_buttons
+from LOVEMUSIC.utils.decorators.language import language, languageCB
+from LOVEMUSIC.utils.inline.stats import back_stats_buttons, stats_buttons
 from config import BANNED_USERS
 
 
