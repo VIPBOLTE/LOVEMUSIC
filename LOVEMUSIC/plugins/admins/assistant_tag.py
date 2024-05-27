@@ -7,7 +7,7 @@ from pyrogram.errors import UserNotParticipant
 from pyrogram.types import ChatPermissions
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import SUDOERS
-from LOVEMUSIC.utils.vip_ban import admin_filter
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
 from LOVEMUSIC.utils.database import get_assistant
 
 SPAM_CHATS = []
