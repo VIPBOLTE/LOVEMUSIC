@@ -1,11 +1,11 @@
 from pyrogram import filters, Client
 from pyrogram.types import Message
 
-from VIPMUSIC import YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils import AdminRightsCheck, seconds_to_min
-from VIPMUSIC.utils.inline import close_markup
+from LOVEMUSIC import YouTube, app
+from LOVEMUSIC.core.call import LOVE
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils import AdminRightsCheck, seconds_to_min
+from LOVEMUSIC.utils.inline import close_markup
 from config import BANNED_USERS
 
 
@@ -56,7 +56,7 @@ async def seek_comm(cli, message: Message, _, chat_id):
     if "index_" in file_path:
         file_path = playing[0]["vidid"]
     try:
-        await VIP.seek_stream(
+        await LOVE.seek_stream(
             chat_id,
             file_path,
             seconds_to_min(to_seek),
