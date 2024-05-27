@@ -33,7 +33,7 @@ from pyrogram.enums import ParseMode
 from pyrogram import *
 from pyrogram.types import *
 from logging import getLogger
-from LOVEMUSIC.utils.vip_ban import admin_filter
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
 import os
 from LOVEMUSIC.misc import SUDOERS
 from PIL import ImageDraw, Image, ImageFont, ImageChops
