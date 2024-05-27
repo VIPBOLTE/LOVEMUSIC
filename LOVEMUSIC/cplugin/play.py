@@ -773,7 +773,7 @@ from pyrogram.types import InlineKeyboardMarkup
 
 import config
 from LOVEMUSIC import Carbon, YouTube
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
 from LOVEMUSIC.utils.exceptions import AssistantErr
@@ -785,7 +785,7 @@ from LOVEMUSIC.utils.inline import (
     stream_markup2,
     panel_markup_4,
 )
-from LOVEMUSIC.utils.pastebin import VIPBin
+from LOVEMUSIC.utils.pastebin import LOVEBin
 from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from youtubesearchpython.__future__ import VideosSearch
 
@@ -948,7 +948,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await VIP.join_call(
+            await LOVE.join_call(
                 chat_id,
                 original_chat_id,
                 file_path,
