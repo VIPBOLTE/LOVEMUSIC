@@ -27,7 +27,7 @@ from LOVEMUSIC.utils.inline.playlist import (
     get_playlist_markup,
     warning_markup,
 )
-from LOVEMUSIC.utils.pastebin import VIPBin
+from LOVEMUSIC.utils.pastebin import LOVEBin
 import time
 import asyncio
 import yt_dlp
