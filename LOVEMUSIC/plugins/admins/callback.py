@@ -7,7 +7,7 @@ from pyrogram.errors import (
     UserAlreadyParticipant,
     UserNotParticipant,
 )
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from LOVEMUSIC import YouTube, app
