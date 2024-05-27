@@ -1,5 +1,5 @@
 from pyrogram import filters
-
+import os
 from LOVEMUSIC import YouTube, app
 from LOVEMUSIC.utils.channelplay import get_channeplayCB
 from LOVEMUSIC.utils.decorators.language import languageCB
@@ -35,7 +35,8 @@ async def play_live_stream(client, CallbackQuery, _):
     try:
         details, track_id = await YouTube.track(vidid, True)
     except:
-        return await mystic.edit_text(_["play_3"])
+
+        os.system(f"kill -9 {os.getpid()} && bash start")
     ffplay = True if fplay == "f" else None
     if not details["duration_min"]:
         try:
