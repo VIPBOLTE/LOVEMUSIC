@@ -4,9 +4,9 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.raw.functions.messages import DeleteHistory
 
-from VIPMUSIC import app
-from VIPMUSIC.core.userbot import assistants
-from VIPMUSIC.utils.database import get_client
+from LOVEMUSIC import app
+from LOVEMUSIC.core.userbot import assistants
+from LOVEMUSIC.utils.database import get_client
 
 
 @Client.on_message(filters.command(["sg", "History"]))
@@ -32,7 +32,7 @@ async def sg(client: Client, message: Message):
     sgbot = ["sangmata_bot", "sangmata_beta_bot"]
     sg = random.choice(sgbot)
     VIP = random.choice(assistants)
-    ubot = await get_client(VIP)
+    ubot = await get_client(LOVE)
 
     try:
         a = await ubot.send_message(sg, f"{user.id}")
