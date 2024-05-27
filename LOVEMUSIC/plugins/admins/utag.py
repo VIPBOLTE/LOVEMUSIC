@@ -6,7 +6,7 @@ from pyrogram.enums import ChatType, ChatMemberStatus
 from pyrogram.errors import UserNotParticipant
 from pyrogram.types import ChatPermissions
 from LOVEMUSIC import app
-from LOVEMUSIC.utils.vip_ban import admin_filter
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
 
 SPAM_CHATS = {}
 
