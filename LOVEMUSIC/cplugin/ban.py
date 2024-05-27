@@ -1,4 +1,4 @@
-"""import asyncio
+import asyncio
 from pyrogram import filters, enums, Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ChatPermissions
 from pyrogram.errors.exceptions.bad_request_400 import (
@@ -8,7 +8,7 @@ from pyrogram.errors.exceptions.bad_request_400 import (
 )
 
 import datetime
-from VIPMUSIC import app
+from LOVEMUSIC import app
 
 
 def mention(user, name, mention=True):
@@ -456,4 +456,3 @@ async def tmute_command_handler(client, message):
         await message.reply_text(msg_text)
     if result == False:
         await message.reply_text(msg_text)
-"""
