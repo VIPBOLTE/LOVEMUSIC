@@ -9,25 +9,30 @@ from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError
 from pyrogram import filters
 import aiohttp
-from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import (
+    ReplyKeyboardMarkup,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+)
 from io import BytesIO
 from pyrogram import filters
 import config
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import HAPP, SUDOERS, XCB
-from LOVEMUSIC.utils.database import (
+from VIPMUSIC.utils.database import (
     get_active_chats,
     remove_active_chat,
     remove_active_video_chat,
 )
 from LOVEMUSIC.utils.decorators.language import language
-from LOVEMUSIC.utils.pastebin import LOVEBin
+from LOVEMUSIC.utils.pastebin import VIPBin
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 async def is_heroku():
     return "heroku" in socket.getfqdn()
+
 
 async def make_carbon(code):
     url = "https://carbonara.solopov.dev/api/cook"
@@ -36,6 +41,7 @@ async def make_carbon(code):
             image = BytesIO(await resp.read())
     image.name = "carbon.png"
     return image
+
 
 # Modify the existing code...
 @app.on_callback_query(filters.regex(r"refresh_logs"))
@@ -49,12 +55,21 @@ async def handle_refresh_logs(_, query: CallbackQuery):
         carbon_image = await make_carbon(logs_content)
 
         # Edit the original message with the new carbon image
-        await query.message.edit_photo(carbon_image, caption="**🥀ᴛʜɪs ɪs ɴᴇᴡ ʀᴇғʀᴇsʜᴇᴅ ʟᴏɢs✨**")
+        await query.message.edit_photo(
+            carbon_image, caption="**🥀ᴛʜɪs ɪs ɴᴇᴡ ʀᴇғʀᴇsʜᴇᴅ ʟᴏɢs✨**"
+        )
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
-@app.on_message(filters.command(["clog", "clogs", "carbonlog", "carbonlogs"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & SUDOERS)
+
+@app.on_message(
+    filters.command(
+        ["clog", "clogs", "carbonlog", "carbonlogs"],
+        prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+    )
+    & SUDOERS
+)
 @language
 async def log_(client, message, _):
     try:
@@ -64,18 +79,28 @@ async def log_(client, message, _):
 
         # Create a carbon image
         carbon_image = await make_carbon(logs_content)
-        
+
         # Create an inline keyboard with a refresh button
-        refresh_button = InlineKeyboardButton("🥀ʀᴇғʀᴇsʜ✨", callback_data="refresh_logs")
+        refresh_button = InlineKeyboardButton(
+            "🥀ʀᴇғʀᴇsʜ✨", callback_data="refresh_logs"
+        )
         keyboard = InlineKeyboardMarkup([[refresh_button]])
 
         # Reply to the message with the carbon image and the inline keyboard
-        await message.reply_photo(carbon_image, caption="**🥀ᴛʜɪs ɪs ʏᴏᴜʀ ʟᴏɢs✨**", reply_markup=keyboard)
+        await message.reply_photo(
+            carbon_image, caption="**🥀ᴛʜɪs ɪs ʏᴏᴜʀ ʟᴏɢs✨**", reply_markup=keyboard
+        )
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
-@app.on_message(filters.command(["getlog", "logs", "getlogs"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & SUDOERS)
+
+@app.on_message(
+    filters.command(
+        ["getlog", "logs", "getlogs"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]
+    )
+    & SUDOERS
+)
 @language
 async def log_(client, message, _):
     try:
@@ -84,7 +109,10 @@ async def log_(client, message, _):
         await message.reply_text(_["server_1"])
 
 
-@app.on_message(filters.command(["update", "gitpull"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & SUDOERS)
+@app.on_message(
+    filters.command(["update", "up"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"])
+    & SUDOERS
+)
 @language
 async def update_(client, message, _):
     if await is_heroku():
@@ -156,6 +184,68 @@ async def update_(client, message, _):
         os.system("pip3 install -r requirements.txt")
         os.system(f"kill -9 {os.getpid()} && bash start")
         exit()
+
+
+@app.on_message(filters.command(["gitpull"]) & SUDOERS)
+@language
+async def updater_(client, message, _):
+    response = await message.reply_text("ᴄʜᴇᴄᴋɪɴɢ ꜰᴏʀ ᴀᴠᴀɪʟᴀʙʟᴇ ᴜᴘᴅᴀᴛᴇs...")
+    try:
+        repo = Repo()
+    except GitCommandError:
+        return await response.edit("ɢɪᴛ ᴄᴏᴍᴍᴀɴᴅ ᴇʀʀᴏʀ")
+    except InvalidGitRepositoryError:
+        return await response.edit("ɪɴᴠᴀʟɪᴅ ɢɪᴛ ʀᴇᴘsɪᴛᴏʀʏ.")
+    to_exc = f"git fetch origin {config.UPSTREAM_BRANCH} &> /dev/null"
+    os.system(to_exc)
+    await asyncio.sleep(0.1)
+    verification = ""
+    REPO_ = repo.remotes.origin.url.split(".git")[0]
+    for checks in repo.iter_commits(f"HEAD..origin/{config.UPSTREAM_BRANCH}"):
+        verification = str(checks.count())
+    if verification == "":
+        return await response.edit("» ʙᴏᴛ ɪs ᴜᴘ-ᴛᴏ-ᴅᴀᴛᴇ.")
+    ordinal = lambda format: "%d%s" % (
+        format,
+        "tsnrhtdd"[(format // 10 % 10 != 1) * (format % 10 < 4) * format % 10 :: 4],
+    )
+    updates = "".join(
+        f"<b>➣ #{info.count()}: <a href={REPO_}/commit/{info}>{info.summary}</a> ʙʏ -> {info.author}</b>\n\t\t\t\t<b>➥ ᴄᴏᴍᴍɪᴛᴇᴅ ᴏɴ :</b> {ordinal(int(datetime.fromtimestamp(info.committed_date).strftime('%d')))} {datetime.fromtimestamp(info.committed_date).strftime('%b')}, {datetime.fromtimestamp(info.committed_date).strftime('%Y')}\n\n"
+        for info in repo.iter_commits(f"HEAD..origin/{config.UPSTREAM_BRANCH}")
+    )
+    _update_response_ = "<b>ᴀ ɴᴇᴡ ᴜᴩᴅᴀᴛᴇ ɪs ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛʜᴇ ʙᴏᴛ !</b>\n\n➣ ᴩᴜsʜɪɴɢ ᴜᴩᴅᴀᴛᴇs ɴᴏᴡ\n\n<b><u>ᴜᴩᴅᴀᴛᴇs:</u></b>\n\n"
+    _final_updates_ = _update_response_ + updates
+    if len(_final_updates_) > 4096:
+        url = await VIPBin(updates)
+        nrs = await response.edit(
+            f"<b>ᴀ ɴᴇᴡ ᴜᴩᴅᴀᴛᴇ ɪs ᴀᴠᴀɪʟᴀʙʟᴇ ғᴏʀ ᴛʜᴇ ʙᴏᴛ !</b>\n\n➣ ᴩᴜsʜɪɴɢ ᴜᴩᴅᴀᴛᴇs ɴᴏᴡ\n\n<u><b>ᴜᴩᴅᴀᴛᴇs :</b></u>\n\n<a href={url}>ᴄʜᴇᴄᴋ ᴜᴩᴅᴀᴛᴇs</a>"
+        )
+    else:
+        nrs = await response.edit(_final_updates_, disable_web_page_preview=True)
+    os.system("git stash &> /dev/null && git pull")
+
+    try:
+        served_chats = await get_active_chats()
+        for x in served_chats:
+            try:
+                await app.send_message(
+                    chat_id=int(x),
+                    text="{0} ɪs ᴜᴘᴅᴀᴛᴇᴅ ʜᴇʀsᴇʟғ\n\nʏᴏᴜ ᴄᴀɴ sᴛᴀʀᴛ ᴩʟᴀʏɪɴɢ ᴀɢᴀɪɴ ᴀғᴛᴇʀ 15-20 sᴇᴄᴏɴᴅs.".format(
+                        app.mention
+                    ),
+                )
+                await remove_active_chat(x)
+                await remove_active_video_chat(x)
+            except:
+                pass
+        await response.edit(
+            f"{nrs.text}\n\n» ʙᴏᴛ ᴜᴩᴅᴀᴛᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ! ɴᴏᴡ ᴡᴀɪᴛ ғᴏʀ ғᴇᴡ ᴍɪɴᴜᴛᴇs ᴜɴᴛɪʟ ᴛʜᴇ ʙᴏᴛ ʀᴇsᴛᴀʀᴛs"
+        )
+    except:
+        pass
+    os.system("pip3 install --no-cache-dir -U -r requirements.txt")
+    os.system(f"kill -9 {os.getpid()} && bash start")
+    exit()
 
 
 @app.on_message(filters.command(["restart"]) & SUDOERS)
