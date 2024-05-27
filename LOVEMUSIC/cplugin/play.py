@@ -5,25 +5,25 @@ import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 import config
-from VIPMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import SUDOERS
-from VIPMUSIC.utils.inline import panel_markup_clone
-from VIPMUSIC.utils import seconds_to_min, time_to_seconds
-from VIPMUSIC.utils.channelplay import get_channeplayCB
-from VIPMUSIC.utils.decorators.language import languageCB
-from VIPMUSIC.utils.decorators.play import CPlayWrapper
-from VIPMUSIC.utils.formatters import formats
-from VIPMUSIC.utils.inline import (
+from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
+from VIPMUSIC.core.call import LOVE
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils.inline import panel_markup_clone
+from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
+from LOVEMUSIC.utils.channelplay import get_channeplayCB
+from LOVEMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.utils.decorators.play import CPlayWrapper
+from LOVEMUSIC.utils.formatters import formats
+from LOVEMUSIC.utils.inline import (
     botplaylist_markup,
     livestream_markup,
     playlist_markup,
     slider_markup,
     track_markup,
 )
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC.utils.database import (
     add_served_chat_clone,
     add_served_user_clone,
     blacklisted_chats,
@@ -31,10 +31,10 @@ from VIPMUSIC.utils.database import (
     is_banned_user,
     is_on_off,
 )
-from VIPMUSIC.utils.logger import play_logs
+from LOVEMUSIC.utils.logger import play_logs
 from config import BANNED_USERS, lyrical
 from time import time
-from VIPMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.extraction import extract_user
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
@@ -387,7 +387,7 @@ async def play_commnd(
             return await mystic.delete()
         else:
             try:
-                await VIP.stream_call(url)
+                await LOVE.stream_call(url)
             except NoActiveGroupCall:
                 await mystic.edit_text(_["black_9"])
                 return await client.send_message(
@@ -772,12 +772,12 @@ from pyrogram import Client
 from pyrogram.types import InlineKeyboardMarkup
 
 import config
-from VIPMUSIC import Carbon, YouTube
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import db
-from VIPMUSIC.utils.database import add_active_video_chat, is_active_chat
-from VIPMUSIC.utils.exceptions import AssistantErr
-from VIPMUSIC.utils.inline import (
+from LOVEMUSIC import Carbon, YouTube
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
+from LOVEMUSIC.utils.exceptions import AssistantErr
+from LOVEMUSIC.utils.inline import (
     aq_markup,
     queuemarkup,
     close_markup,
@@ -785,8 +785,8 @@ from VIPMUSIC.utils.inline import (
     stream_markup2,
     panel_markup_4,
 )
-from VIPMUSIC.utils.pastebin import VIPBin
-from VIPMUSIC.utils.stream.queue import put_queue, put_queue_index
+from LOVEMUSIC.utils.pastebin import VIPBin
+from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from youtubesearchpython.__future__ import VideosSearch
 
 
@@ -807,7 +807,7 @@ async def stream(
     if not result:
         return
     if forceplay:
-        await VIP.force_stop_stream(chat_id)
+        await LOVE.force_stop_stream(chat_id)
     if streamtype == "playlist":
         msg = f"{_['play_19']}\n\n"
         count = 0
@@ -855,7 +855,7 @@ async def stream(
                 except:
 
                     os.system(f"kill -9 {os.getpid()} && bash start")
-                await VIP.join_call(
+                await LOVE.join_call(
                     chat_id,
                     original_chat_id,
                     file_path,
@@ -894,7 +894,7 @@ async def stream(
         if count == 0:
             return
         else:
-            link = await VIPBin(msg)
+            link = await LOVEBin(msg)
             lines = msg.count("\n")
             if lines >= 17:
                 car = os.linesep.join(msg.split(os.linesep)[:17])
@@ -1010,7 +1010,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await VIP.join_call(chat_id, original_chat_id, file_path, video=None)
+            await LOVE.join_call(chat_id, original_chat_id, file_path, video=None)
             await put_queue(
                 chat_id,
                 original_chat_id,
@@ -1062,7 +1062,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await VIP.join_call(chat_id, original_chat_id, file_path, video=status)
+            await LOVE.join_call(chat_id, original_chat_id, file_path, video=status)
             await put_queue(
                 chat_id,
                 original_chat_id,
@@ -1118,7 +1118,7 @@ async def stream(
             n, file_path = await YouTube.video(link)
             if n == 0:
                 raise AssistantErr(_["str_3"])
-            await VIP.join_call(
+            await LOVE.join_call(
                 chat_id,
                 original_chat_id,
                 file_path,
@@ -1175,7 +1175,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await VIP.join_call(
+            await LOVE.join_call(
                 chat_id,
                 original_chat_id,
                 link,
