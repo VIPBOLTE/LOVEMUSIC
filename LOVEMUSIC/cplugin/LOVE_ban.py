@@ -1,13 +1,13 @@
 import requests
 import random
-from VIPMUSIC import app, userbot
-from VIPMUSIC.misc import SUDOERS
+from LOVEMUSIC import app, userbot
+from LOVEMUSIC.misc import SUDOERS
 from pyrogram import filters, Client
 from pyrogram.types import *
-from VIPMUSIC.utils.vip_ban import admin_filter
+from LOVEMUSIC.utils.vip_ban import admin_filter
 
 
-vip_text = [
+love_text = [
     "hey please don't disturb me.",
     "who are you",
     "aap kon ho",
@@ -48,12 +48,12 @@ channel = ["channel"]
 # ========================================= #
 
 
-@Client.on_message(filters.command(["ip", "iyush"], prefixes=["V", "P"]) & admin_filter)
+@Client.on_message(filters.command(["r", "oku"], prefixes=["M", "G"]) & admin_filter)
 async def restriction_app(client: Client, message):
     reply = message.reply_to_message
     chat_id = message.chat.id
     if len(message.text) < 2:
-        return await message.reply(random.choice(vip_text))
+        return await message.reply(random.choice(love_text))
     bruh = message.text.split(maxsplit=1)[1]
     data = bruh.split(" ")
 
