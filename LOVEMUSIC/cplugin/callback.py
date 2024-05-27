@@ -11,7 +11,7 @@ from LOVEMUSIC.utils.database import get_assistant
 from pyrogram import filters, Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from LOVEMUSIC import YouTube, app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import SUDOERS, db
 from LOVEMUSIC.utils.database import (
     get_active_chats,
@@ -391,7 +391,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                         reply_markup=close_markup(_),
                     )
                     try:
-                        return await VIP.stop_stream(chat_id)
+                        return await LOVE.stop_stream(chat_id)
                     except:
                         return
             except:
