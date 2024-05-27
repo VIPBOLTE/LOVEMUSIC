@@ -1,4 +1,4 @@
-from VIPMUSIC.misc import clonedb
+from LOVEMUSIC.misc import clonedb
 
 
 async def put(
