@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 from pyrogram.errors import ChatAdminRequired, UserNotParticipant, ChatWriteForbidden
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from config import SUPPORT_CHANNEL
 
 # --------------------------
