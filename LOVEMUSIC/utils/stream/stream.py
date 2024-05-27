@@ -7,7 +7,7 @@ import asyncio
 from pyrogram import client, filters
 from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 import config
 from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
 from LOVEMUSIC.core.call import LOVE
