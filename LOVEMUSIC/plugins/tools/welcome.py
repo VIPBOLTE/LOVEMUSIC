@@ -19,7 +19,7 @@ from LOVEMUSIC import app, userbot
 from LOVEMUSIC.misc import SUDOERS
 from pyrogram import *
 from pyrogram.types import *
-from LOBEMUSIC.utils.vip_ban import admin_filter
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
 import random
 from pyrogram import Client, filters
 from pyrogram.types import ChatJoinRequest, InlineKeyboardButton, InlineKeyboardMarkup
