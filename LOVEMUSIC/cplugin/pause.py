@@ -1,15 +1,15 @@
 from pyrogram import filters, Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from VIPMUSIC import app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.utils.decorators import AdminRightsCheck
-from VIPMUSIC.utils.inline import close_markup
+from LOVEMUSIC import app
+from LOVEMUSIC.core.call import LOVE
+from LOVEMUSIC.utils.decorators import AdminRightsCheck
+from LOVEMUSIC.utils.inline import close_markup
 from config import BANNED_USERS
 import random
 from typing import Dict, List, Union
 
-from VIPMUSIC import userbot
-from VIPMUSIC.core.mongo import mongodb, pymongodb
+from LOVEMUSIC import userbot
+from LOVEMUSIC.core.mongo import mongodb, pymongodb
 
 authdb = mongodb.adminauth
 authuserdb = mongodb.authuser
@@ -79,7 +79,7 @@ async def music_off(chat_id: int):
 async def pause_admin(cli, message: Message, _, chat_id):
 
     await music_off(chat_id)
-    await VIP.pause_stream(chat_id)
+    await LOVE.pause_stream(chat_id)
 
     buttons = [
         [
