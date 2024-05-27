@@ -32,7 +32,7 @@ async def sg(client: Client, message: Message):
     sgbot = ["sangmata_bot", "sangmata_beta_bot"]
     sg = random.choice(sgbot)
     VIP = random.choice(assistants)
-    ubot = await get_client(VIP)
+    ubot = await get_client(LOVE)
 
     try:
         a = await ubot.send_message(sg, f"{user.id}")
