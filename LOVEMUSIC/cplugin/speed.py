@@ -1,13 +1,13 @@
 from pyrogram import filters, Client
 from pyrogram.types import Message
 
-from VIPMUSIC import app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import SUDOERS, db
-from VIPMUSIC.utils import AdminRightsCheck
-from VIPMUSIC.utils.database import is_active_chat, is_nonadmin_chat
-from VIPMUSIC.utils.decorators.language import languageCB
-from VIPMUSIC.utils.inline import close_markup, speed_markup
+from LOVEMUSIC import app
+from LOVEMUSIC.core.call import LOVE
+from LOVEMUSIC.misc import SUDOERS, db
+from LOVEMUSIC.utils import AdminRightsCheck
+from LOVEMUSIC.utils.database import is_active_chat, is_nonadmin_chat
+from LOVEMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.utils.inline import close_markup, speed_markup
 from config import BANNED_USERS, adminlist
 
 checker = []
@@ -86,7 +86,7 @@ async def del_back_playlist(client, callback_query, _):
         text=_["admin_32"].format(callback_query.from_user.mention),
     )
     try:
-        await VIP.speedup_stream(
+        await LOVE.speedup_stream(
             chat_id,
             file_path,
             speed,
