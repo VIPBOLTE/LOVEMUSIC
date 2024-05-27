@@ -7,13 +7,13 @@ from pyrogram.errors import (
     UserAlreadyParticipant,
     UserNotParticipant,
 )
-from VIPMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.database import get_assistant
 from pyrogram import filters, Client
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from VIPMUSIC import YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.misc import SUDOERS, db
-from VIPMUSIC.utils.database import (
+from LOVEMUSIC import YouTube, app
+from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.misc import SUDOERS, db
+from LOVEMUSIC.utils.database import (
     get_active_chats,
     get_lang,
     get_upvote_count,
@@ -27,9 +27,9 @@ from VIPMUSIC.utils.database import (
     is_muted,
     set_loop,
 )
-from VIPMUSIC.utils.decorators.language import languageCB
-from VIPMUSIC.utils.formatters import seconds_to_min
-from VIPMUSIC.utils.inline import (
+from LOVEMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.utils.formatters import seconds_to_min
+from LOVEMUSIC.utils.inline import (
     close_markup,
     stream_markup,
     stream_markup_timer,
@@ -51,8 +51,8 @@ from VIPMUSIC.utils.inline import (
     queue_markup,
     panel_markup_1,
 )
-from VIPMUSIC.utils.stream.autoclear import auto_clean
-from VIPMUSIC.utils.thumbnails import get_thumb
+from LOVEMUSIC.utils.stream.autoclear import auto_clean
+from LOVEMUSIC.utils.thumbnails import get_thumb
 from config import (
     BANNED_USERS,
     SOUNCLOUD_IMG_URL,
@@ -288,7 +288,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             return await CallbackQuery.answer(_["admin_1"], show_alert=True)
         await CallbackQuery.answer()
         await music_off(chat_id)
-        await VIP.pause_stream(chat_id)
+        await LOVE.pause_stream(chat_id)
         buttons = [
             [
                 InlineKeyboardButton(
@@ -307,7 +307,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             return await CallbackQuery.answer(_["admin_3"], show_alert=True)
         await CallbackQuery.answer()
         await music_on(chat_id)
-        await VIP.resume_stream(chat_id)
+        await LOVE.resume_stream(chat_id)
         buttons_resume = [
             [
                 InlineKeyboardButton(
@@ -331,7 +331,7 @@ async def del_back_playlist(client, CallbackQuery, _):
         )
     elif command == "Stop" or command == "End":
         await CallbackQuery.answer()
-        await VIP.stop_stream(chat_id)
+        await LOVE.stop_stream(chat_id)
         await set_loop(chat_id, 0)
         await CallbackQuery.message.reply_text(
             _["admin_5"].format(mention), reply_markup=close_markup(_)
@@ -342,14 +342,14 @@ async def del_back_playlist(client, CallbackQuery, _):
             return await CallbackQuery.answer(_["admin_45"], show_alert=True)
         await CallbackQuery.answer()
         await mute_on(chat_id)
-        await VIP.mute_stream(chat_id)
+        await LOVE.mute_stream(chat_id)
         await CallbackQuery.message.reply_text(_["admin_46"].format(mention))
     elif command == "Unmute":
         if not await is_muted(chat_id):
             return await CallbackQuery.answer(_["admin_47"], show_alert=True)
         await CallbackQuery.answer()
         await mute_off(chat_id)
-        await VIP.unmute_stream(chat_id)
+        await LOVE.unmute_stream(chat_id)
         await CallbackQuery.message.reply_text(_["admin_48"].format(mention))
     elif command == "Loop":
         await CallbackQuery.answer()
@@ -405,7 +405,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                         ),
                         reply_markup=close_markup(_),
                     )
-                    return await VIP.stop_stream(chat_id)
+                    return await LOVE.stop_stream(chat_id)
                 except:
                     return
         else:
@@ -437,7 +437,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 image = None
             try:
-                await VIP.skip_stream(chat_id, link, video=status, image=image)
+                await LOVE.skip_stream(chat_id, link, video=status, image=image)
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             button = stream_markup2(_, chat_id)
@@ -473,7 +473,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             except:
                 image = None
             try:
-                await VIP.skip_stream(chat_id, file_path, video=status, image=image)
+                await LOVE.skip_stream(chat_id, file_path, video=status, image=image)
             except:
                 return await mystic.edit_text(_["call_6"])
             button = stream_markup(_, videoid, chat_id)
@@ -494,7 +494,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             await mystic.delete()
         elif "index_" in queued:
             try:
-                await VIP.skip_stream(chat_id, videoid, video=status)
+                await LOVE.skip_stream(chat_id, videoid, video=status)
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             button = stream_markup2(_, chat_id)
@@ -517,7 +517,7 @@ async def del_back_playlist(client, CallbackQuery, _):
                 except:
                     image = None
             try:
-                await VIP.skip_stream(chat_id, queued, video=status, image=image)
+                await LOVE.skip_stream(chat_id, queued, video=status, image=image)
             except:
                 return await CallbackQuery.message.reply_text(_["call_6"])
             if videoid == "telegram":
@@ -606,7 +606,7 @@ async def del_back_playlist(client, CallbackQuery, _):
             if n == 0:
                 return await mystic.edit_text(_["admin_22"])
         try:
-            await VIP.seek_stream(
+            await LOVE.seek_stream(
                 chat_id,
                 file_path,
                 seconds_to_min(to_seek),
