@@ -1,9 +1,9 @@
 from pyrogram import filters, Client
 import os
-from VIPMUSIC import YouTube, app
-from VIPMUSIC.utils.channelplay import get_channeplayCB
-from VIPMUSIC.utils.decorators.language import languageCB
-from VIPMUSIC.utils.stream.stream import stream
+from LOVEMUSIC import YouTube, app
+from LOVEMUSIC.utils.channelplay import get_channeplayCB
+from LOVEMUSIC.utils.decorators.language import languageCB
+from LOVEMUSIC.utils.stream.stream import stream
 from config import BANNED_USERS
 
 
