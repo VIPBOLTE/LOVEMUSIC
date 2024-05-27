@@ -13,7 +13,7 @@ from pyrogram import filters
 load_dotenv()
 
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.database import get_assistant, get_authuser_names, get_cmode
 from LOVEMUSIC.utils.decorators import ActualAdminCB, AdminActual, language
@@ -99,7 +99,7 @@ async def restartbot(client, message: Message, _):
             pass
         try:
             db[chat_id] = []
-            await LOVE.stop_streawaitrce(chat_id)
+            await LOVE.stop_stream_force(chat_id)
         except:
             pass
     return await mystic.edit_text(_["reload_5"].format(app.mention))
