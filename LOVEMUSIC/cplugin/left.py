@@ -1,4 +1,4 @@
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from pyrogram import filters
 from pyrogram.errors import RPCError
 from pyrogram.types import ChatMemberUpdated, InlineKeyboardMarkup, InlineKeyboardButton
@@ -19,8 +19,8 @@ from pyrogram.enums import ParseMode
 from pyrogram import *
 from pyrogram.types import *
 from logging import getLogger
-from VIPMUSIC.utils.vip_ban import admin_filter
-from VIPMUSIC import app
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
+from LOVEMUSIC import app
 from pyrogram import filters
 from pyrogram.errors import RPCError
 from pyrogram.types import ChatMemberUpdated, InlineKeyboardMarkup, InlineKeyboardButton
@@ -38,8 +38,8 @@ random_photo = [
     "https://telegra.ph/file/2973150dd62fd27a3a6ba.jpg",
 ]
 
-bg_path = "VIPMUSIC/assets/userinfo.png"
-font_path = "VIPMUSIC/assets/hiroko.ttf"
+bg_path = "LOVEMUSIC/assets/userinfo.png"
+font_path = "LOVEMUSIC/assets/hiroko.ttf"
 
 get_font = lambda font_size, font_path: ImageFont.truetype(font_path, font_size)
 
