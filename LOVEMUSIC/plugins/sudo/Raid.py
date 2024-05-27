@@ -5,6 +5,7 @@ from pyrogram import Client
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import SUDOERS
 
+
 # Define the spam command handler
 @app.on_message(filters.command("raid", prefixes=".") & SUDOERS)
 def spam_command(client, message):
