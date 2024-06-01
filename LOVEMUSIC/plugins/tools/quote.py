@@ -1,8 +1,9 @@
 from io import BytesIO
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from LOVEMUSIC import app
+from VIPMUSIC import app
 from httpx import AsyncClient, Timeout
+
 
 
 fetch = AsyncClient(
@@ -216,9 +217,9 @@ async def pyrogram_to_quotly(messages, is_reply):
         the_message_dict_to_append["from"]["name"] = await get_message_sender_name(
             message
         )
-        the_message_dict_to_append["from"]["username"] = (
-            await get_message_sender_username(message)
-        )
+        the_message_dict_to_append["from"][
+            "username"
+        ] = await get_message_sender_username(message)
         the_message_dict_to_append["from"]["type"] = message.chat.type.name.lower()
         the_message_dict_to_append["from"]["photo"] = await get_message_sender_photo(
             message
@@ -294,3 +295,6 @@ async def msg_quotly_cmd(self: app, ctx: Message):
         return await ctx.reply_sticker(bio_sticker)
     except Exception as e:
         return await ctx.reply_msg(f"ERROR: {e}")
+
+
+
