@@ -7,7 +7,7 @@ from pyrogram import filters
 import pyrogram
 from uuid import uuid4
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from config import BOT_USERNAME
+
 
 @app.on_message(filters.reply & filters.command(["upscale", "hd"]))
 async def upscale_image(client, message):
