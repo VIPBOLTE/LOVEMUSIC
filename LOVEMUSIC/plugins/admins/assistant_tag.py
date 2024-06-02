@@ -1,21 +1,19 @@
 import asyncio
-import random
-from pyrogram import Client, filters
-from pyrogram.enums import ChatType, ChatMemberStatus
+
+from pyrogram import filters
 from pyrogram.enums import ParseMode
-from pyrogram.errors import UserNotParticipant
-from pyrogram.types import ChatPermissions
+
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import SUDOERS
-from LOVEMUSIC.utils.LOVE_ban import admin_filter
 from LOVEMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
 
 SPAM_CHATS = []
 
 
 @app.on_message(
     filters.command(
-        ["atag", "aall", "amention", "amentionall"], prefixes=["/", "@", ".", "#"]
+        ["atag", "aall", "amention", "amentionall"], prefixes=["/", "@", "#"]
     )
     & SUDOERS
 )
