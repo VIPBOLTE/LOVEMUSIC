@@ -70,7 +70,7 @@ def get_random_picture():
     # Replace this with your code to fetch a random picture URL
     # For example:
     picture_urls = [
-        ||"https://telegra.ph/file/8867c84ab89847cc3ca52.jpg"||
+        "https://telegra.ph/file/8867c84ab89847cc3ca52.jpg"
     ]  # List of picture URLs
     return random.choice(picture_urls)
 
