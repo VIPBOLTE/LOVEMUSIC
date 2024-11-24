@@ -1,109 +1,136 @@
-import asyncio
+
+import os
+from inspect import getfullargspec
 
 from pyrogram import filters
-from pyrogram.enums import ParseMode
+from pyrogram.types import Message
 
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import SUDOERS
-from LOVEMUSIC.utils.database import get_assistant
-from LOVEMUSIC.utils.LOVE_ban import admin_filter
-
-SPAM_CHATS = []
+from LOVEMUSIC.utils.database import get_client
 
 
-@app.on_message(
-    filters.command(
-        ["atag", "aall", "amention", "amentionall"], prefixes=["/", "@", "#"]
-    )
-    & SUDOERS
-)
-async def tag_all_useres(_, message):
-    userbot = await get_assistant(message.chat.id)
-    if message.chat.id in SPAM_CHATS:
-        return await message.reply_text(
-            "ᴛᴀɢɢɪɴɢ ᴘʀᴏᴄᴇss ɪs ᴀʟʀᴇᴀᴅʏ ʀᴜɴɴɪɴɢ ɪғ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ sᴛᴏᴘ sᴏ ᴜsᴇ /acancel"
-        )
-    replied = message.reply_to_message
-    if len(message.command) < 2 and not replied:
-        await message.reply_text(
-            "** ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ ᴛᴏ ᴛᴀɢ ᴀʟʟ, ʟɪᴋᴇ »** `@aall Hi Friends`"
-        )
-        return
-    if replied:
-        SPAM_CHATS.append(message.chat.id)
-        usernum = 0
-        usertxt = ""
-        async for m in app.get_chat_members(message.chat.id):
-            if message.chat.id not in SPAM_CHATS:
-                break
-            usernum += 1
-            usertxt += (
-                f"\n⊚ [{m.user.first_name}](tg://openmessage?user_id={m.user.id})\n"
-            )
-            if usernum == 5:
-                await replied.reply_text(usertxt, ParseMode.MARKDOWN)
-                await asyncio.sleep(2)
-                usernum = 0
-                usertxt = ""
+@app.on_message(filters.command("setpfp", prefixes=".") & SUDOERS)
+async def set_pfp(client, message):
+    from LOVEMUSIC.core.userbot import assistants
+
+    if not message.reply_to_message or not message.reply_to_message.photo:
+        return await eor(message, text="Reply to a photo")
+    for num in assistants:
+        client = await get_client(num)
+        photo = await message.reply_to_message.download()
         try:
-            SPAM_CHATS.remove(message.chat.id)
-        except Exception:
-            pass
+            await client.set_profile_photo(photo=photo)
+            await eor(message, text="Successfully Changed PFP.")
+            os.remove(photo)
+        except Exception as e:
+            await eor(message, text=e)
+            os.remove(photo)
+
+
+@app.on_message(filters.command("setbio", prefixes=".") & SUDOERS)
+async def set_bio(client, message):
+    from LOVEMUSIC.core.userbot import assistants
+
+    if len(message.command) == 1:
+        return await eor(message, text="Give some text to set as bio.")
+    elif len(message.command) > 1:
+        for num in assistants:
+            client = await get_client(num)
+            bio = message.text.split(None, 1)[1]
+        try:
+            await client.update_profile(bio=bio)
+            await eor(message, text="Changed Bio.")
+        except Exception as e:
+            await eor(message, text=e)
     else:
-        text = message.text.split(None, 1)[1]
+        return await eor(message, text="Give some text to set as bio.")
 
-        SPAM_CHATS.append(message.chat.id)
-        usernum = 0
-        usertxt = ""
-        async for m in app.get_chat_members(message.chat.id):
-            if message.chat.id not in SPAM_CHATS:
-                break
-            usernum += 1
-            usertxt += f'\n⊚ <a href="tg://openmessage?user_id={m.user.id}">{m.user.first_name}</a>\n'
 
-            if usernum == 5:
-                await userbot.send_message(
-                    message.chat.id,
-                    f"{text}\n{usertxt}\n\n|| ➥ ᴏғғ ᴛᴀɢɢɪɴɢ ʙʏ » /acancel ||",
-                    ParseMode.HTML,
-                )
-                await asyncio.sleep(2)
-                usernum = 0
-                usertxt = ""
+@app.on_message(filters.command("setname", prefixes=".") & SUDOERS)
+async def set_name(client, message):
+    from LOVEMUSIC.core.userbot import assistants
+
+    if len(message.command) == 1:
+        return await eor(message, text="Give some text to set as name.")
+    elif len(message.command) > 1:
+        for num in assistants:
+            client = await get_client(num)
+            name = message.text.split(None, 1)[1]
         try:
-            SPAM_CHATS.remove(message.chat.id)
-        except Exception:
-            pass
-
-
-@app.on_message(
-    filters.command(
-        [
-            "astopmention",
-            "aoffall",
-            "acancel",
-            "aallstop",
-            "astopall",
-            "acancelmention",
-            "aoffmention",
-            "amentionoff",
-            "aalloff",
-            "acancelall",
-            "aallcancel",
-        ],
-        prefixes=["/", "@", "#"],
-    )
-    & admin_filter
-)
-async def cancelcmd(_, message):
-    chat_id = message.chat.id
-    if chat_id in SPAM_CHATS:
-        try:
-            SPAM_CHATS.remove(chat_id)
-        except Exception:
-            pass
-        return await message.reply_text("**ᴛᴀɢɢɪɴɢ ᴘʀᴏᴄᴇss sᴜᴄᴄᴇssғᴜʟʟʏ sᴛᴏᴘᴘᴇᴅ!**")
-
+            await client.update_profile(first_name=name)
+            await eor(message, text=f"name Changed to {name} .")
+        except Exception as e:
+            await eor(message, text=e)
     else:
-        await message.reply_text("**ɴᴏ ᴘʀᴏᴄᴇss ᴏɴɢᴏɪɴɢ!**")
-        return
+        return await eor(message, text="Give some text to set as name.")
+
+
+@app.on_message(filters.command("delpfp", prefixes=".") & SUDOERS)
+async def del_pfp(client, message):
+    from LOVEMUSIC.core.userbot import assistants
+
+    for num in assistants:
+        client = await get_client(num)
+        photos = [p async for p in client.get_chat_photos("me")]
+        try:
+            if photos:
+                await client.delete_profile_photos(photos[0].file_id)
+                await eor(message, text="Successfully deleted photo")
+            else:
+                await eor(message, text="No profile photos found.")
+        except Exception as e:
+            await eor(message, text=e)
+
+
+@app.on_message(filters.command("delallpfp", prefixes=".") & SUDOERS)
+async def delall_pfp(client, message):
+    from LOVEMUSIC.core.userbot import assistants
+
+    for num in assistants:
+        client = await get_client(num)
+        photos = [p async for p in client.get_chat_photos("me")]
+        try:
+            if photos:
+                await client.delete_profile_photos([p.file_id for p in photos[1:]])
+                await eor(message, text="Successfully deleted photos")
+            else:
+                await eor(message, text="No profile photos found.")
+        except Exception as e:
+            await eor(message, text=e)
+
+
+async def eor(msg: Message, **kwargs):
+    func = (
+        (msg.edit_text if msg.from_user.is_self else msg.reply)
+        if msg.from_user
+        else msg.reply
+    )
+    spec = getfullargspec(func.__wrapped__).args
+    return await func(**{k: v for k, v in kwargs.items() if k in spec})
+
+
+"""
+
+<u> ᴀssɪsᴛᴀɴᴛ's ᴄᴏᴍᴍᴀɴᴅ:</u>
+.setpfp - ʀᴇᴘʟʏ ɪɴ ᴘʜᴏᴛᴏ ᴛᴏ sᴇᴛ ᴀʟʟ ʙᴏᴛ ᴀssɪsᴛᴀɴᴛ ᴘʀᴏғɪʟᴇ ᴘɪᴄᴛᴜʀᴇ [ᴏɴʟʏ ᴘʜᴏᴛᴏ] [ᴏɴʟʏ ғᴏʀ sᴜᴅᴏ ᴜsᴇʀ]
+
+.setname [ᴛᴇxᴛ] - ᴛᴏ sᴇᴛ ᴀʟʟ ᴀssɪsᴛᴀɴᴛ ɴᴀᴍᴇ [ᴏɴʟʏ ғᴏʀ sᴜᴅᴏ ᴜsᴇʀ]
+
+.setbio [ᴛᴇxᴛ] - ᴛᴏ sᴇᴛ ᴀʟʟ ᴀssɪsᴛᴀɴᴛ ʙɪᴏ [ᴏɴʟʏ ғᴏʀ sᴜᴅᴏ ᴜsᴇʀ]
+
+
+.delpfp - ᴅᴇʟᴇᴛᴇ ᴀssɪsᴛᴀɴᴛs ᴘʀɪғɪʟᴇ ᴘɪᴄ [ᴏɴʟʏ ᴏɴᴇ ᴘʀᴏғɪʟᴇ ᴘɪᴄ ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ] [ᴏɴʟʏ ғᴏʀ sᴜᴅᴏ ᴜsᴇʀ]
+
+.delallpfp - ᴅᴇʟᴇᴛᴇ ᴀssɪsᴛᴀɴᴛs ᴀʟʟ ᴘʀɪғɪʟᴇ ᴘɪᴄ [ᴏɴʟʏ ᴏɴᴇ ᴘʀᴏғɪʟᴇ ᴘɪᴄ ᴡɪʟʟ ʙᴇ ʀᴇᴍᴀɪɴ] [ᴏɴʟʏ ғᴏʀ sᴜᴅᴏ ᴜsᴇʀ]
+
+<u> ɢʀᴏᴜᴘ ᴀssɪsᴛᴀɴᴛ's ᴄᴏᴍᴍᴀɴᴅ:</u>
+
+/checkassistant - ᴄʜᴇᴄᴋ ᴅᴇᴛᴀɪʟs ᴏғ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀssɪsᴛᴀɴᴛ
+
+/setassistant - ᴄʜᴀɴɢᴇ ᴀssɪsᴛᴀɴᴛ ᴛᴏ sᴘᴇᴄɪғɪᴄ ᴀssɪsᴛᴀɴᴛ ғᴏʀ ʏᴏᴜʀ ɢʀᴏᴜᴘ
+
+/changeassistant - ᴄʜᴀɴɢᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘ ᴀssɪsᴛᴀɴᴛ ᴛᴏ ʀᴀɴᴅᴏᴍ ᴀᴠᴀɪʟᴀʙʟᴇ ᴀssɪsᴛᴀɴᴛ ɪɴ ʙᴏᴛ sᴇʀᴠᴇʀ's
+
+
+"""
