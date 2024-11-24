@@ -1,95 +1,175 @@
-import time
-from time import time
 import asyncio
-from pyrogram.errors import UserAlreadyParticipant
-import random
-from pyrogram.errors import UserNotParticipant
+import time
+
 from pyrogram import filters
-from pyrogram.enums import ChatType
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+from pyrogram.enums import ParseMode
+from pyrogram.types import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+)
 from youtubesearchpython.__future__ import VideosSearch
+
 import config
-from LOVEMUSIC import app
-from LOVEMUSIC.misc import _boot_
-from LOVEMUSIC.utils import bot_up_time
+from config import BANNED_USERS, START_IMG_URL
+from strings import get_string
+from LOVEMUSIC import HELPABLE, Telegram, YouTube, app
+from LOVEMUSIC.misc import SUDOERS, _boot_
+from LOVEMUSIC.plugins.play.playlist import del_plist_msg
 from LOVEMUSIC.plugins.sudo.sudoers import sudoers_list
 from LOVEMUSIC.utils.database import (
     add_served_chat,
     add_served_user,
-    blacklisted_chats,
+    get_assistant,
     get_lang,
+    get_userss,
     is_banned_user,
     is_on_off,
+    is_served_private_chat,
 )
 from LOVEMUSIC.utils.decorators.language import LanguageStart
 from LOVEMUSIC.utils.formatters import get_readable_time
-from LOVEMUSIC.utils.inline import first_page, private_panel, start_panel
-from config import BANNED_USERS
-from strings import get_string
-from LOVEMUSIC.utils.database import get_assistant
-from time import time
-import asyncio
-from LOVEMUSIC.utils.extraction import extract_user
+from LOVEMUSIC.utils.functions import MARKDOWN, WELCOMEHELP
+from LOVEMUSIC.utils.inline import alive_panel, music_start_panel, start_pannel
 
-# Define a dictionary to track the last message timestamp for each user
-user_last_message_time = {}
-user_command_count = {}
-# Define the threshold for command spamming (e.g., 20 commands within 60 seconds)
-SPAM_THRESHOLD = 2
-SPAM_WINDOW_SECONDS = 5
+from .help import paginate_modules
+
+loop = asyncio.get_running_loop()
 
 
-YUMI_PICS = [
-"https://telegra.ph/file/7c29355ceb5aabd8be513.mp4"
-
-]
-
+@app.on_message(group=-1)
+async def ban_new(client, message):
+    user_id = (
+        message.from_user.id if message.from_user and message.from_user.id else 777000
+    )
+    chat_name = message.chat.title if message.chat.title else ""
+    if await is_banned_user(user_id):
+        try:
+            alert_message = f"😳"
+            BAN = await message.chat.ban_member(user_id)
+            if BAN:
+                await message.reply_text(alert_message)
+        except:
+            pass
 
 
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
-async def start_pm(client, message: Message, _):
-    user_id = message.from_user.id
-    current_time = time()
-    # Update the last message timestamp for the user
-    last_message_time = user_last_message_time.get(user_id, 0)
-
-    if current_time - last_message_time < SPAM_WINDOW_SECONDS:
-        # If less than the spam window time has passed since the last message
-        user_last_message_time[user_id] = current_time
-        user_command_count[user_id] = user_command_count.get(user_id, 0) + 1
-        if user_command_count[user_id] > SPAM_THRESHOLD:
-            # Block the user if they exceed the threshold
-            hu = await message.reply_text(f"**{message.from_user.mention} ᴘʟᴇᴀsᴇ ᴅᴏɴᴛ ᴅᴏ sᴘᴀᴍ, ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴀғᴛᴇʀ 5 sᴇᴄ**")
-            await asyncio.sleep(3)
-            await hu.delete()
-            return 
-    else:
-        # If more than the spam window time has passed, reset the command count and update the message timestamp
-        user_command_count[user_id] = 1
-        user_last_message_time[user_id] = current_time
-
+async def start_comm(client, message: Message, _):
+    chat_id = message.chat.id
     await add_served_user(message.from_user.id)
+    await message.react("🕊️")
     if len(message.text.split()) > 1:
         name = message.text.split(None, 1)[1]
         if name[0:4] == "help":
-            keyboard = first_page(_)
-            return await message.reply_video(
-                video=
-                random.choice(YUMI_PICS),
-                caption=_["help_1"].format(config.SUPPORT_CHAT),
-                reply_markup=keyboard,
+            keyboard = InlineKeyboardMarkup(
+                paginate_modules(0, HELPABLE, "help", close=True)
             )
+            if config.START_IMG_URL:
+                return await message.reply_photo(
+                    photo=START_IMG_URL,
+                    caption=_["help_1"],
+                    reply_markup=keyboard,
+                )
+            else:
+                return await message.reply_text(
+                    text=_["help_1"],
+                    reply_markup=keyboard,
+                )
+        if name[0:4] == "song":
+            await message.reply_text(_["song_2"])
+            return
+        if name == "mkdwn_help":
+            await message.reply(
+                MARKDOWN,
+                parse_mode=ParseMode.HTML,
+                disable_web_page_preview=True,
+            )
+        if name == "greetings":
+            await message.reply(
+                WELCOMEHELP,
+                parse_mode=ParseMode.HTML,
+                disable_web_page_preview=True,
+            )
+        if name[0:3] == "sta":
+            m = await message.reply_text("🔎 ғᴇᴛᴄʜɪɴɢ ʏᴏᴜʀ ᴘᴇʀsᴏɴᴀʟ sᴛᴀᴛs.!")
+            stats = await get_userss(message.from_user.id)
+            tot = len(stats)
+            if not stats:
+                await asyncio.sleep(1)
+                return await m.edit(_["ustats_1"])
+
+            def get_stats():
+                msg = ""
+                limit = 0
+                results = {}
+                for i in stats:
+                    top_list = stats[i]["spot"]
+                    results[str(i)] = top_list
+                    list_arranged = dict(
+                        sorted(
+                            results.items(),
+                            key=lambda item: item[1],
+                            reverse=True,
+                        )
+                    )
+                if not results:
+                    return m.edit(_["ustats_1"])
+                tota = 0
+                videoid = None
+                for vidid, count in list_arranged.items():
+                    tota += count
+                    if limit == 10:
+                        continue
+                    if limit == 0:
+                        videoid = vidid
+                    limit += 1
+                    details = stats.get(vidid)
+                    title = (details["title"][:35]).title()
+                    if vidid == "telegram":
+                        msg += f"🔗[ᴛᴇʟᴇɢʀᴀᴍ ғɪʟᴇs ᴀɴᴅ ᴀᴜᴅɪᴏs]({config.SUPPORT_GROUP}) ** played {count} ᴛɪᴍᴇs**\n\n"
+                    else:
+                        msg += f"🔗 [{title}](https://www.youtube.com/watch?v={vidid}) ** played {count} times**\n\n"
+                msg = _["ustats_2"].format(tot, tota, limit) + msg
+                return videoid, msg
+
+            try:
+                videoid, msg = await loop.run_in_executor(None, get_stats)
+            except Exception as e:
+                print(e)
+                return
+            thumbnail = await YouTube.thumbnail(videoid, True)
+            await m.delete()
+            await message.reply_photo(photo=thumbnail, caption=msg)
+            return
         if name[0:3] == "sud":
             await sudoers_list(client=client, message=message, _=_)
-            if await is_on_off(2):
+            await asyncio.sleep(1)
+            if await is_on_off(config.LOG):
+                sender_id = message.from_user.id
+                sender_mention = message.from_user.mention
+                sender_name = message.from_user.first_name
                 return await app.send_message(
-                    chat_id=config.LOGGER_ID,
-                    text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>sᴜᴅᴏʟɪsᴛ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
+                    config.LOG_GROUP_ID,
+                    f"{message.from_user.mention} ʜᴀs ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <code>sᴜᴅᴏʟɪsᴛ </code>\n\n**ᴜsᴇʀ ɪᴅ :** {sender_id}\n**ᴜsᴇʀ ɴᴀᴍᴇ:** {sender_name}",
                 )
             return
+        if name[0:3] == "lyr":
+            query = (str(name)).replace("lyrics_", "", 1)
+            lyrical = config.lyrical
+            lyrics = lyrical.get(query)
+            if lyrics:
+                await Telegram.send_split_text(message, lyrics)
+                return
+            else:
+                await message.reply_text("ғᴀɪʟᴇᴅ ᴛᴏ ɢᴇᴛ ʟʏʀɪᴄs.")
+                return
+        if name[0:3] == "del":
+            await del_plist_msg(client=client, message=message, _=_)
+            await asyncio.sleep(1)
         if name[0:3] == "inf":
-            m = await message.reply_text("🔎")
+            m = await message.reply_text("🔎 ғᴇᴛᴄʜɪɴɢ ɪɴғᴏ!")
             query = (str(name)).replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
@@ -102,166 +182,232 @@ async def start_pm(client, message: Message, _):
                 channel = result["channel"]["name"]
                 link = result["link"]
                 published = result["publishedTime"]
-            searched_text = _["start_6"].format(
-                title, duration, views, published, channellink, channel, app.mention
-            )
+            searched_text = f"""
+🔍__**ᴠɪᴅᴇᴏ ᴛʀᴀᴄᴋ ɪɴғᴏʀᴍᴀᴛɪᴏɴ**__
+
+❇️**ᴛɪᴛʟᴇ:** {title}
+
+⏳**ᴅᴜʀᴀᴛɪᴏɴ:** {duration} Mins
+👀**ᴠɪᴇᴡs:** `{views}`
+⏰**ᴘᴜʙʟɪsʜᴇᴅ ᴛɪᴍᴇ:** {published}
+🎥**ᴄʜᴀɴɴᴇʟ ɴᴀᴍᴇ:** {channel}
+📎**ᴄʜᴀɴɴᴇʟ ʟɪɴᴋ:** [ᴠɪsɪᴛ ғʀᴏᴍ ʜᴇʀᴇ]({channellink})
+🔗**ᴠɪᴅᴇᴏ ʟɪɴᴋ:** [ʟɪɴᴋ]({link})
+"""
             key = InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(text= "📥 ᴠɪᴅᴇᴏ", callback_data=f"downloadvideo {query}"),
-                        InlineKeyboardButton(text= "📥 ᴀᴜᴅɪᴏ", callback_data=f"downloadaudio {query}"),
-                
-                    ],
-                    [
-                        InlineKeyboardButton(text="🎧 sᴇᴇ ᴏɴ ʏᴏᴜᴛᴜʙᴇ 🎧", url=link),
+                        InlineKeyboardButton(text="🎥 ᴡᴀᴛᴄʜ ", url=f"{link}"),
+                        InlineKeyboardButton(text="🔄 ᴄʟᴏsᴇ", callback_data="close"),
                     ],
                 ]
             )
             await m.delete()
             await app.send_photo(
-                chat_id=message.chat.id,
+                message.chat.id,
                 photo=thumbnail,
                 caption=searched_text,
+                parse_mode=ParseMode.MARKDOWN,
                 reply_markup=key,
             )
-            if await is_on_off(2):
+            await asyncio.sleep(1)
+            if await is_on_off(config.LOG):
+                sender_id = message.from_user.id
+                sender_name = message.from_user.first_name
                 return await app.send_message(
-                    chat_id=config.LOGGER_ID,
-                    text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>ᴛʀᴀᴄᴋ ɪɴғᴏʀᴍᴀᴛɪᴏɴ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
+                    config.LOG_GROUP_ID,
+                    f"{message.from_user.mention} ʜᴀs ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ<code> ᴠɪᴅᴇᴏ ɪɴғᴏʀᴍᴀᴛɪᴏɴ </code>\n\n**ᴜsᴇʀ ɪᴅ:** {sender_id}\n**ᴜsᴇʀ ɴᴀᴍᴇ** {sender_name}",
                 )
     else:
-        out = private_panel(_)
-        await message.reply_video(
-            video=
-            random.choice(YUMI_PICS),
+
+        try:
+            out = music_start_panel(_)
+            vip = await message.reply_text(f"**ᴅιиg ᴅσиg ꨄ︎❣️.....**")
+            await vip.edit_text(f"**ᴅιиg ᴅσиg ꨄ︎.❣️....**")
+            await vip.edit_text(f"**ᴅιиg ᴅσиg ꨄ︎..❣️...**")
+            await vip.edit_text(f"**ᴅιиg ᴅσиg ꨄ︎...❣️..**")
+            await vip.edit_text(f"**ᴅιиg ᴅσиg ꨄ︎....❣️.**")
+            await vip.edit_text(f"**ᴅιиg ᴅσиg ꨄ︎.....❣️**")
+
+            await vip.delete()
+            vips = await message.reply_text("**⚡ѕ**")
+            await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕт**")
+            # await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтα**")
+            #  await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαя**")
+            # await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαят**")
+            # await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαятι**")
+            # await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαятιи**")
+            # await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαятιиg**")
+            # await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαятιиg.**")
+            await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαятιиg....**")
+            await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαятιиg.**")
+            await asyncio.sleep(0.1)
+            await vips.edit_text("**⚡ѕтαятιиg....**")
+            if message.chat.photo:
+
+                userss_photo = await app.download_media(
+                    message.chat.photo.big_file_id,
+                )
+            else:
+                userss_photo = "assets/nodp.png"
+            if userss_photo:
+                chat_photo = userss_photo
+            chat_photo = userss_photo if userss_photo else START_IMG_URL
+
+        except AttributeError:
+            chat_photo = "assets/nodp.png"
+        await vips.delete()
+        await message.reply_photo(
+            photo=chat_photo,
             caption=_["start_2"].format(message.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(out),
         )
-        if await is_on_off(2):
+        if await is_on_off(config.LOG):
+            sender_id = message.from_user.id
+            sender_name = message.from_user.first_name
             return await app.send_message(
-                chat_id=config.LOGGER_ID,
-                text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
+                config.LOG_GROUP_ID,
+                f"{message.from_user.mention} ʜᴀs sᴛᴀʀᴛᴇᴅ ʙᴏᴛ. \n\n**ᴜsᴇʀ ɪᴅ :** {sender_id}\n**ᴜsᴇʀ ɴᴀᴍᴇ:** {sender_name}",
             )
 
 
-    
-
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
 @LanguageStart
-async def start_gp(client, message: Message, _):
-    user_id = message.from_user.id
-    current_time = time()
-    
-    # Update the last message timestamp for the user
-    last_message_time = user_last_message_time.get(user_id, 0)
-
-    if current_time - last_message_time < SPAM_WINDOW_SECONDS:
-        # If less than the spam window time has passed since the last message
-        user_last_message_time[user_id] = current_time
-        user_command_count[user_id] = user_command_count.get(user_id, 0) + 1
-        if user_command_count[user_id] > SPAM_THRESHOLD:
-            # Block the user if they exceed the threshold
-            hu = await message.reply_text(f"**{message.from_user.mention} ᴘʟᴇᴀsᴇ ᴅᴏɴᴛ ᴅᴏ sᴘᴀᴍ, ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴀғᴛᴇʀ 5 sᴇᴄ**")
-            await asyncio.sleep(3)
-            await hu.delete()
-            return 
-    else:
-        # If more than the spam window time has passed, reset the command count and update the message timestamp
-        user_command_count[user_id] = 1
-        user_last_message_time[user_id] = current_time
-        
-    out = start_panel(_)
-    BOT_UP = await bot_up_time()
-    await message.reply_video(
-        video=
-        random.choice(YUMI_PICS),
-        caption=_["start_1"].format(app.mention, BOT_UP),
-        reply_markup=InlineKeyboardMarkup(out),
-    )
-    await add_served_chat(message.chat.id)
-    
-    # Check if Userbot is already in the group
+async def testbot(client, message: Message, _):
     try:
-        userbot = await get_assistant(message.chat.id)
-        message = await message.reply_text(f"**ᴄʜᴇᴄᴋɪɴɢ [ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}) ᴀᴠᴀɪʟᴀʙɪʟɪᴛʏ ɪɴ ᴛʜɪs ɢʀᴏᴜᴘ...**")
-        is_userbot = await app.get_chat_member(message.chat.id, userbot.id)
-        if is_userbot:
-            await message.edit_text(f"**[ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}) ᴀʟsᴏ ᴀᴄᴛɪᴠᴇ ɪɴ ᴛʜɪs ɢʀᴏᴜᴘ, ʏᴏᴜ ᴄᴀɴ ᴘʟᴀʏ sᴏɴɢs.**")
-    except Exception as e:
-        # Userbot is not in the group, invite it
+        chat_id = message.chat.id
         try:
-            await message.edit_text(f"**[ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}) ɪs ɴᴏᴛ ᴀᴠᴀɪʟᴀʙʟᴇ ɪɴ ᴛʜɪs ɢʀᴏᴜᴘ, ɪɴᴠɪᴛɪɴɢ...**")
-            invitelink = await app.export_chat_invite_link(message.chat.id)
-            await asyncio.sleep(1)
-            await userbot.join_chat(invitelink)
-            await message.edit_text(f"**[ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}) ɪs ɴᴏᴡ ᴀᴄᴛɪᴠᴇ ɪɴ ᴛʜɪs ɢʀᴏᴜᴘ, ʏᴏᴜ ᴄᴀɴ ᴘʟᴀʏ sᴏɴɢs.**")
-        except Exception as e:
-            await message.edit_text(f"**ᴜɴᴀʙʟᴇ ᴛᴏ ɪɴᴠɪᴛᴇ ᴍʏ [ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}). ᴘʟᴇᴀsᴇ ᴍᴀᴋᴇ ᴍᴇ ᴀᴅᴍɪɴ ᴡɪᴛʜ ɪɴᴠɪᴛᴇ ᴜsᴇʀ ᴀᴅᴍɪɴ ᴘᴏᴡᴇʀ ᴛᴏ ɪɴᴠɪᴛᴇ ᴍʏ [ᴀssɪsᴛᴀɴᴛ](tg://openmessage?user_id={userbot.id}) ɪɴ ᴛʜɪs ɢʀᴏᴜᴘ.**")
+            # Try downloading the group's photo
+            groups_photo = await client.download_media(
+                message.chat.photo.big_file_id, file_name=f"chatpp{chat_id}.png"
+            )
+            chat_photo = groups_photo if groups_photo else START_IMG_URL
+        except AttributeError:
+            # If there's no chat photo, use the default image
+            chat_photo = START_IMG_URL
+
+        # Get the alive panel and uptime
+        out = alive_panel(_)
+        uptime = int(time.time() - _boot_)
+
+        # Send the response with the group photo or fallback to START_IMG_URL
+        if chat_photo:
+            await message.reply_photo(
+                photo=chat_photo,
+                caption=_["start_7"].format(client.mention, get_readable_time(uptime)),
+                reply_markup=InlineKeyboardMarkup(out),
+            )
+        else:
+            await message.reply_photo(
+                photo=config.START_IMG_URL,
+                caption=_["start_7"].format(client.mention, get_readable_time(uptime)),
+                reply_markup=InlineKeyboardMarkup(out),
+            )
+
+        # Add the chat to the served chat list
+        return await add_served_chat(chat_id)
+
+    except Exception as e:
+        print(f"Error: {e}")
 
 
-
-
-@app.on_message(filters.new_chat_members, group=-1)
+@app.on_message(filters.new_chat_members, group=3)
 async def welcome(client, message: Message):
+    chat_id = message.chat.id
+
+    # Private bot mode check
+    if config.PRIVATE_BOT_MODE == str(True):
+        if not await is_served_private_chat(chat_id):
+            await message.reply_text(
+                "**ᴛʜɪs ʙᴏᴛ's ᴘʀɪᴠᴀᴛᴇ ᴍᴏᴅᴇ ʜᴀs ʙᴇᴇɴ ᴇɴᴀʙʟᴇᴅ. ᴏɴʟʏ ᴍʏ ᴏᴡɴᴇʀ ᴄᴀɴ ᴜsᴇ ᴛʜɪs. ɪғ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴜsᴇ ɪᴛ ɪɴ ʏᴏᴜʀ ᴄʜᴀᴛ, ᴀsᴋ ᴍʏ ᴏᴡɴᴇʀ ᴛᴏ ᴀᴜᴛʜᴏʀɪᴢᴇ ʏᴏᴜʀ ᴄʜᴀᴛ.**"
+            )
+            return await client.leave_chat(chat_id)
+    else:
+        await add_served_chat(chat_id)
+
+    # Handle new chat members
     for member in message.new_chat_members:
         try:
-            language = await get_lang(message.chat.id)
+            language = await get_lang(chat_id)
             _ = get_string(language)
-            if await is_banned_user(member.id):
+
+            # If bot itself joins the chat
+            if member.id == client.id:
                 try:
-                    await message.chat.ban_member(member.id)
-                except Exception as e:
-                    print(e)
-            if member.id == app.id:
-                if message.chat.type != ChatType.SUPERGROUP:
-                    await message.reply_text(_["start_4"])
-                    await app.leave_chat(message.chat.id)
-                    return
-                if message.chat.id in await blacklisted_chats():
-                    await message.reply_text(
-                        _["start_5"].format(
-                            app.mention,
-                            f"https://t.me/{app.username}?start=sudolist",
-                            config.SUPPORT_CHAT,
-                        ),
-                        disable_web_page_preview=True,
+                    groups_photo = await client.download_media(
+                        message.chat.photo.big_file_id, file_name=f"chatpp{chat_id}.png"
                     )
-                    await app.leave_chat(message.chat.id)
-                    return
+                    chat_photo = groups_photo if groups_photo else START_IMG_URL
+                except AttributeError:
+                    chat_photo = START_IMG_URL
 
-                out = start_panel(_)
-                chid = message.chat.id
-                
-                try:
-                    userbot = await get_assistant(message.chat.id)
-    
-                    chid = message.chat.id
-                    
-                    
-                    if message.chat.username:
-                        await userbot.join_chat(f"{message.chat.username}")
-                        await message.reply_text(f"**My [Assistant](tg://openmessage?user_id={userbot.id}) also entered the chat using the group's username.**")
-                    else:
-                        invitelink = await app.export_chat_invite_link(chid)
-                        await asyncio.sleep(1)
-                        messages = await message.reply_text(f"**Joining my [Assistant](tg://openmessage?user_id={userbot.id}) using the invite link...**")
-                        await userbot.join_chat(invitelink)
-                        await messages.delete()
-                        await message.reply_text(f"**My [Assistant](tg://openmessage?user_id={userbot.id}) also entered the chat using the invite link.**")
-                except Exception as e:
-                    await message.edit_text(f"**Please make me admin to invite my [Assistant](tg://openmessage?user_id={userbot.id}) in this chat.**")
-
-                await message.reply_video(
-                    random.choice(YUMI_PICS),
-                    caption=_["start_3"].format(
-                        message.from_user.first_name,
-                        app.mention,
-                        message.chat.title,
-                        app.mention,
-                    ),
+                userbot = await get_assistant(chat_id)
+                out = start_pannel(_)
+                await message.reply_photo(
+                    photo=chat_photo,
+                    caption=_["start_2"],
                     reply_markup=InlineKeyboardMarkup(out),
                 )
-                await add_served_chat(message.chat.id)
-                await message.stop_propagation()
-        except Exception as ex:
-            print(ex)
+
+            # Handle owner joining
+            if member.id in config.OWNER_ID:
+                return await message.reply_text(
+                    _["start_3"].format(client.mention, member.mention)
+                )
+
+            # Handle SUDOERS joining
+            if member.id in SUDOERS:
+                return await message.reply_text(
+                    _["start_4"].format(client.mention, member.mention)
+                )
+            return
+
+        except Exception as e:
+            print(f"Error: {e}")
+            return
+
+
+@app.on_callback_query(filters.regex("go_to_start"))
+@LanguageStart
+async def go_to_home(client, callback_query: CallbackQuery, _):
+    out = music_start_panel(_)
+    await callback_query.message.edit_text(
+        text=_["start_2"].format(callback_query.message.from_user.mention, app.mention),
+        reply_markup=InlineKeyboardMarkup(out),
+    )
+
+
+__MODULE__ = "Boᴛ"
+__HELP__ = f"""
+<b>✦ c sᴛᴀɴᴅs ғᴏʀ ᴄʜᴀɴɴᴇʟ ᴘʟᴀʏ.</b>
+
+<b>★ /stats</b> - Gᴇᴛ Tᴏᴘ 𝟷𝟶 Tʀᴀᴄᴋs Gʟᴏʙᴀʟ Sᴛᴀᴛs, Tᴏᴘ 𝟷𝟶 Usᴇʀs ᴏғ ʙᴏᴛ, Tᴏᴘ 𝟷𝟶 Cʜᴀᴛs ᴏɴ ʙᴏᴛ, Tᴏᴘ 𝟷𝟶 Pʟᴀʏᴇᴅ ɪɴ ᴀ ᴄʜᴀᴛ ᴇᴛᴄ ᴇᴛᴄ.
+
+<b>★ /sudolist</b> - Cʜᴇᴄᴋ Sᴜᴅᴏ Usᴇʀs ᴏғ Bᴏᴛ
+
+<b>★ /lyrics [Mᴜsɪᴄ Nᴀᴍᴇ]</b> - Sᴇᴀʀᴄʜᴇs Lʏʀɪᴄs ғᴏʀ ᴛʜᴇ ᴘᴀʀᴛɪᴄᴜʟᴀʀ Mᴜsɪᴄ ᴏɴ ᴡᴇʙ.
+
+<b>★ /song [Tʀᴀᴄᴋ Nᴀᴍᴇ] ᴏʀ [YT Lɪɴᴋ]</b> - Dᴏᴡɴʟᴏᴀᴅ ᴀɴʏ ᴛʀᴀᴄᴋ ғʀᴏᴍ ʏᴏᴜᴛᴜʙᴇ ɪɴ ᴍᴘ𝟹 ᴏʀ ᴍᴘ𝟺 ғᴏʀᴍᴀᴛs.
+
+<b>★ /player</b> - Gᴇᴛ ᴀ ɪɴᴛᴇʀᴀᴄᴛɪᴠᴇ Pʟᴀʏɪɴɢ Pᴀɴᴇʟ.
+
+<b>★ /queue ᴏʀ /cqueue</b> - Cʜᴇᴄᴋ Qᴜᴇᴜᴇ Lɪsᴛ ᴏғ Mᴜsɪᴄ.
+
+    <u><b>⚡️Pʀɪᴠᴀᴛᴇ Bᴏᴛ:</b></u>
+      
+<b>✧ /authorize [CHAT_ID]</b> - Aʟʟᴏᴡ ᴀ ᴄʜᴀᴛ ғᴏʀ ᴜsɪɴɢ ʏᴏᴜʀ ʙᴏᴛ.
+
+<b>✧ /unauthorize[CHAT_ID]</b> - Dɪsᴀʟʟᴏᴡ ᴀ ᴄʜᴀᴛ ғʀᴏᴍ ᴜsɪɴɢ ʏᴏᴜʀ ʙᴏᴛ.
+
+<b>✧ /authorized</b> - Cʜᴇᴄᴋ ᴀʟʟ ᴀʟʟᴏᴡᴇᴅ ᴄʜᴀᴛs ᴏғ ʏᴏᴜʀ ʙᴏᴛ.
+"""
