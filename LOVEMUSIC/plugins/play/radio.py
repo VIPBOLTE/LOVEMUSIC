@@ -1,183 +1,127 @@
-import logging
-
 from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
-from pyrogram.errors import (
-    ChatAdminRequired,
-    InviteRequestSent,
-    UserAlreadyParticipant,
-    UserNotParticipant,
-)
-from pyrogram.types import Message
+from pyrogram.errors import UserNotParticipant
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from config import BANNED_USERS, adminlist
+from config import BANNED_USERS
 from strings import get_string
 from LOVEMUSIC import app
-from LOVEMUSIC.misc import SUDOERS
-from LOVEMUSIC.utils.database import (
-    get_assistant,
-    get_cmode,
-    get_lang,
-    get_playmode,
-    get_playtype,
-)
+from LOVEMUSIC.utils.database import get_assistant, get_lang
+from LOVEMUSIC.utils.decorators.radio import RadioWrapper
 from LOVEMUSIC.utils.logger import play_logs
 from LOVEMUSIC.utils.stream.stream import stream
 
+# Radio Station List
 RADIO_STATION = {
-    "air bilaspur": "http://air.pc.cdn.bitgravity.com/air/live/pbaudio110/playlist.m3u8",
-    "air raipur": "http://air.pc.cdn.bitgravity.com/air/live/pbaudio118/playlist.m3u8",
-    "capital fm": "http://media-ice.musicradio.com/CapitalMP3?.mp3&listening-from-radio-garden=1616312105154",
-    "english": "https://hls-01-regions.emgsound.ru/11_msk/playlist.m3u8",
-    "mirchi": "http://peridot.streamguys.com:7150/Mirchi",
-    "radio today": "http://stream.zenolive.com/8wv4d8g4344tv",
-    "youtube": "https://www.youtube.com/live/eu191hR_LEc?si=T-9QYD548jd0Mogp",
-    "zee news": "https://www.youtube.com/live/TPcmrPrygDc?si=hiHBkIidgurQAd1P",
-    "aaj tak": "https://www.youtube.com/live/Nq2wYlWFucg?si=usY4UYiSBInKA0S1",
+    "ᴀɪʀ ʙɪʟᴀsᴘᴜʀ": "http://air.pc.cdn.bitgravity.com/air/live/pbaudio110/playlist.m3u8",
+    "ᴀɪʀ ʀᴀɪᴘᴜʀ": "http://air.pc.cdn.bitgravity.com/air/live/pbaudio118/playlist.m3u8",
+    "ᴄᴀᴘɪᴛᴀʟ ꜰᴍ": "http://media-ice.musicradio.com/CapitalMP3?.mp3&listening-from-radio-garden=1616312105154",
+    "ᴇɴɢʟɪsʜ": "https://hls-01-regions.emgsound.ru/11_msk/playlist.m3u8",
+    "ᴅᴅ sᴘᴏʀᴛs": "http://103.199.161.254/Content/ddsports/Live/Channel(DDSPORTS)/index.m3u8",
+    "ʀᴀᴅɪᴏ ᴛᴏᴅᴀʏ": "http://stream.zenolive.com/8wv4d8g4344tv",
+    "sᴀɴsᴋᴀʀ ᴛᴠ": "https://d26idhjf0y1p2g.cloudfront.net/out/v1/cd66dd25b9774cb29943bab54bbf3e2f/index.m3u8",
+    "sᴀᴅʜɴᴀ ᴛᴠ": "https://6n3yow8pl9ok-hls-live.5centscdn.com/sadhanalivetv/live.stream/playlist.m3u8",
+    "ᴘᴛᴄ ᴍᴜsɪᴄ": "https://streaming.ptcplay.com/ptcMusicINOne/smil:Live.smil/playlist.m3u8",
+    "𝟿xᴍ ᴍᴜsɪᴄ": "https://d2q8p4pe5spbak.cloudfront.net/bpk-tv/9XM/9XM.isml/index.m3u8",
+    "ɴʀᴊ ʜɪᴛs": "http://cdn.nrjaudio.fm/audio1/fr/30001/mp3_128.mp3",
 }
 
-valid_stations = "\n".join([f"`{name}`" for name in sorted(RADIO_STATION.keys())])
+
+# Function to create triangular buttons dynamically
+def create_triangular_buttons():
+    buttons = []
+    stations = list(RADIO_STATION.keys())
+    row_count = 2  # Number of buttons per row
+
+    # Iterate through the stations and create buttons
+    while stations:
+        button_row = []
+        for _ in range(min(row_count, len(stations))):
+            station_name = stations.pop(0)
+            button_row.append(
+                InlineKeyboardButton(
+                    station_name, callback_data=f"radio_station_{station_name}"
+                )
+            )
+        buttons.append(button_row)
+
+    return buttons
 
 
 @app.on_message(
-    filters.command(["radioplayforce", "radio", "cradio"])
+    filters.command(["radio", "radioplayforce", "cradio"])
     & filters.group
     & ~BANNED_USERS
 )
-async def radio(client, message: Message):
-    msg = await message.reply_text("ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ᴀ ᴍᴏᴍᴇɴᴛ....")
+@RadioWrapper
+async def radio(
+    client, message: Message, _, chat_id, video, channel, playmode, url, fplay
+):
+    msg = await message.reply_text("ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ᴀ ᴍᴏᴍᴇɴᴛ...")
+
     try:
-        try:
-            userbot = await get_assistant(message.chat.id)
-            get = await app.get_chat_member(message.chat.id, userbot.id)
-        except ChatAdminRequired:
-            return await msg.edit_text(
-                f"» ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ɪɴᴠɪᴛᴇ ᴜsᴇʀs ᴠɪᴀ ʟɪɴᴋ ғᴏʀ ɪɴᴠɪᴛɪɴɢ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}."
-            )
+        userbot = await get_assistant(message.chat.id)
+        get = await app.get_chat_member(message.chat.id, userbot.id)
+
         if get.status == ChatMemberStatus.BANNED:
             return await msg.edit_text(
-                text=f"» {userbot.mention} ᴀssɪsᴛᴀɴᴛ ɪs ʙᴀɴɴᴇᴅ ɪɴ {message.chat.title}\n\n𖢵 ɪᴅ : `{userbot.id}`\n𖢵 ɴᴀᴍᴇ : {userbot.mention}\n𖢵 ᴜsᴇʀɴᴀᴍᴇ : @{userbot.username}\n\nᴘʟᴇᴀsᴇ ᴜɴʙᴀɴ ᴛʜᴇ ᴀssɪsᴛᴀɴᴛ ᴀɴᴅ ᴘʟᴀʏ ᴀɢᴀɪɴ...",
+                text=f"» {userbot.mention} ᴀssɪsᴛᴀɴᴛ ɪs ʙᴀɴɴᴇᴅ ɪɴ {message.chat.title}.\nᴘʟᴇᴀsᴇ ᴜɴʙᴀɴ ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ."
             )
     except UserNotParticipant:
-        if message.chat.username:
-            invitelink = message.chat.username
-            try:
-                await userbot.resolve_peer(invitelink)
-            except Exception as ex:
-                logging.exception(ex)
-        else:
-            try:
-                invitelink = await client.export_chat_invite_link(message.chat.id)
-            except ChatAdminRequired:
-                return await msg.edit_text(
-                    f"» ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ɪɴᴠɪᴛᴇ ᴜsᴇʀs ᴠɪᴀ ʟɪɴᴋ ғᴏʀ ɪɴᴠɪᴛɪɴɢ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}."
-                )
-            except InviteRequestSent:
-                try:
-                    await app.approve_chat_join_request(message.chat.id, userbot.id)
-                except Exception as e:
-                    return await msg.edit(
-                        f"ғᴀɪʟᴇᴅ ᴛᴏ ɪɴᴠɪᴛᴇ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}.\n\n**ʀᴇᴀsᴏɴ :** `{ex}`"
-                    )
-            except Exception as ex:
-                if "channels.JoinChannel" in str(ex) or "Username not found" in str(ex):
-                    return await msg.edit_text(
-                        f"» ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ɪɴᴠɪᴛᴇ ᴜsᴇʀs ᴠɪᴀ ʟɪɴᴋ ғᴏʀ ɪɴᴠɪᴛɪɴɢ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}."
-                    )
-                else:
-                    return await msg.edit_text(
-                        f"ғᴀɪʟᴇᴅ ᴛᴏ ɪɴᴠɪᴛᴇ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}.\n\n**ʀᴇᴀsᴏɴ :** `{ex}`"
-                    )
-        if invitelink.startswith("https://t.me/+"):
-            invitelink = invitelink.replace("https://t.me/+", "https://t.me/joinchat/")
-        anon = await msg.edit_text(
-            f"ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ...\n\nɪɴᴠɪᴛɪɴɢ {userbot.mention} ᴛᴏ {message.chat.title}."
-        )
-        try:
-            await userbot.join_chat(invitelink)
-            await asyncio.sleep(2)
-            await msg.edit_text(
-                f"{userbot.mention} ᴊᴏɪɴᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ,\n\nsᴛᴀʀᴛɪɴɢ sᴛʀᴇᴀᴍ..."
-            )
-        except UserAlreadyParticipant:
-            pass
-        except InviteRequestSent:
-            try:
-                await app.approve_chat_join_request(message.chat.id, userbot.id)
-            except Exception as e:
-                return await msg.edit(
-                    f"ғᴀɪʟᴇᴅ ᴛᴏ ɪɴᴠɪᴛᴇ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}.\n\n**ʀᴇᴀsᴏɴ :** `{ex}`"
-                )
-        except Exception as ex:
-            if "channels.JoinChannel" in str(ex) or "Username not found" in str(ex):
-                return await msg.edit_text(
-                    f"» ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪssɪᴏɴs ᴛᴏ ɪɴᴠɪᴛᴇ ᴜsᴇʀs ᴠɪᴀ ʟɪɴᴋ ғᴏʀ ɪɴᴠɪᴛɪɴɢ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}."
-                )
-            else:
-                return await msg.edit_text(
-                    f"ғᴀɪʟᴇᴅ ᴛᴏ ɪɴᴠɪᴛᴇ {userbot.mention} ᴀssɪsᴛᴀɴᴛ ᴛᴏ {message.chat.title}.\n\n**ʀᴇᴀsᴏɴ :** `{ex}`"
-                )
+        pass
 
-        try:
-            await userbot.resolve_peer(invitelink)
-        except:
-            pass
-    await msg.delete()
-    station_name = " ".join(message.command[1:])
+    # Create triangular buttons for available radio stations
+    buttons = create_triangular_buttons()
+
+    # Create a textual list of all channels
+    channels_list = "\n".join(
+        [f"{i + 1}. {name}" for i, name in enumerate(RADIO_STATION.keys())]
+    )
+
+    # Send message with buttons and list of channels
+    await message.reply_text(
+        f"ᴘʟᴇᴀsᴇ ᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ᴘʟᴀʏ ᴀ ʀᴀᴅɪᴏ ᴄʜᴀɴɴᴇʟ:\n\n"
+        f"ᴄʜᴀɴɴᴇʟ ʟɪsᴛ:\n{channels_list}\n\n"
+        f"sᴇʟᴇᴄᴛ ᴀ ʙᴜᴛᴛᴏɴ ᴛᴏ ᴘʟᴀʏ ᴛʜᴇ ʀᴇsᴘᴇᴄᴛɪᴠᴇ ʀᴀᴅɪᴏ sᴛᴀᴛɪᴏɴ.",
+        reply_markup=InlineKeyboardMarkup(buttons),
+    )
+
+
+@app.on_callback_query(filters.regex(r"radio_station_(.*)"))
+async def play_radio(client, callback_query):
+    station_name = callback_query.data.split("_")[-1]
     RADIO_URL = RADIO_STATION.get(station_name)
-    if RADIO_URL:
-        language = await get_lang(message.chat.id)
-        _ = get_string(language)
-        playmode = await get_playmode(message.chat.id)
-        playty = await get_playtype(message.chat.id)
-        if playty != "Everyone":
-            if message.from_user.id not in SUDOERS:
-                admins = adminlist.get(message.chat.id)
-                if not admins:
-                    return await message.reply_text(_["admin_18"])
-                else:
-                    if message.from_user.id not in admins:
-                        return await message.reply_text(_["play_4"])
-        if message.command[0][0] == "c":
-            chat_id = await get_cmode(message.chat.id)
-            if chat_id is None:
-                return await message.reply_text(_["setting_12"])
-            try:
-                chat = await app.get_chat(chat_id)
-            except:
-                return await message.reply_text(_["cplay_4"])
-            channel = chat.title
-        else:
-            chat_id = message.chat.id
-            channel = None
 
-        video = None
-        mystic = await message.reply_text(
-            _["play_2"].format(channel) if channel else _["play_1"]
+    if RADIO_URL:
+        await callback_query.message.edit_text(
+            "ᴏᴋ ʙᴀʙʏ ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ sᴛᴀʀᴛɪɴɢ ʏᴏᴜʀ ʀᴀᴅɪᴏ ɪɴ ᴠᴄ ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴠᴄ ᴀɴᴅ ᴇɴᴊᴏʏ😁"
         )
+        language = await get_lang(callback_query.message.chat.id)
+        _ = get_string(language)
+        chat_id = callback_query.message.chat.id
+
         try:
             await stream(
                 _,
-                mystic,
-                message.from_user.id,
+                callback_query.message,
+                callback_query.from_user.id,
                 RADIO_URL,
                 chat_id,
-                message.from_user.mention,
-                message.chat.id,
-                video=video,
+                callback_query.from_user.mention,
+                callback_query.message.chat.id,
+                video=None,
                 streamtype="index",
             )
         except Exception as e:
             ex_type = type(e).__name__
             err = e if ex_type == "AssistantErr" else _["general_3"].format(ex_type)
-            return await mystic.edit_text(err)
-        return await play_logs(message, streamtype="Radio")
+            await callback_query.message.edit_text(err)
+        await play_logs(callback_query.message, streamtype="Radio")
     else:
-        valid_stations = "\n".join([f"`{name}`" for name in RADIO_STATION.keys()])
-        await message.reply(
-            f"**Please Provide Me a station name after command**\nGiven below available radio station... \n\n{valid_stations}"
-        )
+        await callback_query.message.edit_text("ɪnᴠᴀʟɪᴅ sᴛᴀᴛɪᴏɴ sᴇʟᴇᴄᴛᴇᴅ!")
 
 
-__MODULE__ = "Rᴀᴅɪᴏ"
-__HELP__ = f"\n/radio [sᴛᴀᴛɪᴏɴ ɴᴀᴍᴇ] - ᴛᴏ ᴘʟᴀʏ **ʀᴀᴅɪᴏ ɪɴ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ**\n\nʙᴇʟᴏᴡ ᴀʀᴇ sᴏᴍᴇ sᴛᴀᴛɪᴏɴ ɴᴀᴍᴇ:\n{valid_stations}"
+__MODULE__ = "Radio"
+__HELP__ = """
+/radio - ᴛᴏ ᴘʟᴀʏ ʀᴀᴅɪᴏ ɪɴ ᴛʜᴇ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ.
+"""
