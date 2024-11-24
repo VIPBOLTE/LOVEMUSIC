@@ -1,53 +1,16 @@
-import future
 import asyncio
 import os
 import time
-from urllib.parse import urlparse
-from pyrogram.types import (
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    InputMediaPhoto,
-    InputMediaVideo,
-    Message,
-)
-import wget
-from pyrogram import filters
-from pyrogram.types import Message
-from youtubesearchpython import SearchVideos
-from yt_dlp import YoutubeDL
-from LOVEMUSIC import app
-import asyncio
-import os
-import time
-import wget
-from urllib.parse import urlparse
-from pyrogram import filters
-from pyrogram.types import Message
-from youtubesearchpython import SearchVideos
-from yt_dlp import YoutubeDL
-from LOVEMUSIC import app
 from time import time
-import asyncio
-from LOVEMUSIC.utils.extraction import extract_user
-import asyncio
-import os
+
 import wget
 from pyrogram import filters
-from pyrogram.types import Message
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from youtubesearchpython import SearchVideos
 from yt_dlp import YoutubeDL
 
 from LOVEMUSIC import app
-from LOVEMUSIC.utils.extraction import extract_user
-from time import time
-from LOVEMUSIC.utils.extraction import extract_user
-from urllib.parse import urlparse
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from pyrogram import filters
-from youtubesearchpython import SearchVideos
-from yt_dlp import YoutubeDL
-from LOVEMUSIC import app
-import wget
+from LOVEMUSIC.platforms.Youtube import cookies as cookie_txt_file
 
 # Define a dictionary to track the last query timestamp for each user
 user_last_CallbackQuery_time = {}
@@ -128,6 +91,7 @@ async def download_video(client, CallbackQuery):
         "outtmpl": "%(id)s.mp4",
         "logtostderr": False,
         "quiet": True,
+        "cookiefile": cookie_txt_file(),
     }
     try:
         with YoutubeDL(opts) as ytdl:
@@ -158,7 +122,7 @@ async def download_video(client, CallbackQuery):
         )
         await client.send_message(
             CallbackQuery.message.chat.id,
-            f"**ʜᴇʏ** {chutiya}\n\n**✅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ.**\n**➻ ᴀᴜᴅɪᴏ sᴇɴᴛ ɪɴ ʏᴏᴜʀ ᴘᴍ/ᴅᴍ.**\n**➥ ᴄʜᴇᴄᴋ ʜᴇʀᴇ » [ʙᴏᴛ ᴘᴍ/ᴅᴍ](tg://openmessage?user_id={app.id})**🤗",
+            f"**ʜᴇʏ** {chutiya}\n\n**✅ sᴜᴄᴄᴇssғᴜʟʟʏ ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ.**\n**➻ ᴠɪᴅᴇᴏ sᴇɴᴛ ɪɴ ʏᴏᴜʀ ᴘᴍ/ᴅᴍ.**\n**➥ ᴄʜᴇᴄᴋ ʜᴇʀᴇ » [ʙᴏᴛ ᴘᴍ/ᴅᴍ](tg://openmessage?user_id={app.id})**🤗",
         )
         await pablo.delete()
         for files in (sedlyf, file_stark):
@@ -255,6 +219,7 @@ async def download_audio(client, CallbackQuery):
         "outtmpl": "%(id)s.mp3",  # Output format changed to mp3
         "logtostderr": False,
         "quiet": True,
+        "cookiefile": cookie_txt_file(),
     }
     try:
         with YoutubeDL(opts) as ytdl:
@@ -306,4 +271,4 @@ async def download_audio(client, CallbackQuery):
                     ]
                 ]
             ),
-    )
+        )
