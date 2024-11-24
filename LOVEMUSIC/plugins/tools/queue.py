@@ -19,7 +19,7 @@ from config import BANNED_USERS
 from strings import get_command
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import db
-from LOVEMUSIC.utils import VIPbin, get_channeplayCB, seconds_to_min
+from LOVEMUSIC.utils import LOVEbin, get_channeplayCB, seconds_to_min
 from LOVEMUSIC.utils.database import get_cmode, is_active_chat, is_music_playing
 from LOVEMUSIC.utils.decorators.language import language, languageCB
 from LOVEMUSIC.utils.inline import queue_back_markup, queue_markup
@@ -208,7 +208,7 @@ async def queued_tracks(client, CallbackQuery: CallbackQuery, _):
         if "ǫᴜᴇᴜᴇᴅ" in msg:
             msg = msg.replace("ǫᴜᴇᴜᴇᴅ", "Queued")
 
-        link = await VIPbin(msg)
+        link = await LOVEbin(msg)
         await CallbackQuery.edit_message_text(
             _["queue_3"].format(link), reply_markup=buttons
         )
@@ -227,7 +227,7 @@ async def queued_tracks(client, CallbackQuery: CallbackQuery, _):
             if "ǫᴜᴇᴜᴇᴅ" in msg:
                 msg = msg.replace("ǫᴜᴇᴜᴇᴅ", "Queued")
 
-            link = await VIPbin(msg)
+            link = await LOVEbin(msg)
             await asyncio.sleep(1)
             return await CallbackQuery.edit_message_text(
                 _["queue_3"].format(link), reply_markup=buttons
