@@ -2,7 +2,7 @@
 from pyrogram import filters
 
 from strings import get_command
-from VIPMUSIC import app
+from LOVEMUSIC import app
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.utils.database import autoend_off, autoend_on
 
