@@ -1,25 +1,38 @@
+#
+# Copyright (C) 2024 by THE-VIP-BOY-OP@Github, < https://github.com/THE-VIP-BOY-OP >.
+#
+# This file is part of < https://github.com/THE-VIP-BOY-OP/VIP-MUSIC > project,
+# and is released under the MIT License.
+# Please see < https://github.com/THE-VIP-BOY-OP/VIP-MUSIC/blob/master/LICENSE >
+#
+# All rights reserved.
+#
+
 import asyncio
-import os
 
 from pyrogram import filters
 from pyrogram.errors import FloodWait
 from pyrogram.types import CallbackQuery, InputMediaPhoto, Message
 
 import config
+from config import BANNED_USERS
+from strings import get_command
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import db
-from LOVEMUSIC.utils import LOVEBin, get_channeplayCB, seconds_to_min
+from LOVEMUSIC.utils import VIPbin, get_channeplayCB, seconds_to_min
 from LOVEMUSIC.utils.database import get_cmode, is_active_chat, is_music_playing
 from LOVEMUSIC.utils.decorators.language import language, languageCB
 from LOVEMUSIC.utils.inline import queue_back_markup, queue_markup
-from config import BANNED_USERS
+
+###Commands
+QUEUE_COMMAND = get_command("QUEUE_COMMAND")
 
 basic = {}
 
 
 def get_image(videoid):
     try:
-        url = f"https://img.youtube.com/vi/{videoid}/maxresdefault.jpg"
+        url = f"https://img.youtube.com/vi/{videoid}/hqdefault.jpg"
         return url
     except Exception:
         return config.YOUTUBE_IMG_URL
@@ -36,17 +49,13 @@ def get_duration(playing):
         return "Inline"
 
 
-@app.on_message(
-    filters.command(["queue", "cqueue", "player", "cplayer", "playing", "cplaying"])
-    & filters.group
-    & ~BANNED_USERS
-)
+@app.on_message(filters.command(QUEUE_COMMAND) & filters.group & ~BANNED_USERS)
 @language
-async def get_queue(client, message: Message, _):
+async def ping_com(client, message: Message, _):
     if message.command[0][0] == "c":
         chat_id = await get_cmode(message.chat.id)
         if chat_id is None:
-            return await message.reply_text(_["setting_7"])
+            return await message.reply_text(_["setting_12"])
         try:
             await app.get_chat(chat_id)
         except:
@@ -56,7 +65,7 @@ async def get_queue(client, message: Message, _):
         chat_id = message.chat.id
         cplay = False
     if not await is_active_chat(chat_id):
-        return await message.reply_text(_["general_5"])
+        return await message.reply_text(_["general_6"])
     got = db.get(chat_id)
     if not got:
         return await message.reply_text(_["queue_2"])
@@ -83,8 +92,18 @@ async def get_queue(client, message: Message, _):
             IMAGE = config.SOUNCLOUD_IMG_URL
         else:
             IMAGE = get_image(videoid)
-    send = _["queue_6"] if DUR == "Unknown" else _["queue_7"]
-    cap = _["queue_8"].format(app.mention, title, typo, user, send)
+    send = (
+        "**⌛️ᴅᴜʀᴀᴛɪᴏɴ:** ᴜɴᴋɴᴏᴡɴ ᴅᴜʀᴀᴛɪᴏɴ sᴛʀᴇᴀᴍ \n\nᴄʟɪᴄᴋ ᴏɴ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ɢᴇᴛ ᴡʜᴏʟᴇ ǫᴜᴇᴜᴇᴅ ʟɪsᴛ."
+        if DUR == "Unknown"
+        else "\nᴄʟɪᴄᴋ ᴏɴ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ɢᴇᴛ ᴡʜᴏʟʀ ǫᴜᴇᴜᴇᴅ ʟɪsᴛ."
+    )
+    cap = f"""**{app.mention} ᴘʟᴀʏᴇʀ**
+
+🎥**ᴘʟᴀʏɪɴɢ:** {title}
+
+🔗**sᴛʀᴇᴀᴍ ᴛʏᴘᴇ:** {typo}
+🙍‍♂️**ᴘʟᴀʏᴇᴅ ʙʏ:** {user}
+{send}"""
     upl = (
         queue_markup(_, DUR, "c" if cplay else "g", videoid)
         if DUR == "Unknown"
@@ -147,7 +166,7 @@ async def queued_tracks(client, CallbackQuery: CallbackQuery, _):
     except:
         return
     if not await is_active_chat(chat_id):
-        return await CallbackQuery.answer(_["general_5"], show_alert=True)
+        return await CallbackQuery.answer(_["general_6"], show_alert=True)
     got = db.get(chat_id)
     if not got:
         return await CallbackQuery.answer(_["queue_2"], show_alert=True)
@@ -166,21 +185,54 @@ async def queued_tracks(client, CallbackQuery: CallbackQuery, _):
     for x in got:
         j += 1
         if j == 1:
-            msg += f'Streaming :\n\n✨ Title : {x["title"]}\nDuration : {x["dur"]}\nBy : {x["by"]}\n\n'
+            msg += f'ᴄᴜʀʀᴇɴᴛ ᴘʟᴀʏɪɴɢ:\n\n🏷ᴛɪᴛʟᴇ: {x["title"]}\nᴅᴜʀᴀᴛɪᴏɴ: {x["dur"]}\nʙʏ: {x["by"]}\n\n'
         elif j == 2:
-            msg += f'Queued :\n\n✨ Title : {x["title"]}\nDuration : {x["dur"]}\nBy : {x["by"]}\n\n'
+            msg += f'ǫᴜᴇᴜᴇᴅ:\n\n🏷ᴛɪᴛʟᴇ: {x["title"]}\nᴅᴜʀᴀᴛɪᴏɴ: {x["dur"]}\nʙʏ: {x["by"]}\n\n'
         else:
-            msg += f'✨ Title : {x["title"]}\nDuration : {x["dur"]}\nBy : {x["by"]}\n\n'
+            msg += f'🏷ᴛɪᴛʟᴇ: {x["title"]}\nᴅᴜʀᴀᴛɪᴏɴ: {x["dur"]}\nʙʏ: {x["by"]}\n\n'
     if "Queued" in msg:
         if len(msg) < 700:
             await asyncio.sleep(1)
             return await CallbackQuery.edit_message_text(msg, reply_markup=buttons)
-        if "✨" in msg:
-            msg = msg.replace("✨", "")
-        link = await LOVEBin(msg)
-        med = InputMediaPhoto(media=link, caption=_["queue_3"].format(link))
-        await CallbackQuery.edit_message_media(media=med, reply_markup=buttons)
+
+        if "🏷" in msg:
+            msg = msg.replace("🏷", "")
+        if "ᴄᴜʀʀᴇɴᴛ ᴘʟᴀʏɪɴɢ" in msg:
+            msg = msg.replace("ᴄᴜʀʀᴇɴᴛ ᴘʟᴀʏɪɴɢ", "Current Playling")
+        if "ᴛɪᴛʟᴇ" in msg:
+            msg = msg.replace("ᴛɪᴛʟᴇ", "Title")
+        if "ᴅᴜʀᴀᴛɪᴏɴ" in msg:
+            msg = msg.replace("ᴅᴜʀᴀᴛɪᴏɴ", "Duration")
+        if "ʙʏ" in msg:
+            msg = msg.replace("ʙʏ", "By")
+        if "ǫᴜᴇᴜᴇᴅ" in msg:
+            msg = msg.replace("ǫᴜᴇᴜᴇᴅ", "Queued")
+
+        link = await VIPbin(msg)
+        await CallbackQuery.edit_message_text(
+            _["queue_3"].format(link), reply_markup=buttons
+        )
     else:
+        if len(msg) > 700:
+            if "🏷" in msg:
+                msg = msg.replace("🏷", "")
+            if "ᴄᴜʀʀᴇɴᴛ ᴘʟᴀʏɪɴɢ" in msg:
+                msg = msg.replace("ᴄᴜʀʀᴇɴᴛ ᴘʟᴀʏɪɴɢ", "Current Playling")
+            if "ᴛɪᴛʟᴇ" in msg:
+                msg = msg.replace("ᴛɪᴛʟᴇ", "Title")
+            if "ᴅᴜʀᴀᴛɪᴏɴ" in msg:
+                msg = msg.replace("ᴅᴜʀᴀᴛɪᴏɴ", "Duration")
+            if "ʙʏ" in msg:
+                msg = msg.replace("ʙʏ", "By")
+            if "ǫᴜᴇᴜᴇᴅ" in msg:
+                msg = msg.replace("ǫᴜᴇᴜᴇᴅ", "Queued")
+
+            link = await VIPbin(msg)
+            await asyncio.sleep(1)
+            return await CallbackQuery.edit_message_text(
+                _["queue_3"].format(link), reply_markup=buttons
+            )
+
         await asyncio.sleep(1)
         return await CallbackQuery.edit_message_text(msg, reply_markup=buttons)
 
@@ -195,11 +247,11 @@ async def queue_back(client, CallbackQuery: CallbackQuery, _):
     except:
         return
     if not await is_active_chat(chat_id):
-        return await CallbackQuery.answer(_["general_5"], show_alert=True)
+        return await CallbackQuery.answer(_["general_6"], show_alert=True)
     got = db.get(chat_id)
     if not got:
         return await CallbackQuery.answer(_["queue_2"], show_alert=True)
-    await CallbackQuery.answer(_["set_cb_5"], show_alert=True)
+    await CallbackQuery.answer(_["set_cb_8"], show_alert=True)
     file = got[0]["file"]
     videoid = got[0]["vidid"]
     user = got[0]["by"]
@@ -223,8 +275,18 @@ async def queue_back(client, CallbackQuery: CallbackQuery, _):
             IMAGE = config.SOUNCLOUD_IMG_URL
         else:
             IMAGE = get_image(videoid)
-    send = _["queue_6"] if DUR == "Unknown" else _["queue_7"]
-    cap = _["queue_8"].format(app.mention, title, typo, user, send)
+    send = (
+        "**⌛️ᴅᴜʀᴀᴛɪᴏɴ:** ᴜɴᴋɴᴏᴡɴ ᴅᴜʀᴀᴛɪᴏɴ sᴛʀᴇᴀᴍ \n\nᴄʟɪᴄᴋ ᴏɴ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ᴡʜᴏʟᴇ ǫᴜᴇᴜᴇᴅ ʟɪsᴛ."
+        if DUR == "Unknown"
+        else "\nᴄʟɪᴄᴋ ᴏɴ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ɢᴇᴛ ᴡʜᴏʟᴇ ǫᴜᴇᴜᴇᴅ ʟɪsᴛ."
+    )
+    cap = f"""**{app.mention} ᴘʟᴀʏᴇʀ**
+
+🎥**ᴘʟᴀʏɪɴɢ:** {title}
+
+🔗**sᴛʀᴇᴀᴍ ᴛʏᴘᴇ:** {typo}
+🙍‍♂️**ᴘʟᴀʏᴇᴅ ʙʏ :** {user}
+{send}"""
     upl = (
         queue_markup(_, DUR, cplay, videoid)
         if DUR == "Unknown"
