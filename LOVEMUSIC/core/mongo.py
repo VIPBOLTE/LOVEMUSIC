@@ -14,7 +14,7 @@ if config.MONGO_DB_URI is None:
         "𝐍o 𝐌ONGO 𝐃B 𝐔RL 𝐅ound.. 𝐘our 𝐁ot 𝐖ill 𝐖ork 𝐎n 𝐕𝐈𝐏 𝐌𝐔𝐒𝐈𝐂 𝐃atabase"
     )
     temp_client = Client(
-        "LOVEMUSIC",
+        "VIPMUSIC",
         bot_token=config.BOT_TOKEN,
         api_id=config.API_ID,
         api_hash=config.API_HASH,
