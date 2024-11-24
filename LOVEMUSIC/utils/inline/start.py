@@ -1,14 +1,16 @@
 from pyrogram.types import InlineKeyboardButton
 
 import config
+from config import SUPPORT_GROUP
 from LOVEMUSIC import app
 
 
-def start_panel(_):
+def start_pannel(_):
     buttons = [
         [
             InlineKeyboardButton(
-                text=_["S_B_1"], url=f"https://t.me/{app.username}?startgroup=true"
+                text="💠 𝐀𝙳𝙳 𝙼𝙴 𝙸𝙽 𝙽𝙴𝚆 𝙶𝚁𝙾𝚄𝙿𝚂 💠",
+                url=f"https://t.me/{app.username}?startgroup=true",
             ),
         ],
         [
@@ -16,7 +18,7 @@ def start_panel(_):
             InlineKeyboardButton(text="☢ 𝐒𝙴𝚃 ☢", callback_data="settings_helper"),
         ],
         [
-            InlineKeyboardButton(text="✡ 𝐆𝚁𝙾𝚄𝙿 ✡", url=config.SUPPORT_CHAT),
+            InlineKeyboardButton(text="✡ 𝐆𝚁𝙾𝚄𝙿 ✡", url=config.SUPPORT_GROUP),
         ],
     ]
     return buttons
@@ -31,7 +33,7 @@ def private_panel(_):
             )
         ],
         [
-            InlineKeyboardButton(text="𝐆𝚁𝙾𝚄𝙿✨", url=config.SUPPORT_CHAT),
+            InlineKeyboardButton(text="𝐆𝚁𝙾𝚄𝙿✨", url=config.SUPPORT_GROUP),
             InlineKeyboardButton(text="𝐌ᴏʀᴇ🥀", url=config.SUPPORT_CHANNEL),
         ],
         [
@@ -39,5 +41,34 @@ def private_panel(_):
                 text="۞ 𝐅𝙴𝙰𝚃𝚄𝚁𝙴𝚂 ۞", callback_data="settings_back_helper"
             )
         ],
+    ]
+    return buttons
+
+
+def alive_panel(_):
+    buttons = [
+        [
+            InlineKeyboardButton(
+                text="✿︎ ᴀᴅᴅ ᴍᴇ ✿︎", url=f"https://t.me/{app.username}?startgroup=true"
+            ),
+            InlineKeyboardButton(text=_["S_B_3"], url=f"{SUPPORT_GROUP}"),
+        ],
+    ]
+    return buttons
+
+
+def music_start_panel(_):
+    buttons = [
+        [
+            InlineKeyboardButton(
+                text="💠 ᴀᴅᴅ ᴍᴇ ɪɴ ɴᴇᴡ ɢʀᴏᴜᴘ 💠",
+                url=f"https://t.me/{app.username}?startgroup=true",
+            )
+        ],
+        [
+            InlineKeyboardButton(text="ᴀʙᴏᴜᴛ 📝", callback_data="about"),
+            InlineKeyboardButton(text="sᴜᴘᴘᴏʀᴛ 🥀", callback_data="support"),
+        ],
+        [InlineKeyboardButton(text="۞ ғᴇᴀᴛᴜʀᴇ ۞", callback_data="feature")],
     ]
     return buttons
