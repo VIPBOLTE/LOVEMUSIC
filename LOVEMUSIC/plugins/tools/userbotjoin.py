@@ -1,23 +1,13 @@
 import asyncio
-from LOVEMUSIC.misc import SUDOERS
-from LOVEMUSIC.core.userbot import Userbot
-from pyrogram import Client, filters
-from pyrogram.errors import UserAlreadyParticipant
-from LOVEMUSIC import app
-import asyncio
-import random
-from pyrogram import Client, filters
+
+from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
-from pyrogram.errors import (
-    ChatAdminRequired,
-    InviteRequestSent,
-    UserAlreadyParticipant,
-    UserNotParticipant,
-)
+from pyrogram.errors import InviteRequestSent
+
 from LOVEMUSIC import app
-from LOVEMUSIC.utils.LOVE_ban import admin_filter
-from LOVEMUSIC.utils.decorators.userbotjoin import UserbotWrapper
-from LOVEMUSIC.utils.database import get_assistant, is_active_chat
+from LOVEMUSIC.misc import SUDOERS
+from LOVEMUSIC.utils.database import get_assistant
+from LOVEMUSIC.utils.vip_ban import admin_filter
 
 links = {}
 
@@ -190,7 +180,7 @@ async def leave_all(client, message):
     try:
         userbot = await get_assistant(message.chat.id)
         async for dialog in userbot.get_dialogs():
-            if dialog.chat.id == -1002126989582:
+            if dialog.chat.id == -1001733534088:
                 continue
             try:
                 await userbot.leave_chat(dialog.chat.id)
@@ -208,4 +198,11 @@ async def leave_all(client, message):
         await app.send_message(
             message.chat.id,
             f"**✅ ʟᴇғᴛ ғʀᴏᴍ:* {left} chats.\n**❌ ғᴀɪʟᴇᴅ ɪɴ:** {failed} chats.",
-)
+        )
+
+
+__MODULES__ = "Userbotjoin"
+__HELP__ = """
+/userbotjoin: Invites the userbot to the current group.
+/userbotleave: Makes the userbot leave the current group.
+/leaveall: Makes the userbot leave all groups where it is present (accessible only to SUDOERS)."""
