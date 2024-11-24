@@ -5,7 +5,7 @@ import heroku3
 from pyrogram import filters
 
 import config
-from VIPMUSIC.core.mongo import pymongodb
+from LOVEMUSIC.core.mongo import pymongodb
 
 from .logging import LOGGER
 
