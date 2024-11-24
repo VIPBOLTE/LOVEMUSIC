@@ -8,7 +8,7 @@ from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
 from pyrogram.types import ChatPrivileges, Message
 
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.utils.database import *
 from LOVEMUSIC.utils.database import set_loop
 
