@@ -1,29 +1,38 @@
-from LOVEMUSIC.core.bot import LOVE
+import json
+import os
+
+from LOVEMUSIC.core.bot import LOVEBot
 from LOVEMUSIC.core.dir import dirr
 from LOVEMUSIC.core.git import git
 from LOVEMUSIC.core.userbot import Userbot
-from LOVEMUSIC.misc import dbb, heroku
+from LOVEMUSIC.core.youtube import GOKUBLACK
+from LOVEMUSIC.misc import dbb, heroku, sudo
 
-from SafoneAPI import SafoneAPI
 from .logging import LOGGER
 
 dirr()
+
 git()
+
 dbb()
+
 heroku()
 
-app = LOVE()
-api = SafoneAPI()
-userbot = Userbot()
+sudo()
 
+GOKUBLACK()
+
+app = LOVEBot()
+
+userbot = Userbot()
 
 from .platforms import *
 
-Apple = AppleAPI()
-Carbon = CarbonAPI()
-SoundCloud = SoundAPI()
-Spotify = SpotifyAPI()
-Resso = RessoAPI()
-Telegram = TeleAPI()
 YouTube = YouTubeAPI()
-APP = "LOVEMUSIC_bot"  # connect music api key "Dont change it"
+Carbon = CarbonAPI()
+Spotify = SpotifyAPI()
+Apple = AppleAPI()
+Resso = RessoAPI()
+SoundCloud = SoundAPI()
+Telegram = TeleAPI()
+HELPABLE = {}
