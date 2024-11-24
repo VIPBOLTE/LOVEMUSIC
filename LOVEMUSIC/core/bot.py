@@ -1,53 +1,183 @@
-from pyrogram import Client, errors
-from pyrogram.enums import ChatMemberStatus, ParseMode
+import asyncio
+import threading
+
+import uvloop
+from flask import Flask
+from pyrogram import Client, idle
+from pyrogram.enums import ChatMemberStatus
+from pyrogram.types import (
+    BotCommand,
+    BotCommandScopeAllChatAdministrators,
+    BotCommandScopeAllGroupChats,
+    BotCommandScopeAllPrivateChats,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+)
 
 import config
 
 from ..logging import LOGGER
 
+uvloop.install()
 
-class LOVE(Client):
+# Flask app initialize
+app = Flask(__name__)
+
+
+@app.route("/")
+def home():
+    return "Bot is running"
+
+
+def run():
+    app.run(host="0.0.0.0", port=8000, debug=False)
+
+
+# VIPBot Class
+class VIPBot(Client):
     def __init__(self):
-        LOGGER(__name__).info(f"Starting Bot...")
+        LOGGER(__name__).info("Starting Bot")
         super().__init__(
-            name="LOVEMUSIC",
+            "VIPMUSIC",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             bot_token=config.BOT_TOKEN,
-            in_memory=True,
-            max_concurrent_transmissions=7,
         )
 
     async def start(self):
         await super().start()
-        self.id = self.me.id
-        self.name = self.me.first_name + " " + (self.me.last_name or "")
-        self.username = self.me.username
-        self.mention = self.me.mention
+        get_me = await self.get_me()
+        self.username = get_me.username
+        self.id = get_me.id
+        self.name = get_me.first_name + " " + (get_me.last_name or "")
+        self.mention = get_me.mention
 
-        try:
-            await self.send_message(
-                chat_id=config.LOGGER_ID,
-                text=f"<u><b>» {self.mention} ʙᴏᴛ sᴛᴀʀᴛᴇᴅ :</b><u>\n\nɪᴅ : <code>{self.id}</code>\nɴᴀᴍᴇ : {self.name}\nᴜsᴇʀɴᴀᴍᴇ : @{self.username}",
-            )
-        except (errors.ChannelInvalid, errors.PeerIdInvalid):
-            LOGGER(__name__).error(
-                "Bot has failed to access the log group/channel. Make sure that you have added your bot to your log group/channel."
-            )
-            
-        except Exception as ex:
-            LOGGER(__name__).error(
-                f"Bot has failed to access the log group/channel.\n  Reason : {type(ex).__name__}."
-            )
-            
+        button = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        text="๏ ᴀᴅᴅ ᴍᴇ ɪɴ ɢʀᴏᴜᴘ ๏",
+                        url=f"https://t.me/{self.username}?startgroup=true",
+                    )
+                ]
+            ]
+        )
 
-        a = await self.get_chat_member(config.LOGGER_ID, self.id)
-        if a.status != ChatMemberStatus.ADMINISTRATOR:
-            LOGGER(__name__).error(
-                "Please promote your bot as an admin in your log group/channel."
+        if config.LOG_GROUP_ID:
+            try:
+                await self.send_photo(
+                    config.LOG_GROUP_ID,
+                    photo=config.START_IMG_URL,
+                    caption=f"╔════❰𝐖𝐄𝐋𝐂𝐎𝐌𝐄❱════❍⊱❁۪۪\n║\n║┣⪼🥀𝐁𝐨𝐭 𝐒𝐭𝐚𝐫𝐭𝐞𝐝 𝐁𝐚𝐛𝐲🎉\n║\n║┣⪼ {self.name}\n║\n║┣⪼🎈𝐈𝐃:- `{self.id}` \n║\n║┣⪼🎄@{self.username} \n║ \n║┣⪼💖𝐓𝐡𝐚𝐧𝐤𝐬 𝐅𝐨𝐫 𝐔𝐬𝐢𝐧𝐠😍\n║\n╚════════════════❍⊱❁",
+                    reply_markup=button,
+                )
+            except pyrogram.errors.ChatWriteForbidden as e:
+                LOGGER(__name__).error(f"Bot cannot write to the log group: {e}")
+                try:
+                    await self.send_message(
+                        config.LOG_GROUP_ID,
+                        f"╔═══❰𝐖𝐄𝐋𝐂𝐎𝐌𝐄❱═══❍⊱❁۪۪\n║\n║┣⪼🥀𝐁𝐨𝐭 𝐒𝐭𝐚𝐫𝐭𝐞𝐝 𝐁𝐚𝐛𝐲🎉\n║\n║◈ {self.name}\n║\n║┣⪼🎈𝐈𝐃:- `{self.id}` \n║\n║┣⪼🎄@{self.username} \n║ \n║┣⪼💖𝐓𝐡𝐚𝐧𝐤𝐬 𝐅𝐨𝐫 𝐔𝐬𝐢𝐧𝐠😍\n║\n╚══════════════❍⊱❁",
+                        reply_markup=button,
+                    )
+                except Exception as e:
+                    LOGGER(__name__).error(f"Failed to send message in log group: {e}")
+            except Exception as e:
+                LOGGER(__name__).error(
+                    f"Unexpected error while sending to log group: {e}"
+                )
+        else:
+            LOGGER(__name__).warning(
+                "LOG_GROUP_ID is not set, skipping log group notifications."
             )
-            
-        LOGGER(__name__).info(f"Music Bot Started as {self.name}")
+        if config.SET_CMDS:
+            try:
+                await self.set_bot_commands(
+                    commands=[
+                        BotCommand("start", "Start the bot"),
+                        BotCommand("help", "Get the help menu"),
+                        BotCommand("ping", "Check if the bot is alive or dead"),
+                    ],
+                    scope=BotCommandScopeAllPrivateChats(),
+                )
+                await self.set_bot_commands(
+                    commands=[
+                        BotCommand("play", "Start playing requested song"),
+                        BotCommand("stop", "Stop the current song"),
+                        BotCommand("pause", "Pause the current song"),
+                        BotCommand("resume", "Resume the paused song"),
+                        BotCommand("queue", "Check the queue of songs"),
+                        BotCommand("skip", "Skip the current song"),
+                        BotCommand("volume", "Adjust the music volume"),
+                        BotCommand("lyrics", "Get lyrics of the song"),
+                    ],
+                    scope=BotCommandScopeAllGroupChats(),
+                )
+                await self.set_bot_commands(
+                    commands=[
+                        BotCommand("start", "❥ Start the bot"),
+                        BotCommand("ping", "❥ Check the ping"),
+                        BotCommand("help", "❥ Get help"),
+                        BotCommand("vctag", "❥ Tag all for voice chat"),
+                        BotCommand("stopvctag", "❥ Stop tagging for VC"),
+                        BotCommand("tagall", "❥ Tag all members by text"),
+                        BotCommand("cancel", "❥ Cancel the tagging"),
+                        BotCommand("settings", "❥ Get the settings"),
+                        BotCommand("reload", "❥ Reload the bot"),
+                        BotCommand("play", "❥ Play the requested song"),
+                        BotCommand("vplay", "❥ Play video along with music"),
+                        BotCommand("end", "❥ Empty the queue"),
+                        BotCommand("playlist", "❥ Get the playlist"),
+                        BotCommand("stop", "❥ Stop the song"),
+                        BotCommand("lyrics", "❥ Get the song lyrics"),
+                        BotCommand("song", "❥ Download the requested song"),
+                        BotCommand("video", "❥ Download the requested video song"),
+                        BotCommand("gali", "❥ Reply with fun"),
+                        BotCommand("shayri", "❥ Get a shayari"),
+                        BotCommand("love", "❥ Get a love shayari"),
+                        BotCommand("sudolist", "❥ Check the sudo list"),
+                        BotCommand("owner", "❥ Check the owner"),
+                        BotCommand("update", "❥ Update bot"),
+                        BotCommand("gstats", "❥ Get stats of the bot"),
+                        BotCommand("repo", "❥ Check the repo"),
+                    ],
+                    scope=BotCommandScopeAllChatAdministrators(),
+                )
+            except Exception as e:
+                LOGGER(__name__).error(f"Failed to set bot commands: {e}")
 
-    async def stop(self):
-        await super().stop()
+        if config.LOG_GROUP_ID:
+            try:
+                chat_member_info = await self.get_chat_member(
+                    config.LOG_GROUP_ID, self.id
+                )
+                if chat_member_info.status != ChatMemberStatus.ADMINISTRATOR:
+                    LOGGER(__name__).error(
+                        "Please promote Bot as Admin in Logger Group"
+                    )
+            except Exception as e:
+                LOGGER(__name__).error(f"Error occurred while checking bot status: {e}")
+
+        LOGGER(__name__).info(f"MusicBot Started as {self.name}")
+
+
+# Define the async boot function
+async def anony_boot():
+    bot = LOVEBot()
+    await bot.start()
+    await idle()
+
+
+if __name__ == "__main__":
+    LOGGER(__name__).info("Starting Flask server...")
+
+    # Start Flask server in a new thread
+    t = threading.Thread(target=run)
+    t.daemon = True
+    t.start()
+
+    LOGGER(__name__).info("Starting LOVEBot...")
+
+    # Run the bot
+    asyncio.run(anony_boot())
+
+    LOGGER(__name__).info("Stopping LOVEBot...")
