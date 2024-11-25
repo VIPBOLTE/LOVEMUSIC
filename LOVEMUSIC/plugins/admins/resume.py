@@ -3,7 +3,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from config import BANNED_USERS
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP as VIP
+from LOVEMUSIC.core.call import LOVE as LOVE
 from LOVEMUSIC.utils.database import is_music_playing, music_on
 from LOVEMUSIC.utils.decorators import AdminRightsCheck
 
