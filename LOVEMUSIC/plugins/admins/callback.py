@@ -12,7 +12,7 @@ from config import (
     adminlist,
 )
 from LOVEMUSIC import YouTube, app
-from LOVEMUSIC.core.call import VIP as VIP
+from LOVEMUSIC.core.call import LOVE as LOVE
 from LOVEMUSIC.misc import SUDOERS, db
 from LOVEMUSIC.utils.database import (
     is_active_chat,
