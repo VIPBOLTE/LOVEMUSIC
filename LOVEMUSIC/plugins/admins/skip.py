@@ -5,7 +5,7 @@ import config
 from config import BANNED_USERS
 from strings import get_command
 from LOVEMUSIC import YouTube, app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.database import get_loop
 from LOVEMUSIC.utils.decorators import AdminRightsCheck
