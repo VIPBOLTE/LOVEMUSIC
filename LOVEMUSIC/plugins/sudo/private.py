@@ -12,7 +12,7 @@ from LOVEMUSIC.utils.database import (
     is_served_private_chat,
     remove_private_chat,
 )
-from VIPMUSIC.utils.decorators.language import language
+from LOVEMUSIC.utils.decorators.language import language
 
 AUTHORIZE_COMMAND = get_command("AUTHORIZE_COMMAND")
 UNAUTHORIZE_COMMAND = get_command("UNAUTHORIZE_COMMAND")
