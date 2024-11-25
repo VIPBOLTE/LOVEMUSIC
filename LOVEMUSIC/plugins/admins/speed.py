@@ -3,7 +3,7 @@ from pyrogram.types import Message
 
 from config import BANNED_USERS, adminlist
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import SUDOERS, db
 from LOVEMUSIC.utils import AdminRightsCheck
 from LOVEMUSIC.utils.decorators.language import languageCB
@@ -84,7 +84,7 @@ async def del_back_playlist(client, callback_query, _):
         text=_["speed_6"].format(callback_query.from_user.mention),
     )
     try:
-        await VIP.speedup_stream(
+        await LOVE.speedup_stream(
             chat_id,
             file_path,
             speed,
