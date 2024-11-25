@@ -7,7 +7,7 @@ from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import SUDOERS, db
 from LOVEMUSIC.utils import AdminRightsCheck
 from LOVEMUSIC.utils.decorators.language import languageCB
-from MUSIC.utils.inline import close_markup, speed_markup
+from LOVEMUSIC.utils.inline import close_markup, speed_markup
 
 checker = []
 
