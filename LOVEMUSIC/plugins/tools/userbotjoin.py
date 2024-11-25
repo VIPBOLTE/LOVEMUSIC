@@ -7,7 +7,7 @@ from pyrogram.errors import InviteRequestSent
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.utils.database import get_assistant
-from LOVEMUSIC.utils.vip_ban import admin_filter
+from LOVEMUSIC.utils.LOVE_ban import admin_filter
 
 links = {}
 
