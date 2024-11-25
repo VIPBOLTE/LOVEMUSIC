@@ -25,7 +25,7 @@ from LOVEMUSIC.utils.database import (
     remove_active_video_chat,
 )
 from LOVEMUSIC.utils.decorators.language import language
-from LOVEMUSIC.utils.pastebin import VIPbin
+from LOVEMUSIC.utils.pastebin import LOVEbin
 
 # Commands
 GETLOG_COMMAND = get_command("GETLOG_COMMAND")
