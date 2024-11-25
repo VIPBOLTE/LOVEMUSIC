@@ -33,8 +33,8 @@ def run():
     app.run(host="0.0.0.0", port=8000, debug=False)
 
 
-# VIPBot Class
-class VIPBot(Client):
+# LOVEBot Class
+class LOVEBot(Client):
     def __init__(self):
         LOGGER(__name__).info("Starting Bot")
         super().__init__(
