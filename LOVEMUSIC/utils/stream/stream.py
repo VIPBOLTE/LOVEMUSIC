@@ -18,7 +18,7 @@ from LOVEMUSIC.utils.database import (
 from LOVEMUSIC.utils.exceptions import AssistantErr
 from LOVEMUSIC.utils.inline.play import queue_markup, stream_markup, telegram_markup
 from LOVEMUSIC.utils.inline.playlist import close_markup
-from LOVEMUSIC.utils.pastebin import VIPbin
+from LOVEMUSIC.utils.pastebin import LOVEbin
 from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from LOVEMUSIC.utils.thumbnails import gen_qthumb, gen_thumb
 
