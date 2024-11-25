@@ -19,7 +19,7 @@ from LOVEMUSIC.utils.inline.playlist import (
     get_playlist_markup,
     warning_markup,
 )
-from VIPMUSIC.utils.stream.stream import stream
+from LOVEMUSIC.utils.stream.stream import stream
 
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
