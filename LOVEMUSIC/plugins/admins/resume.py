@@ -1,12 +1,11 @@
 from pyrogram import filters
-from pyrogram.types import Message
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
+
+from config import BANNED_USERS
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import LOVE
+from LOVEMUSIC.core.call import VIP as VIP
 from LOVEMUSIC.utils.database import is_music_playing, music_on
 from LOVEMUSIC.utils.decorators import AdminRightsCheck
-from LOVEMUSIC.utils.inline import close_markup
-from config import BANNED_USERS
 
 
 @app.on_message(filters.command(["resume", "cresume"]) & filters.group & ~BANNED_USERS)
@@ -32,3 +31,18 @@ async def resume_com(cli, message: Message, _, chat_id):
         _["admin_4"].format(message.from_user.mention),
         reply_markup=InlineKeyboardMarkup(buttons_resume),
     )
+
+
+__MODULE__ = "Resume"
+__HELP__ = """
+**Resume**
+
+This module allows administrators to resume playback of the currently paused track.
+
+Commands:
+- /resume: Resumes playback of the currently paused track for group.
+- /cresume: Resumes playback of the currently paused track for channel.
+
+Note:
+- Only administrators can use these commands.
+"""
