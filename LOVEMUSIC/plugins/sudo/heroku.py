@@ -341,8 +341,8 @@ import requests
 from pyrogram import filters
 
 import config
-from VIPMUSIC import app
-from VIPMUSIC.misc import SUDOERS
+from LOVEMUSIC import app
+from LOVEMUSIC.misc import SUDOERS
 
 # Heroku API base URL
 HEROKU_API_URL = "https://api.heroku.com/apps"
