@@ -4,7 +4,7 @@ from pyrogram.types import Message
 
 from config import BANNED_USERS
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.utils.database import is_muted, mute_off, mute_on
 from LOVEMUSIC.utils.decorators import AdminRightsCheck
 
