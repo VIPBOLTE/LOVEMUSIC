@@ -6,7 +6,7 @@ from pyrogram.types import Message
 
 from config import BANNED_USERS, PING_IMG_URL
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.utils import bot_sys_stats
 from LOVEMUSIC.utils.decorators.language import language
 from LOVEMUSIC.utils.inline import support_group_markup
