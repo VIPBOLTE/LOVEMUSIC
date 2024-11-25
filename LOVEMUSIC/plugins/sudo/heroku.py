@@ -19,7 +19,7 @@ from config import OWNER_ID
 from strings import get_command
 from LOVEMUSIC import app
 from LOVEMUSIC.misc import HAPP, SUDOERS, XCB
-from MUSIC.utils.database import (
+from LOVEMUSIC.utils.database import (
     get_active_chats,
     remove_active_chat,
     remove_active_video_chat,
