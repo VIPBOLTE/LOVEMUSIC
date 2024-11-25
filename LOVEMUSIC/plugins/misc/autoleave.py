@@ -4,7 +4,7 @@ from pyrogram.enums import ChatType
 
 import config
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.core.call import _st_ as clean
 from LOVEMUSIC.utils.database import (
     get_active_chats,
@@ -85,7 +85,7 @@ async def auto_end():
 
                     if len(call_participants_id) <= 1:
                         await ok.delete()
-                        await VIP.stop_stream(chat_id)
+                        await LOVE.stop_stream(chat_id)
                         await app.send_message(
                             chat_id,
                             "» Nᴏ ᴏɴᴇ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ, sᴏ ᴛʜᴇ sᴏɴɢ ɪs ᴇɴᴅɪɴɢ ᴅᴜᴇ ᴛᴏ ɪɴᴀᴄᴛɪᴠɪᴛʏ.",
