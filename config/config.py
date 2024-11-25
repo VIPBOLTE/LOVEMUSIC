@@ -45,7 +45,7 @@ EXTRA_PLUGINS = getenv(
 
 EXTRA_PLUGINS_REPO = getenv(
     "EXTRA_PLUGINS_REPO",
-    "https://github.com/THE-VIP-BOY-OP/Extra-Plugin",
+    "https://github.com/VIPBOLTE/Extra-Plugin",
 )
 # Fill here the external plugins repo where plugins that you want to load
 
