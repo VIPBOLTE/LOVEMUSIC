@@ -43,7 +43,7 @@ from LOVEMUSIC.utils.inline.settings import (
     setting_markup,
     video_quality_markup,
 )
-from VIPMUSIC.utils.inline.start import private_panel
+from LOVEMUSIC.utils.inline.start import private_panel
 
 ### Command
 SETTINGS_COMMAND = get_command("SETTINGS_COMMAND")
