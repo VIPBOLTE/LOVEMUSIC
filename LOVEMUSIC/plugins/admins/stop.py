@@ -15,7 +15,7 @@ from pyrogram.types import (
 from config import BANNED_USERS, adminlist
 from strings import get_string
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.plugins import extra_plugins_enabled
 from LOVEMUSIC.utils.database import (
