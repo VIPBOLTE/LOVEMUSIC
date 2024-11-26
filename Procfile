@@ -1,1 +1,1 @@
-worker: python3 -m LOVEMUSIC
+web: python3 -m LOVEMUSIC
