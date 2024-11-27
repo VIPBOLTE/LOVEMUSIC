@@ -31,7 +31,7 @@ from LOVEMUSIC.utils.database import (
 from LOVEMUSIC.utils.decorators.language import LanguageStart
 from LOVEMUSIC.utils.formatters import get_readable_time
 from LOVEMUSIC.utils.functions import MARKDOWN, WELCOMEHELP
-from LOVEMUSIC.utils.inline import alive_panel, music_start_panel, start_pannel
+from LOVEMUSIC.utils.inline import alive_panel, music_start_panel, start_panel
 
 from .help import paginate_modules
 
