@@ -1,4 +1,3 @@
-> ֆ†ΛƦϦO̴ץ ◔ᵃᶠᵏ ๋࣭⋆࿐໋:
 import asyncio
 import os
 import re
