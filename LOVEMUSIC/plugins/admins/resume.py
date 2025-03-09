@@ -2,7 +2,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import Anony
+from LOVEMUSIC.core.call import LOVE as Anony
 from LOVEMUSIC.utils.database import is_music_playing, music_on
 from LOVEMUSIC.utils.decorators import AdminRightsCheck
 from LOVEMUSIC.utils.inline import close_markup
