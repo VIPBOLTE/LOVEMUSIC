@@ -1,4 +1,4 @@
-#
+VIP
 import asyncio
 import random
 import string
