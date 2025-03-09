@@ -12,7 +12,7 @@ from pytgcalls.exceptions import NoActiveGroupCall
 import config
 from config import BANNED_USERS, LOG_GROUP_ID, OWNER_ID, lyrical
 from LOVEMUSIC import LOGGER, Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
-from LOVEMUSIC.core.call import LOVE as VIP
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
 from LOVEMUSIC.utils.channelplay import get_channeplayCB
 from LOVEMUSIC.utils.database import add_served_chat, get_assistant, is_video_allowed
@@ -350,7 +350,7 @@ async def play_command(
                     "ᴏᴏᴘs ɪ ᴅᴏɴ'ᴛ Tʜɪɴᴋ ᴛʜᴀᴛ ɪᴛ ɪs ᴀ sᴛʀᴇᴀᴍᴀʙʟᴇ ᴜʀʟ"
                 )
             try:
-                await VIP.stream_call(url)
+                await LOVE.stream_call(url)
             except NoActiveGroupCall:
                 await mystic.edit_text(
                     "ᴛʜᴇʀᴇ's ᴀɴ ᴇʀʀᴏʀ ɪɴ ᴛʜᴇ ʙᴏᴛ, ᴩʟᴇᴀsᴇ ʀᴇᴩᴏʀᴛ ɪᴛ ᴛᴏ sᴜᴩᴩᴏʀᴛ ᴄʜᴀᴛ ᴀs sᴏᴏɴ ᴀs ᴩᴏssɪʙʟᴇ."
