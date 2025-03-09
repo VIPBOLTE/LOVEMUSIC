@@ -11,7 +11,7 @@ git()
 dbb()
 heroku()
 
-app = LOVEMUSIC()
+app = LOVE()
 userbot = Userbot()
 
 
