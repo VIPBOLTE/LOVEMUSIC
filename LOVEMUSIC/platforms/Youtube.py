@@ -122,7 +122,7 @@ class YouTubeAPI:
             return None
         return text[offset : offset + length]
 
-> ֆ†ΛƦϦO̴ץ ◔ᵃᶠᵏ ๋࣭⋆࿐໋:
+
 async def details(self, link: str, videoid: Union[bool, str] = None):
         if videoid:
             link = self.base + link
@@ -229,7 +229,7 @@ async def details(self, link: str, videoid: Union[bool, str] = None):
         }
         return track_details, vidid
 
-> ֆ†ΛƦϦO̴ץ ◔ᵃᶠᵏ ๋࣭⋆࿐໋:
+
 async def formats(self, link: str, videoid: Union[bool, str] = None):
         if videoid:
             link = self.base + link
@@ -334,7 +334,7 @@ async def formats(self, link: str, videoid: Union[bool, str] = None):
             x.download([link])
             return xyz
 
-> ֆ†ΛƦϦO̴ץ ◔ᵃᶠᵏ ๋࣭⋆࿐໋:
+
 def song_video_dl():
             formats = f"{format_id}+140"
             fpath = f"downloads/{title}"
