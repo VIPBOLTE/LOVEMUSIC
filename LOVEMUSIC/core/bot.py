@@ -1,4 +1,4 @@
-import pyrogram
+
 import asyncio
 import threading
 
@@ -34,12 +34,12 @@ def run():
     app.run(host="0.0.0.0", port=8000, debug=False)
 
 
-# LOVEBot Class
-class LOVEBot(Client):
+#LOVEBOT
+class LOVEBOT(Client):
     def __init__(self):
-        LOGGER(__name__).info("Starting Bot")
+        LOGGER(__name__).info(f"Starting Bot")
         super().__init__(
-            "VIPMUSIC",
+            "LOVEMUSIC",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             bot_token=config.BOT_TOKEN,
@@ -50,9 +50,10 @@ class LOVEBot(Client):
         get_me = await self.get_me()
         self.username = get_me.username
         self.id = get_me.id
-        self.name = get_me.first_name + " " + (get_me.last_name or "")
-        self.mention = get_me.mention
+        self.name = self.me.first_name + " " + (self.me.last_name or "")
+        self.mention = self.me.mention
 
+        # Create the button
         button = InlineKeyboardMarkup(
             [
                 [
@@ -64,12 +65,13 @@ class LOVEBot(Client):
             ]
         )
 
+        # Try to send a message to the logger group
         if config.LOG_GROUP_ID:
             try:
                 await self.send_photo(
                     config.LOG_GROUP_ID,
-                    photo=config.START_IMG_URL,
-                    caption=f"╔════❰𝐖𝐄𝐋𝐂𝐎𝐌𝐄❱════❍⊱❁۪۪\n║\n║┣⪼🥀𝐁𝐨𝐭 𝐒𝐭𝐚𝐫𝐭𝐞𝐝 𝐁𝐚𝐛𝐲🎉\n║\n║┣⪼ {self.name}\n║\n║┣⪼🎈𝐈𝐃:- `{self.id}` \n║\n║┣⪼🎄@{self.username} \n║ \n║┣⪼💖𝐓𝐡𝐚𝐧𝐤𝐬 𝐅𝐨𝐫 𝐔𝐬𝐢𝐧𝐠😍\n║\n╚════════════════❍⊱❁",
+                    photo=config.BOT_IMG_URL,
+                    caption=f"╔════❰💓ᴡᴇʟᴄᴏᴍᴇ💓❱════❍⊱❁۪۪\n║\n║┣⪼💫 ʙᴏᴛ sᴛᴀʀᴛᴇᴅ ʙᴀʙʏ ❤️\n║\n║┣⪼ {self.name}\n║\n║┣⪼🕊️ ɪᴅ:- `{self.id}` \n║\n║┣⪼🤡 @{self.username} \n║ \n║┣⪼💀 ᴛʜᴀɴᴋs ғᴏʀ ᴜsɪɴɢ 🌸\n║\n╚════════════════❍⊱❁",
                     reply_markup=button,
                 )
             except pyrogram.errors.ChatWriteForbidden as e:
@@ -77,7 +79,7 @@ class LOVEBot(Client):
                 try:
                     await self.send_message(
                         config.LOG_GROUP_ID,
-                        f"╔═══❰𝐖𝐄𝐋𝐂𝐎𝐌𝐄❱═══❍⊱❁۪۪\n║\n║┣⪼🥀𝐁𝐨𝐭 𝐒𝐭𝐚𝐫𝐭𝐞𝐝 𝐁𝐚𝐛𝐲🎉\n║\n║◈ {self.name}\n║\n║┣⪼🎈𝐈𝐃:- `{self.id}` \n║\n║┣⪼🎄@{self.username} \n║ \n║┣⪼💖𝐓𝐡𝐚𝐧𝐤𝐬 𝐅𝐨𝐫 𝐔𝐬𝐢𝐧𝐠😍\n║\n╚══════════════❍⊱❁",
+                        f"╔═══❰💓ᴡᴇʟᴄᴏᴍᴇ💓❱═══❍⊱❁۪۪\n║\n║┣⪼ 💫 ʙᴏᴛ sᴛᴀʀᴛᴇᴅ ʙᴀʙʏ ❤️\n║\n║◈ {self.name}\n║\n║┣⪼🕊️ɪᴅ :- `{self.id}` \n║\n║┣⪼🤡 @{self.username} \n║ \n║┣⪼💀 ᴛʜᴀɴᴋs ғᴏʀ ᴜsɪɴɢ 🌸\n║\n╚══════════════❍⊱❁",
                         reply_markup=button,
                     )
                 except Exception as e:
@@ -90,6 +92,8 @@ class LOVEBot(Client):
             LOGGER(__name__).warning(
                 "LOG_GROUP_ID is not set, skipping log group notifications."
             )
+
+        # Setting commands
         if config.SET_CMDS:
             try:
                 await self.set_bot_commands(
@@ -146,6 +150,7 @@ class LOVEBot(Client):
             except Exception as e:
                 LOGGER(__name__).error(f"Failed to set bot commands: {e}")
 
+        # Check if bot is an admin in the logger group
         if config.LOG_GROUP_ID:
             try:
                 chat_member_info = await self.get_chat_member(
@@ -159,26 +164,3 @@ class LOVEBot(Client):
                 LOGGER(__name__).error(f"Error occurred while checking bot status: {e}")
 
         LOGGER(__name__).info(f"MusicBot Started as {self.name}")
-
-
-# Define the async boot function
-async def anony_boot():
-    bot = LOVEBot()
-    await bot.start()
-    await idle()
-
-
-if __name__ == "__main__":
-    LOGGER(__name__).info("Starting Flask server...")
-
-    # Start Flask server in a new thread
-    t = threading.Thread(target=run)
-    t.daemon = True
-    t.start()
-
-    LOGGER(__name__).info("Starting LOVEBot...")
-
-    # Run the bot
-    asyncio.run(anony_boot())
-
-    LOGGER(__name__).info("Stopping LOVEBot...")
