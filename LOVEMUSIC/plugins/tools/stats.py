@@ -9,7 +9,7 @@ from pyrogram.types import InputMediaPhoto, Message
 from pytgcalls.__version__ import __version__ as pytgver
 
 import config
-from AnonXMusic import app
+from LOVEMUSIC import app
 from LOVEMUSIC.core.userbot import assistants
 from LOVEMUSIC.misc import SUDOERS, mongodb
 from LOVEMUSIC.plugins import ALL_MODULES
