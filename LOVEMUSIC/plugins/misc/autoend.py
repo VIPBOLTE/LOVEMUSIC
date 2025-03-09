@@ -5,7 +5,7 @@ from pyrogram.enums import ChatType
 
 import config
 from LOVEMUSIC import app
-from LOVEMUSIC.core.call import Anony, autoend
+from LOVEMUSIC.core.call import LOVE as Anony, autoend
 from LOVEMUSIC.utils.database import get_client, is_active_chat, is_autoend
 
 
