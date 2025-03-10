@@ -1,7 +1,5 @@
 import json
 import subprocess
-
-
 def get_readable_time(seconds: int) -> str:
     count = 0
     ping_time = ""
@@ -24,8 +22,6 @@ def get_readable_time(seconds: int) -> str:
     time_list.reverse()
     ping_time += ":".join(time_list)
     return ping_time
-
-
 def convert_bytes(size: float) -> str:
     """humanize size"""
     if not size:
@@ -37,8 +33,6 @@ def convert_bytes(size: float) -> str:
         size /= power
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
-
-
 async def int_to_alpha(user_id: int) -> str:
     alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
     text = ""
@@ -46,8 +40,6 @@ async def int_to_alpha(user_id: int) -> str:
     for i in user_id:
         text += alphabet[int(i)]
     return text
-
-
 async def alpha_to_int(user_id_alphabet: str) -> int:
     alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
     user_id = ""
@@ -56,13 +48,9 @@ async def alpha_to_int(user_id_alphabet: str) -> int:
         user_id += str(index)
     user_id = int(user_id)
     return user_id
-
-
 def time_to_seconds(time):
     stringt = str(time)
     return sum(int(x) * 60**i for i, x in enumerate(reversed(stringt.split(":"))))
-
-
 def seconds_to_min(seconds):
     if seconds is not None:
         seconds = int(seconds)
@@ -81,8 +69,6 @@ def seconds_to_min(seconds):
         elif s > 0:
             return "00:{:02d}".format(s)
     return "-"
-
-
 def speed_converter(seconds, speed):
     if str(speed) == str("0.5"):
         seconds = seconds * 2
@@ -114,8 +100,6 @@ def speed_converter(seconds, speed):
             convert = "00:{:02d}".format(s)
             return convert, collect
     return "-"
-
-
 def check_duration(file_path):
     command = [
         "ffprobe",
@@ -127,7 +111,6 @@ def check_duration(file_path):
         "-show_streams",
         file_path,
     ]
-
     pipe = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     out, err = pipe.communicate()
     _json = json.loads(out)
@@ -142,8 +125,6 @@ def check_duration(file_path):
                 return float(s["duration"])
 
     return "Unknown"
-
-
 formats = [
     "webm",
     "mkv",
