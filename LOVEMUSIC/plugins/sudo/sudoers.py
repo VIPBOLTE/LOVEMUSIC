@@ -1,6 +1,6 @@
 from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from ChampuXMusic import app
+from LOVEMUSIC import app
 from pyrogram.types import InputMediaVideo
 from LOVEMUSIC.misc import SUDOERS, SPECIAL_ID
 from LOVEMUSIC.utils.database import add_sudo, remove_sudo
