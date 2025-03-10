@@ -40,7 +40,7 @@ async def init():
     await userbot.start()
     await LOVE.start()
     try:
-        await Champu.stream_call("https://telegra.ph/file/58cc6ef6d0a2a720ea6e3.mp4")
+        await LOVE.stream_call("https://telegra.ph/file/58cc6ef6d0a2a720ea6e3.mp4")
     except NoActiveGroupCall:
         LOGGER("LOVEMUSIC").error(
             "ᴘʟᴇᴀsᴇ ᴛᴜʀɴ ᴏɴ ᴛʜᴇ ᴠɪᴅᴇᴏᴄʜᴀᴛ ᴏғ ʏᴏᴜʀ ʟᴏɢ ɢʀᴏᴜᴘ\ᴄʜᴀɴɴᴇʟ.\n\nsᴛᴏᴘᴘɪɴɢ ʙᴏᴛ..."
@@ -48,7 +48,7 @@ async def init():
         exit()
     except:
         pass
-    await Champu.decorators()
+    await LOVE.decorators()
     LOGGER("LOVEMUSIC").info(
         "\x43\x68\x61\x6D\x70\x75\x20\x42\x6F\x74\x20\x68\x61\x73\x20\x62\x65\x65\x6E\x20\x73\x75\x63\x63\x65\x73\x73\x66\x75\x6C\x6C\x79\x20\x73\x74\x61\x72\x74\x65\x64\x2E\x0A\x0A\x40\x54\x68\x65\x43\x68\x61\x6D\x70\x75\x20"
     )
