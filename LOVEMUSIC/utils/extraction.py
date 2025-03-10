@@ -1,9 +1,6 @@
 from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message, User
-
 from LOVEMUSIC import app
-
-
 async def extract_user(m: Message) -> User:
     if m.reply_to_message:
         return m.reply_to_message.from_user
