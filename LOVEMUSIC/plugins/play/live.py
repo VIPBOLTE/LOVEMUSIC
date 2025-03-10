@@ -1,6 +1,6 @@
 from pyrogram import filters
-
-from LOVEMUSIC import YouTube, app
+import random
+from LOVEMUSIC import YouTube, app, EMOJIS
 from LOVEMUSIC.utils.channelplay import get_channeplayCB
 from LOVEMUSIC.utils.decorators.language import languageCB
 from LOVEMUSIC.utils.stream.stream import stream
@@ -29,8 +29,9 @@ async def play_live_stream(client, CallbackQuery, _):
         await CallbackQuery.answer()
     except:
         pass
+    Emoji = random.choice(EMOJIS)
     mystic = await CallbackQuery.message.reply_text(
-        _["play_2"].format(channel) if channel else _["play_1"]
+        _["play_2"].format(channel) if channel else _[Emoji]
     )
     try:
         details, track_id = await YouTube.track(vidid, True)
