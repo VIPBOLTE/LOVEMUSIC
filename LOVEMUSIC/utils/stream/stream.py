@@ -6,12 +6,12 @@ from pyrogram.types import InlineKeyboardMarkup
 
 import config
 from LOVEMUSIC import Carbon, YouTube, app
-from LOVEMUSIC.core.call import Champu
+from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import db
 from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
 from LOVEMUSIC.utils.exceptions import AssistantErr
 from LOVEMUSIC.utils.inline import aq_markup, close_markup, stream_markup
-from LOVEMUSIC.utils.pastebin import ChampuBin
+from LOVEMUSIC.utils.pastebin import LOVEBin
 from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from LOVEMUSIC.utils.thumbnails import get_thumb
 
@@ -277,7 +277,7 @@ async def stream(
         else:
             if not forceplay:
                 db[chat_id] = []
-            await Champu.join_call(chat_id, original_chat_id, file_path, video=status)
+            await LOVE.join_call(chat_id, original_chat_id, file_path, video=status)
             await put_queue(
                 chat_id,
                 original_chat_id,
