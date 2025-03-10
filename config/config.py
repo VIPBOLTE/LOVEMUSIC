@@ -92,7 +92,7 @@ TELEGRAM_VIDEO_URL = "https://envs.sh/s/i0YWsoZ6cUhL7EZO79EQqQ/WdO.jpg"
 STREAM_IMG_URL = "https://envs.sh/s/4ht29RFA5a1P_9XMK19pPA/Wdx.jpg"
 SOUNCLOUD_IMG_URL = "https://envs.sh/s/WV85h_s_uMx8BrD5HmA1wA/Wd-.jpg"
 YOUTUBE_IMG_URL = "https://graph.org/file/7e177561e54188f35fa03.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://graph.org/file/42739cf35a58f1eda76f0.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://envs.sh/s/a1aYFyCzf4FKZu7e1pJovQ/W2q.jpg"
 SPOTIFY_ALBUM_IMG_URL = "https://envs.sh/s/tRhUQrmd-HpxKjmyxhEGNA/W2w.jpg"
 SPOTIFY_PLAYLIST_IMG_URL = "https://envs.sh/s/YkamjVd3r_qatS0nQeCcJg/W2u.jpg"
 
