@@ -4,7 +4,7 @@ import importlib
 from pyrogram import idle
 from pytgcalls.exceptions import NoActiveGroupCall
 
-import config
+import config 
 from LOVEMUSIC import LOGGER, app, userbot
 from LOVEMUSIC.core.call import LOVE
 from LOVEMUSIC.misc import sudo
@@ -21,7 +21,7 @@ async def init():
         and not config.STRING4
         and not config.STRING5
     ):
-        LOGGER(__name__).error("Assistant client variables not defined, exiting...")
+        LOGGER(__name__).error("ᴀssɪsᴛᴀɴᴛ ᴄʟɪᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇs ɴᴏᴛ ᴅᴇғɪɴᴇᴅ, ᴇxɪᴛɪɴɢ...")
         exit()
     await sudo()
     try:
@@ -36,26 +36,26 @@ async def init():
     await app.start()
     for all_module in ALL_MODULES:
         importlib.import_module("LOVEMUSIC.plugins" + all_module)
-    LOGGER("LOVEMUSIC.plugins").info("Successfully Imported Modules...")
+    LOGGER("LOVEMUSIC.plugins").info("sᴜᴄᴄᴇssғᴜʟʟʏ ɪᴍᴘᴏʀᴛᴇᴅ ᴍᴏᴅᴜʟᴇs...")
     await userbot.start()
     await LOVE.start()
     try:
-        await LOVE.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
+        await Champu.stream_call("https://telegra.ph/file/58cc6ef6d0a2a720ea6e3.mp4")
     except NoActiveGroupCall:
         LOGGER("LOVEMUSIC").error(
-            "Please turn on the videochat of your log group\channel.\n\nStopping Bot..."
+            "ᴘʟᴇᴀsᴇ ᴛᴜʀɴ ᴏɴ ᴛʜᴇ ᴠɪᴅᴇᴏᴄʜᴀᴛ ᴏғ ʏᴏᴜʀ ʟᴏɢ ɢʀᴏᴜᴘ\ᴄʜᴀɴɴᴇʟ.\n\nsᴛᴏᴘᴘɪɴɢ ʙᴏᴛ..."
         )
         exit()
     except:
         pass
-    await LOVE.decorators()
+    await Champu.decorators()
     LOGGER("LOVEMUSIC").info(
-        "\x41\x6e\x6f\x6e\x58\x20\x4d\x75\x73\x69\x63\x20\x42\x6f\x74\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\n\n\x44\x6f\x6e'\x74\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x76\x69\x73\x69\x74\x20\x40\x46\x61\x6c\x6c\x65\x6e\x41\x73\x73\x6f\x63\x69\x61\x74\x69\x6f\x6e"
+        "\x43\x68\x61\x6D\x70\x75\x20\x42\x6F\x74\x20\x68\x61\x73\x20\x62\x65\x65\x6E\x20\x73\x75\x63\x63\x65\x73\x73\x66\x75\x6C\x6C\x79\x20\x73\x74\x61\x72\x74\x65\x64\x2E\x0A\x0A\x40\x54\x68\x65\x43\x68\x61\x6D\x70\x75\x20"
     )
     await idle()
     await app.stop()
     await userbot.stop()
-    LOGGER("LOVEMUSIC").info("Stopping LOVEMUSIC Music Bot...")
+    LOGGER("LOVEMUSIC").info("sᴛᴏᴘᴘɪɴɢ ᴄʜᴀᴍᴘᴜ ᴍᴜsɪᴄ ʙᴏᴛ...")
 
 
 if __name__ == "__main__":
