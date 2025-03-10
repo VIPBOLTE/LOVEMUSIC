@@ -11,7 +11,7 @@ from pytgcalls.__version__ import __version__ as pytgver
 import config
 from LOVEMUSIC import app
 from LOVEMUSIC.core.userbot import assistants
-from LOVEMUSIC.misc import SUDOERS, mongodb
+from LOVEMUSIC.misc import SUDOERS, pymongodb
 from LOVEMUSIC.plugins import ALL_MODULES
 from LOVEMUSIC.utils.database import get_served_chats, get_served_users, get_sudoers
 from LOVEMUSIC.utils.decorators.language import language, languageCB
@@ -98,7 +98,7 @@ async def bot_stats(client, CallbackQuery, _):
     total = hdd.total / (1024.0**3)
     used = hdd.used / (1024.0**3)
     free = hdd.free / (1024.0**3)
-    call = await mongodb.command("dbstats")
+    call = await pymongodb.command("dbstats")
     datasize = call["dataSize"] / 1024
     storage = call["storageSize"] / 1024
     served_chats = len(await get_served_chats())
@@ -132,4 +132,4 @@ async def bot_stats(client, CallbackQuery, _):
     except MessageIdInvalid:
         await CallbackQuery.message.reply_photo(
             photo=config.STATS_IMG_URL, caption=text, reply_markup=upl
-                      )
+)
