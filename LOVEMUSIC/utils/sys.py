@@ -1,11 +1,7 @@
 import time
-
 import psutil
-
 from LOVEMUSIC.misc import _boot_
 from LOVEMUSIC.utils.formatters import get_readable_time
-
-
 async def bot_sys_stats():
     bot_uptime = int(time.time() - _boot_)
     UP = f"{get_readable_time(bot_uptime)}"
