@@ -1,8 +1,5 @@
 import aiohttp
-
 BASE = "https://batbin.me/"
-
-
 async def post(url: str, *args, **kwargs):
     async with aiohttp.ClientSession() as session:
         async with session.post(url, *args, **kwargs) as resp:
@@ -11,8 +8,6 @@ async def post(url: str, *args, **kwargs):
             except Exception:
                 data = await resp.text()
         return data
-
-
 async def LOVEBin(text):
     resp = await post(f"{BASE}api/v2/paste", data=text)
     if not resp["success"]:
