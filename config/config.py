@@ -94,7 +94,7 @@ SOUNCLOUD_IMG_URL = "https://envs.sh/s/WV85h_s_uMx8BrD5HmA1wA/Wd-.jpg"
 YOUTUBE_IMG_URL = "https://graph.org/file/7e177561e54188f35fa03.jpg"
 SPOTIFY_ARTIST_IMG_URL = "https://graph.org/file/42739cf35a58f1eda76f0.jpg"
 SPOTIFY_ALBUM_IMG_URL = "https://graph.org/file/9553b762fd6a2aaf7ab0a.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://graph.org/file/08b0f34c8012e2e231978.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://envs.sh/s/YkamjVd3r_qatS0nQeCcJg/W2u.jpg"
 
 
 def time_to_seconds(time):
