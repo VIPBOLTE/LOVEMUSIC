@@ -644,6 +644,36 @@ async def remove_banned_user(user_id: int):
     if not is_gbanned:
         return
     return await blockeddb.delete_one({"user_id": user_id})
+# Delete command mode
+
+# Define file paths
+CLEANMODE_DB = os.path.join(config.TEMP_DB_FOLDER, "cleanmode.json")
+COMMAND_DB = os.path.join(config.TEMP_DB_FOLDER, "command.json")
+
+
+def load_cleanmode():
+    if os.path.exists(CLEANMODE_DB):
+        with open(CLEANMODE_DB, "r") as file:
+            return json.load(file)
+    return []
+
+
+def load_command():
+    if os.path.exists(COMMAND_DB):
+        with open(COMMAND_DB, "r") as file:
+            return json.load(file)
+    return []
+
+
+def save_cleanmode():
+    with open(CLEANMODE_DB, "w") as file:
+        json.dump(cleanmode, file)
+
+
+def save_command():
+    with open(COMMAND_DB, "w") as file:
+        json.dump(command, file)
+
 
 cleanmode = load_cleanmode()
 command = load_command()
