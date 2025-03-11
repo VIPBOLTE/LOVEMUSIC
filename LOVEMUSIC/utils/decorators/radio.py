@@ -132,7 +132,7 @@ def RadioWrapper(command):
         if chat_matched:
             # If common chat matches, skip join process and proceed
             call_participants_id = [
-                member.chat.id async for member in userbot.get_call_members(chat_id)
+                member.chat.id async for member in userbot.get_chat_members(chat_id)
             ]
             if await is_active_chat(chat_id) and userbot.id not in call_participants_id:
                 await clean(chat_id)
