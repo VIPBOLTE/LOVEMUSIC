@@ -644,3 +644,38 @@ async def remove_banned_user(user_id: int):
     if not is_gbanned:
         return
     return await blockeddb.delete_one({"user_id": user_id})
+
+cleanmode = load_cleanmode()
+command = load_command()
+
+
+async def is_cleanmode_on(chat_id: int) -> bool:
+    return chat_id not in cleanmode
+
+
+async def cleanmode_off(chat_id: int):
+    if chat_id not in cleanmode:
+        cleanmode.append(chat_id)
+        save_cleanmode()
+
+
+async def cleanmode_on(chat_id: int):
+    if chat_id in cleanmode:
+        cleanmode.remove(chat_id)
+        save_cleanmode()
+
+
+async def is_commanddelete_on(chat_id: int) -> bool:
+    return chat_id not in command
+
+
+async def commanddelete_off(chat_id: int):
+    if chat_id not in command:
+        command.append(chat_id)
+        save_command()
+
+
+async def commanddelete_on(chat_id: int):
+    if chat_id in command:
+        command.remove(chat_id)
+        save_command()
