@@ -13,7 +13,7 @@ from config import PRIVATE_BOT_MODE
 from config import SUPPORT_CHAT
 from strings import get_string
 from LOVEMUSIC import YouTube, app
-from LOVEMUSIC.core.call import _st_ as clean
+from LOVEMUSIC.core.call import _clear_ as clean
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.utils.database import (
     get_assistant,
