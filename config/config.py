@@ -77,7 +77,7 @@ lyrical = {}
 votemode = {}
 autoclean = []
 confirmer = {}
-
+TEMP_DB_FOLDER = "tempdb"
 
 START_IMG_URL = getenv(
     "START_IMG_URL", "https://envs.sh/s/IB5qmR6tODPCcNm6NAmuHA/Wds.jpg"
