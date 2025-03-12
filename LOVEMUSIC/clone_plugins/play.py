@@ -7,8 +7,8 @@ from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
 from LOVEMUSIC.utils.database import get_assistant
 import config
-from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
-from LOVEMUSIC.core.call import BABY
+from LOVEMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app, EMOJIS
+from LOVEMUSIC.core.call import LOVE as BABY
 from LOVEMUSIC.misc import SUDOERS
 from LOVEMUSIC.utils.inline import panel_markup_clone
 from LOVEMUSIC.utils import seconds_to_min, time_to_seconds
@@ -772,12 +772,12 @@ from pyrogram import Client
 from pyrogram.types import InlineKeyboardMarkup
 
 import config
-from BABYMUSIC import Carbon, YouTube
-from BABYMUSIC.core.call import BABY
-from BABYMUSIC.misc import db
-from BABYMUSIC.utils.database import add_active_video_chat, is_active_chat
-from BABYMUSIC.utils.exceptions import AssistantErr
-from BABYMUSIC.utils.inline import (
+from LOVEMUSIC import Carbon, YouTube
+from LOVEMUSIC.core.call import LOVE as BABY
+from LOVEMUSIC.misc import db
+from LOVEMUSIC.utils.database import add_active_video_chat, is_active_chat
+from LOVEMUSIC.utils.exceptions import AssistantErr
+from LOVEMUSIC.utils.inline import (
     aq_markup,
     queuemarkup,
     close_markup,
@@ -785,8 +785,8 @@ from BABYMUSIC.utils.inline import (
     stream_markup2,
     panel_markup_4,
 )
-from BABYMUSIC.utils.pastebin import PROBin
-from BABYMUSIC.utils.stream.queue import put_queue, put_queue_index
+from LOVEMUSIC.utils.pastebin import LOVEBin as PROBin
+from LOVEMUSIC.utils.stream.queue import put_queue, put_queue_index
 from youtubesearchpython.__future__ import VideosSearch
 
 
