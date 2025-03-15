@@ -77,7 +77,7 @@ async def get_thumb(videoid):
     circle_size = 400
 
     # Resize the thumbnail to a larger size (Zoom In)
-    zoom_factor = 1.5  # Adjust this factor for more or less zoom
+    zoom_factor = 1.2  # Adjust this factor for more or less zoom
     large_thumbnail = youtube.resize(
         (int(youtube.width * zoom_factor), int(youtube.height * zoom_factor)),
         Image.LANCZOS
