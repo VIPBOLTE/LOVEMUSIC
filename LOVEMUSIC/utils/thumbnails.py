@@ -30,7 +30,7 @@ def truncate(text):
             text2 += " " + word
     return text1.strip(), text2.strip()
 
-async def get_thumb(videoid, has_spoiler=False):
+async def get_thumb(videoid):
     """Fetches video thumbnail and generates an overlay image."""
     cached_path = f"cache/{videoid}_v4.png"
     if os.path.isfile(cached_path):
@@ -70,28 +70,32 @@ async def get_thumb(videoid, has_spoiler=False):
         print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
 
-    # Ensure the image is square
-    width, height = youtube.size
-    if width != height:
-        new_size = min(width, height)
-        left = (width - new_size) / 2
-        top = (height - new_size) / 2
-        right = (width + new_size) / 2
-        bottom = (height + new_size) / 2
-        youtube = youtube.crop((left, top, right, bottom))
-
     blurred_background = youtube.convert("RGBA").filter(ImageFilter.GaussianBlur(20))
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
 
     # Create circular HD thumbnail with a thick border
     circle_size = 400
-    hd_thumbnail = youtube.resize((circle_size, circle_size), Image.LANCZOS)
+
+    # Resize the thumbnail to a larger size (Zoom In)
+    zoom_factor = 1.5  # Adjust this factor for more or less zoom
+    large_thumbnail = youtube.resize(
+        (int(youtube.width * zoom_factor), int(youtube.height * zoom_factor)),
+        Image.LANCZOS
+    )
+
+    # Crop the center of the zoomed image
+    left = (large_thumbnail.width - circle_size) // 2
+    top = (large_thumbnail.height - circle_size) // 2
+    right = (large_thumbnail.width + circle_size) // 2
+    bottom = (large_thumbnail.height + circle_size) // 2
+
+    zoomed_thumbnail = large_thumbnail.crop((left, top, right, bottom))
 
     # Create circular mask
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
-    hd_thumbnail.putalpha(circle_mask)
+    zoomed_thumbnail.putalpha(circle_mask)
 
     # Create border
     border_thickness = 20
@@ -141,17 +145,10 @@ async def get_thumb(videoid, has_spoiler=False):
     except Exception as e:
         print(f"Error opening play_icons.png: {e}")
 
-    # If has_spoiler is True, add a spoiler overlay
-    if has_spoiler:
-        # Adding a red "SPOILER" text
-        spoiler_text = "SPOILER ALERT"
-        spoiler_font = ImageFont.truetype("LOVEMUSIC/assets/font.ttf", 50)
-        draw.text((text_x + 150, 300), spoiler_text, fill=(255, 0, 0), font=spoiler_font)
-
     # Final Image Composition
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
-    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
+    blurred_background.paste(zoomed_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), zoomed_thumbnail)
 
     try:
         os.remove(thumbnail_path)
