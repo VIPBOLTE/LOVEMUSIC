@@ -29,7 +29,7 @@ def truncate(text):
         elif len(text2) + len(word) < 30:
             text2 += " " + word
     return text1.strip(), text2.strip()
-async def get_thumb(videoid, has_spoiler=True):
+async def get_thumb(videoid, has_spoiler=false):
     """Fetches video thumbnail and generates an overlay image."""
     cached_path = f"cache/{videoid}_v4.png"
     if os.path.isfile(cached_path):
