@@ -74,23 +74,23 @@ async def get_thumb(videoid):
     blurred_background = youtube.filter(ImageFilter.GaussianBlur(20))
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
 
-    # Create circular HD thumbnail with a thick border
-    circle_size = 400
+    # Get the width and height
+    width, height = youtube.size
 
-    # Maintain aspect ratio while resizing
-    youtube.thumbnail((circle_size, circle_size), Image.LANCZOS)
+    # Crop the middle 70% horizontally (remove left and right 15%)
+    left = int(width * 0.15)
+    right = int(width * 0.85)
+    youtube = youtube.crop((left, 0, right, height))
 
-    # Create a blank transparent image and paste resized image at center
-    hd_thumbnail = Image.new("RGBA", (circle_size, circle_size), (0, 0, 0, 0))
-    x_offset = (circle_size - youtube.size[0]) // 2
-    y_offset = (circle_size - youtube.size[1]) // 2
-    hd_thumbnail.paste(youtube, (x_offset, y_offset))
+    # Create a circular mask and apply it
+    circle_size = min(youtube.size)
+    youtube = youtube.resize((circle_size, circle_size), Image.LANCZOS)
 
     # Create circular mask
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
-    hd_thumbnail.putalpha(circle_mask)
+    youtube.putalpha(circle_mask)
 
     # Create border
     border_thickness = 20
@@ -143,7 +143,7 @@ async def get_thumb(videoid):
     # Final Image Composition
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
-    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
+    blurred_background.paste(youtube, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), youtube)
 
     try:
         os.remove(thumbnail_path)
