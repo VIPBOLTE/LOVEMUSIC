@@ -29,8 +29,7 @@ def truncate(text):
         elif len(text2) + len(word) < 30:
             text2 += " " + word
     return text1.strip(), text2.strip()
-
-async def get_thumb(videoid):
+async def get_thumb(videoid, has_spoiler=False):
     """Fetches video thumbnail and generates an overlay image."""
     cached_path = f"cache/{videoid}_v4.png"
     if os.path.isfile(cached_path):
@@ -65,32 +64,23 @@ async def get_thumb(videoid):
         downloaded_path = await download_image(YOUTUBE_IMG_URL, thumbnail_path)
 
     try:
-        youtube = Image.open(downloaded_path).convert("RGBA")
+        youtube = Image.open(downloaded_path)
     except Exception as e:
         print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
 
-    # Apply blur effect
-    blurred_background = youtube.filter(ImageFilter.GaussianBlur(20))
+    blurred_background = youtube.convert("RGBA").filter(ImageFilter.GaussianBlur(20))
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
 
-    # Get the width and height
-    width, height = youtube.size
-
-    # Crop the middle 70% horizontally (remove left and right 15%)
-    left = int(width * 0.15)
-    right = int(width * 0.85)
-    youtube = youtube.crop((left, 0, right, height))
-
-    # Create a circular mask and apply it
-    circle_size = min(youtube.size)
-    youtube = youtube.resize((circle_size, circle_size), Image.LANCZOS)
+    # Create circular HD thumbnail with a thick border
+    circle_size = 400
+    hd_thumbnail = youtube.resize((circle_size, circle_size), Image.LANCZOS)
 
     # Create circular mask
     circle_mask = Image.new("L", (circle_size, circle_size), 0)
     draw_mask = ImageDraw.Draw(circle_mask)
     draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
-    youtube.putalpha(circle_mask)
+    hd_thumbnail.putalpha(circle_mask)
 
     # Create border
     border_thickness = 20
@@ -140,10 +130,17 @@ async def get_thumb(videoid):
     except Exception as e:
         print(f"Error opening play_icons.png: {e}")
 
+    # If has_spoiler is True, add a spoiler overlay
+    if has_spoiler:
+        # Adding a red "SPOILER" text
+        spoiler_text = "SPOILER ALERT"
+        spoiler_font = ImageFont.truetype("LOVEMUSIC/assets/font.ttf", 50)
+        draw.text((text_x + 150, 300), spoiler_text, fill=(255, 0, 0), font=spoiler_font)
+
     # Final Image Composition
     hd_position = (60, 140)
     blurred_background.paste(border_circle, hd_position, border_circle)
-    blurred_background.paste(youtube, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), youtube)
+    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
 
     try:
         os.remove(thumbnail_path)
