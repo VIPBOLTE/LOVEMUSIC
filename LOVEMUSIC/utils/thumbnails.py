@@ -105,9 +105,9 @@ async def get_thumb(videoid):
     draw = ImageDraw.Draw(blurred_background)
 
     try:
-        font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
-        title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
-        info_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 25)
+        font = ImageFont.truetype("LOVEMUSIC/assets/font.ttf", 30)
+        title_font = ImageFont.truetype("LOVEMUSIC/assets/font3.ttf", 45)
+        info_font = ImageFont.truetype("LOVEMUSIC/assets/font.ttf", 25)
     except Exception as e:
         print(f"Error loading fonts: {e}")
         return YOUTUBE_IMG_URL
@@ -135,7 +135,7 @@ async def get_thumb(videoid):
 
     # Overlay Play Button
     try:
-        play_icons = Image.open("GOKUMUSIC/assets/assets/play_icons.png").resize((580, 62))
+        play_icons = Image.open("LOVEMUSIC/assets/play_icons.png").resize((580, 62))
         blurred_background.paste(play_icons, (text_x, 450), play_icons)
     except Exception as e:
         print(f"Error opening play_icons.png: {e}")
