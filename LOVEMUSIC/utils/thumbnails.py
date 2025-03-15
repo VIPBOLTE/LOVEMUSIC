@@ -29,7 +29,8 @@ def truncate(text):
         elif len(text2) + len(word) < 30:
             text2 += " " + word
     return text1.strip(), text2.strip()
-async def get_thumb(videoid, has_spoiler=false):
+
+async def get_thumb(videoid, has_spoiler=False):
     """Fetches video thumbnail and generates an overlay image."""
     cached_path = f"cache/{videoid}_v4.png"
     if os.path.isfile(cached_path):
@@ -68,6 +69,16 @@ async def get_thumb(videoid, has_spoiler=false):
     except Exception as e:
         print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
+
+    # Ensure the image is square
+    width, height = youtube.size
+    if width != height:
+        new_size = min(width, height)
+        left = (width - new_size) / 2
+        top = (height - new_size) / 2
+        right = (width + new_size) / 2
+        bottom = (height + new_size) / 2
+        youtube = youtube.crop((left, top, right, bottom))
 
     blurred_background = youtube.convert("RGBA").filter(ImageFilter.GaussianBlur(20))
     blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
