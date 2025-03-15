@@ -1,121 +1,154 @@
 import os
 import re
-
 import aiofiles
 import aiohttp
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
-from unidecode import unidecode
 from youtubesearchpython.__future__ import VideosSearch
-
-from LOVEMUSIC import app
 from config import YOUTUBE_IMG_URL
 
+async def download_image(url, path):
+    """Downloads an image from the URL and saves it."""
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                if resp.status == 200:
+                    async with aiofiles.open(path, mode="wb") as f:
+                        await f.write(await resp.read())
+                    return path
+    except Exception as e:
+        print(f"Error downloading image: {e}")
+    return None  
 
-def changeImageSize(maxWidth, maxHeight, image):
-    widthRatio = maxWidth / image.size[0]
-    heightRatio = maxHeight / image.size[1]
-    newWidth = int(widthRatio * image.size[0])
-    newHeight = int(heightRatio * image.size[1])
-    newImage = image.resize((newWidth, newHeight))
-    return newImage
-
-
-def clear(text):
-    list = text.split(" ")
-    title = ""
-    for i in list:
-        if len(title) + len(i) < 60:
-            title += " " + i
-    return title.strip()
-
+def truncate(text):
+    """Truncates title text into two lines."""
+    words = text.split(" ")
+    text1, text2 = "", ""
+    for word in words:
+        if len(text1) + len(word) < 30:
+            text1 += " " + word
+        elif len(text2) + len(word) < 30:
+            text2 += " " + word
+    return text1.strip(), text2.strip()
 
 async def get_thumb(videoid):
-    if os.path.isfile(f"cache/{videoid}.png"):
-        return f"cache/{videoid}.png"
+    """Fetches video thumbnail and generates an overlay image."""
+    cached_path = f"cache/{videoid}_v4.png"
+    if os.path.isfile(cached_path):
+        return cached_path
 
     url = f"https://www.youtube.com/watch?v={videoid}"
+    results = VideosSearch(url, limit=1)
+
     try:
-        results = VideosSearch(url, limit=1)
-        for result in (await results.next())["result"]:
-            try:
-                title = result["title"]
-                title = re.sub("\W+", " ", title)
-                title = title.title()
-            except:
-                title = "Unsupported Title"
-            try:
-                duration = result["duration"]
-            except:
-                duration = "Unknown Mins"
-            thumbnail = result["thumbnails"][0]["url"].split("?")[0]
-            try:
-                views = result["viewCount"]["short"]
-            except:
-                views = "Unknown Views"
-            try:
-                channel = result["channel"]["name"]
-            except:
-                channel = "Unknown Channel"
-
-        async with aiohttp.ClientSession() as session:
-            async with session.get(thumbnail) as resp:
-                if resp.status == 200:
-                    f = await aiofiles.open(f"cache/thumb{videoid}.png", mode="wb")
-                    await f.write(await resp.read())
-                    await f.close()
-
-        youtube = Image.open(f"cache/thumb{videoid}.png")
-        image1 = changeImageSize(1280, 720, youtube)
-        image2 = image1.convert("RGBA")
-        background = image2.filter(filter=ImageFilter.BoxBlur(10))
-        enhancer = ImageEnhance.Brightness(background)
-        background = enhancer.enhance(0.5)
-        draw = ImageDraw.Draw(background)
-        arial = ImageFont.truetype("LOVEMUSIC/assets/font2.ttf", 30)
-        font = ImageFont.truetype("LOVEMUSIC/assets/font.ttf", 30)
-        draw.text((1110, 8), unidecode(app.name), fill="white", font=arial)
-        draw.text(
-            (55, 560),
-            f"{channel} | {views[:23]}",
-            (255, 255, 255),
-            font=arial,
-        )
-        draw.text(
-            (57, 600),
-            clear(title),
-            (255, 255, 255),
-            font=font,
-        )
-        draw.line(
-            [(55, 660), (1220, 660)],
-            fill="white",
-            width=5,
-            joint="curve",
-        )
-        draw.ellipse(
-            [(918, 648), (942, 672)],
-            outline="white",
-            fill="white",
-            width=15,
-        )
-        draw.text(
-            (36, 685),
-            "00:00",
-            (255, 255, 255),
-            font=arial,
-        )
-        draw.text(
-            (1185, 685),
-            f"{duration[:23]}",
-            (255, 255, 255),
-            font=arial,
-        )
-        try:
-            os.remove(f"cache/thumb{videoid}.png")
-        except:
-            pass
-        background.save(f"cache/{videoid}.png")
-        return f"cache/{videoid}.png"
+        response = await results.next()
+        result = response["result"][0] if response and "result" in response and response["result"] else None
     except Exception as e:
-        print(e)
+        print(f"Error fetching video details: {e}")
+        return YOUTUBE_IMG_URL  
+
+    if not result:
+        print("Error: No results found.")
+        return YOUTUBE_IMG_URL  
+
+    title = re.sub("\W+", " ", result.get("title", "Unknown Title")).title()
+    duration = result.get("duration")
+    thumbnail_url = result.get("thumbnails", [{}])[0].get("url", "").split("?")[0]
+    views = result.get("viewCount", {}).get("short", "Unknown Views")
+    channel = result.get("channel", {}).get("name", "Unknown Channel")
+
+    is_live = duration is None
+    duration_text = "🔴 LIVE" if is_live else duration
+
+    thumbnail_path = f"cache/thumb{videoid}.png"
+    downloaded_path = await download_image(thumbnail_url, thumbnail_path)
+    if not downloaded_path:  
+        downloaded_path = await download_image(YOUTUBE_IMG_URL, thumbnail_path)
+
+    try:
+        youtube = Image.open(downloaded_path).convert("RGBA")
+    except Exception as e:
+        print(f"Error opening image: {e}")
         return YOUTUBE_IMG_URL
+
+    # Apply blur effect
+    blurred_background = youtube.filter(ImageFilter.GaussianBlur(20))
+    blurred_background = ImageEnhance.Brightness(blurred_background).enhance(0.6)
+
+    # Create circular HD thumbnail with a thick border
+    circle_size = 400
+
+    # Maintain aspect ratio while resizing
+    youtube.thumbnail((circle_size, circle_size), Image.LANCZOS)
+
+    # Create a blank transparent image and paste resized image at center
+    hd_thumbnail = Image.new("RGBA", (circle_size, circle_size), (0, 0, 0, 0))
+    x_offset = (circle_size - youtube.size[0]) // 2
+    y_offset = (circle_size - youtube.size[1]) // 2
+    hd_thumbnail.paste(youtube, (x_offset, y_offset))
+
+    # Create circular mask
+    circle_mask = Image.new("L", (circle_size, circle_size), 0)
+    draw_mask = ImageDraw.Draw(circle_mask)
+    draw_mask.ellipse((0, 0, circle_size, circle_size), fill=255)
+    hd_thumbnail.putalpha(circle_mask)
+
+    # Create border
+    border_thickness = 20
+    border_size = circle_size + (border_thickness * 2)
+    border_circle = Image.new("RGBA", (border_size, border_size), (255, 255, 255, 255))
+    border_mask = Image.new("L", (border_size, border_size), 0)
+    border_draw = ImageDraw.Draw(border_mask)
+    border_draw.ellipse((0, 0, border_size, border_size), fill=255)
+    border_circle.putalpha(border_mask)
+
+    # Drawing Logic
+    draw = ImageDraw.Draw(blurred_background)
+
+    try:
+        font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 30)
+        title_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font3.ttf", 45)
+        info_font = ImageFont.truetype("GOKUMUSIC/assets/assets/font.ttf", 25)
+    except Exception as e:
+        print(f"Error loading fonts: {e}")
+        return YOUTUBE_IMG_URL
+
+    # Title Text
+    text_x = 565
+    title1, title2 = truncate(title)
+    draw.text((text_x, 180), title1, fill=(255, 255, 255), font=title_font)
+    draw.text((text_x, 230), title2, fill=(255, 255, 255), font=title_font)
+
+    # Channel and View Count
+    draw.text((text_x, 320), f"{channel} | {views}", fill=(255, 255, 255), font=info_font)
+
+    # Progress Line
+    progress_line_start_x = text_x
+    progress_line_end_x = text_x + 580
+    draw.line([progress_line_start_x, 380, progress_line_start_x + 348, 380], fill="red", width=9)
+    draw.line([progress_line_start_x + 348, 380, progress_line_end_x, 380], fill="white", width=8)
+    draw.ellipse([(progress_line_start_x + 348 - 5, 380 - 5), 
+                  (progress_line_start_x + 348 + 5, 380 + 5)], fill="red")
+
+    # Duration Text
+    draw.text((text_x, 400), "00:00", (255, 255, 255), font=info_font)
+    draw.text((1080, 400), duration_text, (255, 255, 255), font=info_font)
+
+    # Overlay Play Button
+    try:
+        play_icons = Image.open("GOKUMUSIC/assets/assets/play_icons.png").resize((580, 62))
+        blurred_background.paste(play_icons, (text_x, 450), play_icons)
+    except Exception as e:
+        print(f"Error opening play_icons.png: {e}")
+
+    # Final Image Composition
+    hd_position = (60, 140)
+    blurred_background.paste(border_circle, hd_position, border_circle)
+    blurred_background.paste(hd_thumbnail, (hd_position[0] + border_thickness, hd_position[1] + border_thickness), hd_thumbnail)
+
+    try:
+        os.remove(thumbnail_path)
+    except:
+        pass
+
+    blurred_background.save(cached_path)
+    return cached_path
